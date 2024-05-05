@@ -1,6 +1,6 @@
-import {config} from "dotenv"
+import { config } from "dotenv";
 
-config()
+config();
 
-export const port =process.env.PORT || 8000
-export const dbUrl:any = process.env.DB_URL
+export const port = process.env.PORT || 8000;
+export const dbUrl = process.env.DB_URL;
