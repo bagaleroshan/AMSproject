@@ -1,12 +1,9 @@
 import { Router } from "express";
-import upload from "./utils/uploadFile";
 import { multipleFileController, singleFileController } from "./fileController";
-let file=Router()
-file  
-.route('/single')
- .post(upload.single("document"),singleFileController)   // middleware
- 
- file .route('/multiple')
- .post(upload.array("document"),multipleFileController)   // middleware
+import upload from "./utils/uploadFile";
+let file = Router();
+file.route("/single").post(upload.single("document"), singleFileController);
 
-export default file
+file.route("/multiple").post(upload.array("document"), multipleFileController);
+
+export default file;
