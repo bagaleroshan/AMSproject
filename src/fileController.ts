@@ -18,7 +18,9 @@ export let multipleFileController = async (req: any, res: Response) => {
       let link = req.files.map((val: {filename:string,fieldname:string,originalname:string,encoding:string,mimetype:string,destination:string,path:string,size:number}, i: Number) => {
         return `http://localhost:8000/${val.filename}`;
       });
-      res.json({ result: link });
+      if (link.length===0) {res.status(400).json({ result: 'file not supported' })}
+      else res.status(200).json({files:link,result:'files uploaded'})
+      
     }
   } catch (error) {
     res.status(400).json({ message: (error as Error).message });

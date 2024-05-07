@@ -63,10 +63,8 @@ let fileFilter = (
     ".JPEG",
     ".png",
     ".svg",
-    ".doc",
-    ".pdf",
-    ".mp4",
     ".PNG",
+    ".doc", ".pdf", ".mp4"
   ];
   if (req.query.validExtensions === "image")
     validExtensions = [
@@ -88,7 +86,7 @@ let fileFilter = (
   if (isValidExtension) {
     cb(null, true);
   } else {
-    cb(new Error("File is not supported"), false);
+    cb(null, false);
   }
 };
 
