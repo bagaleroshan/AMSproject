@@ -2,8 +2,8 @@ import { Request, Response } from "express";
 import {
   createStudentService,
   deleteStudentService,
+  readAllStudentService,
   readSpecificStudentService,
-  readStudentService,
   updateStudentService,
 } from "../Services/studentService";
 
@@ -25,7 +25,9 @@ export const createStudentController = async (req: Request, res: Response) => {
 
 export const readAllStudentController = async (req: Request, res: Response) => {
   try {
-    let result = await readStudentService();
+    let page: number = Number(req.query.page) || 1;
+    let limit: number = Number(req.query.limit) || 10;
+    let result = await readAllStudentService(page, limit);
     res.status(200).json({
       success: true,
       message: "Student read successfully",

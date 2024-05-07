@@ -1,4 +1,11 @@
-import { model } from "mongoose";
-import studentSchema from "../Schema/studentSchema";
+// import { Document, PaginateModel, model } from "mongoose";
+// import mongoosePaginate from "mongoose-paginate-v2";
+// import studentSchema from "../Schema/studentSchema";
 
-export let Student = model("Student", studentSchema);
+// studentSchema.plugin(mongoosePaginate);
+// // const Student = model("Student", studentSchema);
+// const Student = model<PaginateModel<Document<any>>, {}>(
+//   "Student",
+//   studentSchema
+// );
+// export default Student;
