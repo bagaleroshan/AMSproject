@@ -3,21 +3,6 @@ import Student from "../Schema/studentSchema";
 let createStudentService = async (data: {}) => {
   return await Student.create(data);
 };
-
-// let readAllStudentService = async () => {
-//   try {
-//     // page: number, limit: number
-
-//     const options = {
-//       page: 1,
-//       limit: 10,
-//     };
-//     const result = await Student.paginate({}, options);
-//     return result;
-//   } catch (error) {}
-//   // return await Student.find({});
-// };
-
 let readAllStudentService = async (page = 1, limit = 10) => {
   try {
     const options = {
@@ -25,16 +10,22 @@ let readAllStudentService = async (page = 1, limit = 10) => {
       limit,
     };
     const result = await Student.paginate({}, options);
-
-    const { docs, totalDocs, totalPages, page: currentPage } = result;
+    const {
+      docs,
+      totalDocs,
+      totalPages,
+      page: currentPage,
+      hasPrevPage,
+      hasNextPage,
+    } = result;
     const data = {
       results: docs,
       totalDataInAPage: docs.length,
       totalDataInWholePage: totalDocs,
       currentPage: currentPage,
-      totalPage: totalPages,
-      hasPreviousPage: currentPage > 1,
-      hasNextPage: currentPage < totalPages,
+      totalPages: totalPages,
+      hasPreviousPage: hasPrevPage,
+      hasNextPage: hasNextPage,
     };
 
     return data;
