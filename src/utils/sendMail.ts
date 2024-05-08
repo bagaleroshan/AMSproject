@@ -1,68 +1,129 @@
 import nodemailer from "nodemailer";
+import { mailPass, mailUser } from "./constant";
+import path from "path";
 
-// the main thing in this file is trasporterInfo and mailInfo
-//neglet other part
-
-//transporterInof gives form information while mailInof gives to info
 let transporterInfo = {
-  // host: emailHost,
   host: "smtp.gmail.com",
-  // if from is gmail use gmail smtp
   port: 587,
   secure: false,
 
-  //   auth user and pass play the role from
   auth: {
-    // note user and pass most be genuine
-    //it is the email through which email is send
-    user: "jenishona123@gmail.com",
-    pass: "misd oait jhwa vmxd",
-    // to send email form server first you have to =>
-    //use 2-step verification and generate app password
-    //instead of using your password use app password of gmail
-    //for this go to the => manage your account => security setting and=>enable 2-step verifiction =>crete app pssword (select other option)
+    // user: "jenishona123@gmail.com",
+    // pass: "misd oait jhwa vmxd",
+    user: `${mailUser}`,
+    pass: `${mailPass}`,
   },
 };
+interface iAttachment {
+  fileName: string;
+  path: string;
+  cid?: string;
+}
 
-export let sendEmail = async (mailInfo) => {
+export let sendEmail = async (mailInfo: {
+  from: string;
+  to: string[];
+  subject: string;
+  html: string;
+  attachments: iAttachment[];
+}) => {
   try {
-    let transporter = nodemailer.createTransport(transporterInfo); //transporter gives from information
+    let transporter = nodemailer.createTransport(transporterInfo);
     let info = await transporter.sendMail(mailInfo);
   } catch (error) {
-    console.log("error has occurred", error.message);
+    console.log("error has occurred", (error as Error).message);
   }
 };
 
-// How to call mail
-// await sendMail({
-// from: '"Unique" <uniquekc425@gmail.com>',
-//   to: ["abc@gmail.com", "nitanthapa425@gmail.com"],
-//   subject: "My first system email",
-//   html: `<h1>Hello world</h1>`,
-// });
+export const htmlContent: string = `
+    <html>
+        <head>
+            <style>
+               table {
+               border-collapse: collapse;
+                width: 100%;
+    }
+              th, td {
+              border: 1px solid black;
+              padding: 8px;
+             text-align: left;
+             vertical-align: top; /* Align content to the top of cells */
+             white-space: nowrap; /* Prevent wrapping of long content */
+             overflow: hidden; /* Hide content that exceeds cell dimensions */
+             text-overflow: ellipsis; /* Show ellipsis (...) for overflow */
+    }
+            th {
+                  background-color: #f2f2f2;
+    }   
+                 .image-container {
+                 border: 2px solid #000;
+                 padding: 20px;
+                 position:relative
+                 }
+                 .image-container img{
+                   position: absolute;
+                   top: 0;
+                   left: 0;
+                 }
+            </style>
+        </head>
+        <body>
+            <h1>Attendance Sheet</h1>
+            <p></p>
+            <table>
+                <thead>
+        <tr>
+            <th>Course</th>
+            <th>Number Of absentees</th>
+            <th>Present No.</th>
+            <th>Classes Completed</th>
+            <th>Absentees</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Mern</td>
+            <td>0</td>
+            <td>10</td>
+            <td>5/55</td>
+            <td>No record</td>
+        </tr>
+        <tr>
+            <td>Python</td>
+            <td>4</td>
+            <td>6</td>
+            <td>10/55</td>
+            <td>Sanjog,Roshan,Ram,Laxman</td>
+        </tr>
+        <tr>
+            <td>Machine Learning With Python</td>
+            <td>10</td>
+            <td>0</td>
+            <td>50/55</td>
+            <td>Sanjog,Roshan,Ram,Laxman,Sanjog,Roshan,Ram,Laxman,Jenis,Shambhu</td>
+        </tr>
+                </tbody>
+            </table>
+            <img src="cid:unique_image_cid" width= "100" height = "100">
+        </body>
+    </html>
+`;
+export let imagePath = path.resolve(
+  __dirname,
+  "../../public/image/logoOnly.png"
+);
+export let docPath = path.resolve(__dirname, "../../public/docs/intro.pdf");
 
-// the from part is responsible  to show
+export let attachments: iAttachment[] = [
+  {
+    fileName: "logoOnly.png",
+    path: imagePath,
+    cid: "unique_image_cid",
+  },
+  {
+    fileName: "intro.pdf",
+    path: docPath,
+  },
+];
 
-// if you want to attach file use below code
-
-//to sendMail just call
-// try {
-//   await sendMail({
-//     from: '"Fred Foo" <nitanthapa425@gmail.com>',
-//     to: ["nitanthapa123@gmail.com", "sandeshbca5@arunima.edu.np"],
-//     cc: ["ram@gmail.com"],
-//     bcc: ["hari@gmail.com"],
-////bcc is blind carbon copy
-//     attachments: [
-//   {
-//     filename: 'example.pdf', // Replace with your desired filename
-//     path: '/path/to/example.pdf' // Replace with the actual file path on your server
-//   }
-// ]
-//     subject: "this is subject",
-//     html: `<h1>Hello World<h1>`,
-//   });
-//   console.log("email is sent successfully");
-// } catch (error) {}
-
-// note from : is only  use to show the from information (ie not used to point the sender email sender email is point by the auth part)
+export let subject: string = "Welcome to AMS";
