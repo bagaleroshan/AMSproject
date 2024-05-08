@@ -27,7 +27,6 @@ export const studentSchema = new Schema(
 );
 
 studentSchema.plugin(mongoosePaginate);
-// const Student = model("Student", studentSchema);
 const Student: any = model<
   typeof Student & {
     paginate: (
