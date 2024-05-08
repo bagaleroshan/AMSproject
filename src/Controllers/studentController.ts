@@ -6,6 +6,14 @@ import {
   readSpecificStudentService,
   updateStudentService,
 } from "../Services/studentService";
+import { mailProvider, mailUser } from "../utils/constant";
+import {
+  attachments,
+  htmlContent,
+  sendEmail,
+  subject,
+} from "../utils/sendMail";
+import { myMongooseQuerys } from "../utils/mongooseQuery";
 
 interface ISearchQuery {
   fullName?: string;
@@ -15,9 +23,18 @@ interface ISearchQuery {
 export const createStudentController = async (req: Request, res: Response) => {
   try {
     let result = await createStudentService(req.body);
-    res.status(201).json({
+    await sendEmail({
+      from: `${mailProvider} <${mailUser}>`,
+      to: [req.body.email],
+      subject: subject,
+      html: htmlContent,
+      attachments: attachments,
+    });
+
+    res.status(200).json({
       success: true,
-      message: "Student created successfully",
+      message:
+        "Successfully created Student and email has been sent for verification",
       result: result,
     });
   } catch (error) {
@@ -28,40 +45,10 @@ export const createStudentController = async (req: Request, res: Response) => {
   }
 };
 
-export const myMongooseQuerys = (query: {}) => {
-  let { page, limit, sort, ...find } = query;
-  limit = Number(limit) || 10;
-  page = Number(page) || 1;
-  sort = String(sort || "-createdAt").replaceAll(",", " ");
-
-  return {
-    page,
-    limit,
-    sort,
-    find,
-  };
-};
-
 export const readAllStudentController = async (req: Request, res: Response) => {
-  /* 
-  
-
-  http://localhost:8000/students?course=&fullName=nitan&age=30&isMarried= true
-  
-
-
-  let {page,limit,sort,select,populate,...find} = req.query
-  //{fullName="nitan",age=30,&isMarried=true}
-  */
-
   try {
-    let { page, limit, sort, find } = myMongooseQuerys(req.query);
-    let result = await readAllStudentService(
-      Number(page) || 1,
-      Number(limit) || 10,
-      sort as string,
-      find
-    );
+    const { page, limit, sort, find } = myMongooseQuerys(req.query);
+    let result = await readAllStudentService(page, limit, sort, find);
     res.status(200).json({
       success: true,
       message: "Student read successfully",
