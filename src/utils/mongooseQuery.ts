@@ -1,6 +1,6 @@
 import { Request } from "express";
 
-interface MongooseQueryOptions {
+interface IMongooseQueryOptions {
   page: number;
   limit: number;
   sort: string;
@@ -9,7 +9,7 @@ interface MongooseQueryOptions {
 
 export const myMongooseQuerys = (
   query: Request["query"]
-): MongooseQueryOptions => {
+): IMongooseQueryOptions => {
   let { page, limit, sort, ...find } = query;
 
   return {
