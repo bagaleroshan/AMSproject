@@ -10,6 +10,10 @@ app.use(cors());
 app.use(express.static("./public"))
 app.use(json());
 
+
+
+
+
 app.use("/file",file)
 
 app.get("/", (req: Request, res: Response) => {

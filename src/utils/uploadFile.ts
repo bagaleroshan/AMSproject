@@ -1,6 +1,11 @@
+import { error } from "console";
 import { Request } from "express";
 import multer from "multer";
 import path from "path";
+import cheerio from 'cheerio';
+
+const fs = require("fs");
+let LocErr: Boolean = false;
 
 let limits = {
   fileSize: 1024 * 1024 * 2,
@@ -19,16 +24,25 @@ let storage = multer.diskStorage({
   ) => {
     let location = `public/${(req.query.location as string) || false}`;
     //let staticFolder = "./public";
+    console.log(fs.existsSync(location));
 
     if (!req.query.location) {
       location = "./public";
     }
+
     if (!location) {
       return cb(new Error("folderName is required"));
     }
-
+    console.log(location);
     const uploadPath = path.join(__dirname, "uploads", location);
-    cb(null, location);
+    if (fs.existsSync(location)) {
+      LocErr = false;
+      cb(null, location);
+    } else {
+      console.log('file error')
+      LocErr = true;
+      // cb(new Error(jsonError), false);
+    }
   },
 
   filename: (
@@ -64,7 +78,9 @@ let fileFilter = (
     ".png",
     ".svg",
     ".PNG",
-    ".doc", ".pdf", ".mp4"
+    ".doc",
+    ".pdf",
+    ".mp4",
   ];
   if (req.query.validExtensions === "image")
     validExtensions = [
@@ -77,17 +93,24 @@ let fileFilter = (
       ".PNG",
     ];
   else if (req.query.validExtensions === "docs")
-    validExtensions = [".doc", ".pdf", ".mp4"]; 
+    validExtensions = [".doc", ".pdf", ".mp4"];
+  else {
+    validExtensions = String(req.query.validExtensions).split(",");
+  }
 
   let originalName = file.originalname;
   let originalExtension = path.extname(originalName);
   let isValidExtension = validExtensions.includes(originalExtension);
 
-  if (isValidExtension) {
-    cb(null, true);
+  console.log(LocErr)
+  if (isValidExtension && LocErr === false) {
+    try {
+      cb(null, true);
+    } catch (error) {}
   } else {
     cb(null, false);
   }
+  LocErr = false;
 };
 
 const upload = multer({
@@ -96,4 +119,12 @@ const upload = multer({
   limits: limits,
 });
 
+
+
+
+
+
+
 export default upload;
+
+
