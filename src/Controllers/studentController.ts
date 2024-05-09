@@ -6,11 +6,21 @@ import {
   readSpecificStudentService,
   updateStudentService,
 } from "../Services/studentService";
-import { attachments, docPath, htmlContent, imagePath, sendEmail, subject } from "../utils/sendMail";
 import { mailProvider, mailUser } from "../utils/constant";
+import {
+  attachments,
+  htmlContent,
+  sendEmail,
+  subject,
+} from "../utils/sendMail";
+import { myMongooseQuerys } from "../utils/mongooseQuery";
+
+interface ISearchQuery {
+  fullName?: string;
+  course?: string;
+}
 
 export const createStudentController = async (req: Request, res: Response) => {
-  
   try {
     let result = await createStudentService(req.body);
     await sendEmail({
@@ -37,9 +47,8 @@ export const createStudentController = async (req: Request, res: Response) => {
 
 export const readAllStudentController = async (req: Request, res: Response) => {
   try {
-    let page: number = Number(req.query.page) || 1;
-    let limit: number = Number(req.query.limit) || 10;
-    let result = await readAllStudentService(page, limit);
+    const { page, limit, sort, select, find } = myMongooseQuerys(req.query);
+    let result = await readAllStudentService(page, limit, sort, select, find);
     res.status(200).json({
       success: true,
       message: "Student read successfully",
