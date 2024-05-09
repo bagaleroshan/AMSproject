@@ -7,15 +7,17 @@ let createStudentService = async (data: {}) => {
 let readAllStudentService = async (
   page: number,
   limit: number,
-  customSort: string,
+  sort: string,
+  select: string,
   find: {}
 ) => {
   const options = {
     page,
     limit,
-    sort: customSort,
+    sort,
+    select,
+    // populate: { path: "author", select: "username email" },
   };
-  console.log(find);
   const result = await Student.paginate(find, options);
   const {
     docs,

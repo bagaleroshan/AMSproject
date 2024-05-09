@@ -47,8 +47,8 @@ export const createStudentController = async (req: Request, res: Response) => {
 
 export const readAllStudentController = async (req: Request, res: Response) => {
   try {
-    const { page, limit, sort, find } = myMongooseQuerys(req.query);
-    let result = await readAllStudentService(page, limit, sort, find);
+    const { page, limit, sort, select, find } = myMongooseQuerys(req.query);
+    let result = await readAllStudentService(page, limit, sort, select, find);
     res.status(200).json({
       success: true,
       message: "Student read successfully",
