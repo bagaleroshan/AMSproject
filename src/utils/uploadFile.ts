@@ -1,116 +1,50 @@
-import { error } from "console";
 import { Request } from "express";
 import multer from "multer";
 import path from "path";
-import cheerio from 'cheerio';
-
-const fs = require("fs");
-let LocErr: Boolean = false;
+import { staticFolder, validExtensions } from "./constant";
 
 let limits = {
   fileSize: 1024 * 1024 * 2,
 };
 
 let storage = multer.diskStorage({
-  destination: (
-    req: Request,
-    file: {
-      fieldname: string;
-      originalname: string;
-      encoding: string;
-      mimetype: string;
-    },
-    cb: any
-  ) => {
-    let location = `public/${(req.query.location as string) || false}`;
-    //let staticFolder = "./public";
-    console.log(fs.existsSync(location));
+  destination: (req: Request, _file, cb: any) => {
+    
+    const location = req.query.location
+      ? `${staticFolder}/${req.query.location}`
+      : `${staticFolder}`;
 
-    if (!req.query.location) {
-      location = "./public";
-    }
-
-    if (!location) {
-      return cb(new Error("folderName is required"));
-    }
-    console.log(location);
-    const uploadPath = path.join(__dirname, "uploads", location);
-    if (fs.existsSync(location)) {
-      LocErr = false;
-      cb(null, location);
-    } else {
-      console.log('file error')
-      LocErr = true;
-      // cb(new Error(jsonError), false);
-    }
+    cb(null, location);
   },
 
-  filename: (
-    req: Request,
-    file: {
-      fieldname: string;
-      originalname: string;
-      encoding: string;
-      mimetype: string;
-    },
-    cb: any
-  ) => {
+  filename: (_req, file, cb: any) => {
     let fileName = Date.now() + file.originalname;
     cb(null, fileName);
   },
 });
 
-let fileFilter = (
-  req: Request,
-  file: {
-    fieldname: string;
-    originalname: string;
-    encoding: string;
-    mimetype: string;
-  },
-  cb: any
-) => {
-  let validExtensions = [
-    ".jpeg",
-    ".jpg",
-    ".JPG",
-    ".JPEG",
-    ".png",
-    ".svg",
-    ".PNG",
-    ".doc",
-    ".pdf",
-    ".mp4",
-  ];
-  if (req.query.validExtensions === "image")
-    validExtensions = [
-      ".jpeg",
-      ".jpg",
-      ".JPG",
-      ".JPEG",
-      ".png",
-      ".svg",
-      ".PNG",
-    ];
-  else if (req.query.validExtensions === "docs")
-    validExtensions = [".doc", ".pdf", ".mp4"];
-  else {
-    validExtensions = String(req.query.validExtensions).split(",");
+let fileFilter = (req: Request, file: any, cb: any) => {
+  let validExt = [];
+  if (req.query.validExtension) {
+    validExt = String(req.query.validExtension).split(",");
+  } else {
+    validExt = [...validExtensions];
   }
 
   let originalName = file.originalname;
-  let originalExtension = path.extname(originalName);
-  let isValidExtension = validExtensions.includes(originalExtension);
+  let originalExtension = path.extname(originalName); //note path module is inbuilt module(package) of node js (ie no need to install path package)
+  let isValidExtension = validExt.includes(originalExtension);
 
-  console.log(LocErr)
-  if (isValidExtension && LocErr === false) {
-    try {
-      cb(null, true);
-    } catch (error) {}
+  if (isValidExtension) {
+    cb(null, true);
+    //true =>it means  pass such type of file
+    //note null represent error since there is no error thus error is null
   } else {
+    req.body.error += originalName + " file not supported  ";
     cb(null, false);
+
+    //false means don't pass such type of file
   }
-  LocErr = false;
 };
 
 const upload = multer({
@@ -119,12 +53,4 @@ const upload = multer({
   limits: limits,
 });
 
-
-
-
-
-
-
 export default upload;
-
-

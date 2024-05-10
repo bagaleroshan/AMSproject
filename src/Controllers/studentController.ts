@@ -2,17 +2,29 @@ import { Request, Response } from "express";
 import {
   createStudentService,
   deleteStudentService,
+  readAllStudentService,
   readSpecificStudentService,
-  readStudentService,
   updateStudentService,
 } from "../Services/studentService";
+import { attachments, docPath, htmlContent, imagePath, sendEmail, subject } from "../utils/sendMail";
+import { mailProvider, mailUser } from "../utils/constant";
 
 export const createStudentController = async (req: Request, res: Response) => {
+  
   try {
     let result = await createStudentService(req.body);
-    res.status(201).json({
+    await sendEmail({
+      from: `${mailProvider} <${mailUser}>`,
+      to: [req.body.email],
+      subject: subject,
+      html: htmlContent,
+      attachments: attachments,
+    });
+
+    res.status(200).json({
       success: true,
-      message: "Student created successfully",
+      message:
+        "Successfully created Student and email has been sent for verification",
       result: result,
     });
   } catch (error) {
@@ -25,7 +37,9 @@ export const createStudentController = async (req: Request, res: Response) => {
 
 export const readAllStudentController = async (req: Request, res: Response) => {
   try {
-    let result = await readStudentService();
+    let page: number = Number(req.query.page) || 1;
+    let limit: number = Number(req.query.limit) || 10;
+    let result = await readAllStudentService(page, limit);
     res.status(200).json({
       success: true,
       message: "Student read successfully",
