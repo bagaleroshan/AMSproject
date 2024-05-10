@@ -12,4 +12,7 @@ file
   .route("/multiple")
   .post(chkFol, upload.array("document"), multipleFileController);
 
+
+file.delete('/delete/:fileName').delete()
+
 export default file;
