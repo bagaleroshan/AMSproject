@@ -1,14 +1,18 @@
-import express, { json, Express, Request, Response } from "express";
-import { port } from "./utils/constant";
-import { connectToMongo } from "./connectDb/connectToMongo";
 import cors from "cors";
 import { studentRouter } from "./Routes/studentRouter";
 import { errorHandler } from "./utils/errorHandler";
+import express, { Express, Request, Response, json } from "express";
+import { connectToMongo } from "./connectDb/connectToMongo";
+import file from "./fileRouter";
+import { port, staticFolder } from "./utils/constant";
 
 const app: Express = express();
 connectToMongo();
 app.use(cors());
+app.use(express.static(staticFolder));
 app.use(json());
+
+app.use("/file", file);
 
 app.use("/students", studentRouter);
 
