@@ -9,6 +9,7 @@ export const studentSchema = new Schema(
     },
     email: {
       type: String,
+      unique: true,
       required: [true, "email field is required"],
     },
 
@@ -17,7 +18,7 @@ export const studentSchema = new Schema(
       required: [true, "course field is required"],
     },
     phoneNumber: {
-      type: Number,
+      type: String,
       required: [true, "phoneNumber field is required"],
     },
   },

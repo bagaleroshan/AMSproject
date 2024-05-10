@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import asyncHandler from "express-async-handler";
 import {
   createStudentService,
   deleteStudentService,
@@ -6,22 +7,18 @@ import {
   readSpecificStudentService,
   updateStudentService,
 } from "../Services/studentService";
+import successResponseData from "../helper/successResponse";
 import { mailProvider, mailUser } from "../utils/constant";
+import { myMongooseQuerys } from "../utils/mongooseQuery";
 import {
   attachments,
   htmlContent,
   sendEmail,
   subject,
 } from "../utils/sendMail";
-import { myMongooseQuerys } from "../utils/mongooseQuery";
 
-interface ISearchQuery {
-  fullName?: string;
-  course?: string;
-}
-
-export const createStudentController = async (req: Request, res: Response) => {
-  try {
+export const createStudentController = asyncHandler(
+  async (req: Request, res: Response) => {
     let result = await createStudentService(req.body);
     await sendEmail({
       from: `${mailProvider} <${mailUser}>`,
@@ -31,83 +28,39 @@ export const createStudentController = async (req: Request, res: Response) => {
       attachments: attachments,
     });
 
-    res.status(200).json({
-      success: true,
-      message:
-        "Successfully created Student and email has been sent for verification",
-      result: result,
-    });
-  } catch (error) {
-    res.status(400).json({
-      success: false,
-      message: (error as Error).message,
-    });
+    successResponseData(
+      res,
+      "Successfully created Student and Verification email has been sent.",
+      201,
+      result
+    );
   }
-};
+);
 
-export const readAllStudentController = async (req: Request, res: Response) => {
-  try {
+export const readAllStudentController = asyncHandler(
+  async (req: Request, res: Response) => {
     const { page, limit, sort, select, find } = myMongooseQuerys(req.query);
     let result = await readAllStudentService(page, limit, sort, select, find);
-    res.status(200).json({
-      success: true,
-      message: "Student read successfully",
-      result: result,
-    });
-  } catch (error) {
-    res.status(400).json({
-      success: true,
-      message: (error as Error).message,
-    });
+    successResponseData(res, "Successfully Read All Student", 200, result);
   }
-};
+);
 
-export const readSpecificStudentController = async (
-  req: Request,
-  res: Response
-) => {
-  try {
+export const readSpecificStudentController = asyncHandler(
+  async (req: Request, res: Response) => {
     let result = await readSpecificStudentService(req.params.id);
-    res.status(200).json({
-      success: true,
-      message: "Successfully read a student",
-      result: result,
-    });
-  } catch (error) {
-    res.status(400).json({
-      success: true,
-      message: (error as Error).message,
-    });
+    successResponseData(res, "Read Successfully", 200, result);
   }
-};
+);
 
-export const updateStudentController = async (req: Request, res: Response) => {
-  try {
+export const updateStudentController = asyncHandler(
+  async (req: Request, res: Response) => {
     let result = await updateStudentService(req.params.id, req.body);
-    res.status(201).json({
-      success: true,
-      message: "student updated successfully",
-      result: result,
-    });
-  } catch (error) {
-    res.status(400).json({
-      success: true,
-      message: (error as Error).message,
-    });
+    successResponseData(res, "Successfully Updated", 201, result);
   }
-};
-export const deleteStudentController = async (req: Request, res: Response) => {
-  try {
+);
+export const deleteStudentController = asyncHandler(
+  async (req: Request, res: Response) => {
     let result = await deleteStudentService(req.params.id);
-    res.status(201).json({
-      success: true,
-      message: "student deleted successfully",
-      result: result,
-    });
-  } catch (error) {
-    res.status(400).json({
-      success: true,
-      message: (error as Error).message,
-    });
+    successResponseData(res, "Successfully Deleted", 200, result);
   }
-};
+);
