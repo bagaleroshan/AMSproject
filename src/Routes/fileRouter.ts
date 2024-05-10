@@ -1,10 +1,9 @@
 import { Router } from "express";
-import {
-  multipleFileController,
-  singleFileController,
-} from "../controllers/fileController";
 import chkFol from "../utils/chkfun";
 import upload from "../utils/uploadFile";
+import { multipleFileController, singleFileController } from "../Controllers/fileController";
+import { handleFileUpload } from "../utils/deleteFile";
+
 
 let file = Router();
 file
@@ -16,6 +15,6 @@ file
   .post(chkFol, upload.array("document"), multipleFileController);
 
 
-file.delete('/delete/:fileName').delete()
+file.route('/delete/:fileName').delete(handleFileUpload)
 
 export default file;

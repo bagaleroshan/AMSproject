@@ -10,7 +10,7 @@ export function handleFileUpload(req: any, res: Response) {
     const filenameToDelete = req.params.fileName;
 
   // Construct the full path to the file within your static folder
-  const filePath = path.join(__dirname, 'public', filenameToDelete);
+  const filePath = path.join(__dirname, './public', filenameToDelete);
   // Assuming you're dealing with a single file upload
 
   // Delete the file using fs.unlink
