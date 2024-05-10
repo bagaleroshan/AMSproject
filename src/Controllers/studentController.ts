@@ -6,7 +6,7 @@ import {
   readAllStudentService,
   readSpecificStudentService,
   updateStudentService,
-} from "../Services/studentService";
+} from "../services/studentService";
 import successResponseData from "../helper/successResponse";
 import { mailProvider, mailUser } from "../utils/constant";
 import { myMongooseQuerys } from "../utils/mongooseQuery";

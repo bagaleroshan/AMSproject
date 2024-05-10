@@ -1,5 +1,5 @@
 import { model } from "mongoose";
-import studentSchema from "../Schema/studentSchema";
+import studentSchema from "./studentSchema";
 
 const Student: any = model<
   typeof Student & {
