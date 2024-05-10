@@ -8,8 +8,6 @@ let transporterInfo = {
   secure: false,
 
   auth: {
-    // user: "jenishona123@gmail.com",
-    // pass: "misd oait jhwa vmxd",
     user: `${mailUser}`,
     pass: `${mailPass}`,
   },
