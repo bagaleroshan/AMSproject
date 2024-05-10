@@ -2,7 +2,7 @@ import { Router } from "express";
 import {
   multipleFileController,
   singleFileController,
-} from "../controllers/fileController";
+} from "../Controllers/fileController";
 import chkFol from "../utils/chkfun";
 import upload from "../utils/uploadFile";
 
