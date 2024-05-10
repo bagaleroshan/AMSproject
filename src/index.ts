@@ -1,9 +1,9 @@
 import cors from "cors";
-import { studentRouter } from "./routes/studentRouter";
+import { studentRouter } from "./Routes/studentRouter";
 import { errorHandler } from "./utils/errorHandler";
 import express, { Express, Request, Response, json } from "express";
 import { connectToMongo } from "./connectDb/connectToMongo";
-import file from "./routes/fileRouter";
+import file from "./Routes/fileRouter";
 import { port, staticFolder } from "./utils/constant";
 
 const app: Express = express();
