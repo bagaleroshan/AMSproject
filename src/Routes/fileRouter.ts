@@ -1,7 +1,10 @@
 import { Router } from "express";
-import { multipleFileController, singleFileController } from "./fileController";
-import chkFol from "./utils/chkfun";
-import upload from "./utils/uploadFile";
+import {
+  multipleFileController,
+  singleFileController,
+} from "../controllers/fileController";
+import chkFol from "../utils/chkfun";
+import upload from "../utils/uploadFile";
 
 let file = Router();
 file

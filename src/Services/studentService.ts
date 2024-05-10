@@ -1,4 +1,4 @@
-import Student from "../Model/model";
+import Student from "../schema/model";
 
 let createStudentService = async (data: {}) => {
   return await Student.create(data);
