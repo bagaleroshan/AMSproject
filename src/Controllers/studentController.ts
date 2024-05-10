@@ -1,6 +1,12 @@
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
-
+import {
+  createStudentService,
+  deleteStudentService,
+  readAllStudentService,
+  readSpecificStudentService,
+  updateStudentService,
+} from "../Services/studentService";
 import successResponseData from "../helper/successResponse";
 import { mailProvider, mailUser } from "../utils/constant";
 import { myMongooseQuerys } from "../utils/mongooseQuery";
@@ -10,7 +16,6 @@ import {
   sendEmail,
   subject,
 } from "../utils/sendMail";
-import { createStudentService, deleteStudentService, readAllStudentService, readSpecificStudentService, updateStudentService } from "../Services/studentService";
 
 export const createStudentController = asyncHandler(
   async (req: Request, res: Response) => {

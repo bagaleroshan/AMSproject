@@ -5,7 +5,7 @@ import {
   readAllStudentController,
   readSpecificStudentController,
   updateStudentController,
-} from "../controllers/studentController";
+} from "../Controllers/studentController";
 
 export const studentRouter = Router();
 
