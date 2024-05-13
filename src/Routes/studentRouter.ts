@@ -8,6 +8,7 @@ import {
 } from "../Controllers/studentController";
 
 export const studentRouter = Router();
+export const numRouter = Router();
 
 studentRouter
   .route("/")

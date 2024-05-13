@@ -2,7 +2,7 @@ import express, { json, Express, Request, Response } from "express";
 import { port } from "./utils/constant";
 import { connectToMongo } from "./connectDb/connectToMongo";
 import cors from "cors";
-import { studentRouter } from "./Routes/studentRouter";
+import { numRouter, studentRouter } from "./Routes/studentRouter";
 
 const app: Express = express();
 connectToMongo();
