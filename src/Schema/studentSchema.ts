@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema } from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
 
 export const studentSchema = new Schema(
@@ -9,6 +9,7 @@ export const studentSchema = new Schema(
     },
     email: {
       type: String,
+      unique: true,
       required: [true, "email field is required"],
     },
 
@@ -17,7 +18,7 @@ export const studentSchema = new Schema(
       required: [true, "course field is required"],
     },
     phoneNumber: {
-      type: Number,
+      type: String,
       required: [true, "phoneNumber field is required"],
     },
   },
@@ -27,13 +28,5 @@ export const studentSchema = new Schema(
 );
 
 studentSchema.plugin(mongoosePaginate);
-const Student: any = model<
-  typeof Student & {
-    paginate: (
-      filter: any,
-      options: any,
-      callback?: (err: any, result: any) => void
-    ) => Promise<any>;
-  }
->("Student", studentSchema);
-export default Student;
+
+export default studentSchema;
