@@ -6,13 +6,15 @@ import {
   readSpecificStudentController,
   updateStudentController,
 } from "../Controllers/studentController";
+import { studentValidation } from "../validation/studentValidation";
+import { validation } from "../middleware/validation";
 
 export const studentRouter = Router();
 export const numRouter = Router();
 
 studentRouter
   .route("/")
-  .post(createStudentController)
+  .post(validation(studentValidation), createStudentController)
   .get(readAllStudentController);
 
 studentRouter
