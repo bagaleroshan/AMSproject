@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema } from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
 
 export const studentSchema = new Schema(
