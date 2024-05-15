@@ -16,6 +16,8 @@ app.use("/file", file);
 
 app.use("/students", studentRouter);
 
+app.use("/teachers", studentRouter);
+
 app.use(errorHandler);
 
 app.listen(port, () => {

@@ -1,7 +1,8 @@
 import { model } from "mongoose";
 import studentSchema from "./studentSchema";
+import teacherSchema from "./teacherSchema";
 
-const Student: any = model<
+export const Student: any = model<
   typeof Student & {
     paginate: (
       filter: any,
@@ -10,4 +11,13 @@ const Student: any = model<
     ) => Promise<any>;
   }
 >("Student", studentSchema);
-export default Student;
+export const Teacher: any = model<
+  typeof Teacher & {
+    paginate: (
+      filter: any,
+      options: any,
+      callback?: (err: any, result: any) => void
+    ) => Promise<any>;
+  }
+>("Student", teacherSchema);
+ 
