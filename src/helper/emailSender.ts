@@ -5,7 +5,7 @@ import {
   sendEmail,
   subject,
 } from "../utils/sendMail";
- let emailSender = async (email: string) => {
+export let emailSender = async (email: string) => {
   await sendEmail({
     from: `${mailProvider} <${mailUser}>`,
     to: [email],
@@ -14,4 +14,3 @@ import {
     attachments: attachments,
   });
 };
-export default emailSender

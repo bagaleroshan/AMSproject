@@ -24,7 +24,7 @@ app.use("/file", file);
 
 app.use("/students", studentRouter);
 
-app.use("/subject", subjectRouter);
+app.use("/subjects", subjectRouter);
 
 app.use(errorHandler);
 

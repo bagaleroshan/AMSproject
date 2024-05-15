@@ -126,6 +126,8 @@ paths:
       responses:
         "200":
           description: Student deleted successfully
+  /subjects:
+    post:
   
 components:
   schemas:
