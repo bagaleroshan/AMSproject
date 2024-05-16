@@ -1,8 +1,6 @@
 import Joi, { CustomHelpers, LanguageMessages } from "joi";
 
-
-
-export const teacherValidation = Joi.object()
+export const userValidation = Joi.object()
   .keys({
     fullName: Joi.string()
       .custom((value, msg: any) => {
@@ -25,21 +23,32 @@ export const teacherValidation = Joi.object()
       .required()
       .lowercase(),
 
-    password: Joi.string()
-      .custom((value, msg: any) => {
-        if (value.match(/^(?=.*[a-zA-Z])(?=.*\d).{8,}$/)) {
-          return true;
-        }
-        return msg.message("Invalid password!!");
-      })
-      .required(),
-
-    role: Joi.string().custom((value, msg: any) => {
-      if (value.match(/^(admin|teacher)$/)) {
+    password: Joi.string().custom((value, msg: any) => {
+      if (value.match(/^(?=.*[a-zA-Z])(?=.*\d).{8,}$/)) {
         return true;
       }
       return msg.message("Invalid password!!");
-    })
-    .required(),
+    }),
+
+    phoneNumber: Joi.string()
+      .custom((value, msg: any) => {
+        if (
+          value.match(/^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/)
+        ) {
+          return true;
+        } else {
+          return msg.message("Invalid phoneNumber");
+        }
+      })
+      .required(),
+
+    role: Joi.string()
+      .custom((value, msg: any) => {
+        if (value.match(/^(admin|teacher)$/)) {
+          return true;
+        }
+        return msg.message("Invalid Role");
+      })
+      .required(),
   })
   .unknown(false);

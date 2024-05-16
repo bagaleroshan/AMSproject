@@ -1,7 +1,7 @@
-import { Schema, model } from "mongoose";
+import { Schema } from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
 
-export const teacherSchema = new Schema(
+export const userSchema = new Schema(
   {
     fullName: {
       type: String,
@@ -12,14 +12,18 @@ export const teacherSchema = new Schema(
       unique: true,
       required: [true, "email field is required"],
     },
-
     password: {
       type: String,
       required: [true, "password field is required"],
     },
+    phoneNumber: {
+      type: String,
+      required: [true, "phoneNumber field is required"],
+    },
     role: {
       type: String,
       required: [true, "role field is required"],
+      // enum: ["admin", "teacher"],
     },
   },
   {
@@ -27,6 +31,6 @@ export const teacherSchema = new Schema(
   }
 );
 
-teacherSchema.plugin(mongoosePaginate);
+userSchema.plugin(mongoosePaginate);
 
-export default teacherSchema;
+export default userSchema;

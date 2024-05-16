@@ -5,6 +5,7 @@ import express, { Express, Request, Response, json } from "express";
 import { connectToMongo } from "./connectDb/connectToMongo";
 import file from "./Routes/fileRouter";
 import { port, staticFolder } from "./utils/constant";
+import { userRouter } from "./Routes/userRouter";
 
 const app: Express = express();
 connectToMongo();
@@ -16,7 +17,7 @@ app.use("/file", file);
 
 app.use("/students", studentRouter);
 
-app.use("/teachers", studentRouter);
+app.use("/users", userRouter);
 
 app.use(errorHandler);
 

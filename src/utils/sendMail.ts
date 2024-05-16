@@ -112,7 +112,7 @@ export let imagePath = path.resolve(
   __dirname,
   "../../public/image/logoOnly.png"
 );
-export let docPath = path.resolve(__dirname, "../../public/docs/intro.pdf");
+// export let docPath = path.resolve(__dirname, "../../public/docs/intro.pdf");
 
 export let attachments: iAttachment[] = [
   {
@@ -120,10 +120,10 @@ export let attachments: iAttachment[] = [
     path: imagePath,
     cid: "unique_image_cid",
   },
-  {
-    fileName: "intro.pdf",
-    path: docPath,
-  },
+  // {
+  //   fileName: "intro.pdf",
+  //   path: docPath,
+  // },
 ];
 
 export let subject: string = "Welcome to AMS";

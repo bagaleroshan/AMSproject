@@ -16,7 +16,6 @@ let readAllStudentService = async (
     limit,
     sort,
     select,
-    // populate: { path: "author", select: "username email" },
   };
   const result = await Student.paginate(find, options);
   const {
