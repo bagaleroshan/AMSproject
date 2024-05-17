@@ -7,6 +7,10 @@ export const dbUrl = process.env.DB_URL || "mongodb://0.0.0.0:27017/ams";
 export const mailUser = process.env.MAIL_USER || "jenishona123@gmail.com";
 export const mailPass = process.env.MAIL_PASS || "misd oait jhwa vmxd";
 export const mailProvider = process.env.MAIL_PROVIDER || "Jenis Hona";
+export const secretKey = process.env.SECRET_KEY || "ams2024";
+export const clientUrl = process.env.CLIENT_URL || "http://localhost:5173";
+export const serverUrl = process.env.SERVER_URL || "http://localhost:8000";
+
 export const HttpStatus = {
   CONTINUE: 100,
   SWITCHING_PROTOCOLS: 101,

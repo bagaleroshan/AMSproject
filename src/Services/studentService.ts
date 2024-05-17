@@ -1,4 +1,4 @@
-import {Student} from "../Schema/model";
+import { Student } from "../Schema/model";
 
 let createStudentService = async (data: {}) => {
   return await Student.create(data);
@@ -16,7 +16,6 @@ let readAllStudentService = async (
     limit,
     sort,
     select,
-    // populate: { path: "author", select: "username email" },
   };
   const result = await Student.paginate(find, options);
   const {

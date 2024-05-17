@@ -1,0 +1,94 @@
+openapi: 3.0.0
+info:
+  title: Student Management API
+  description: API for managing student records
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000
+paths:
+  /students:
+    post:
+      summary: Create a new student
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentInput'
+      responses:
+        '200':
+          description: Student created successfully
+    get:
+      summary: Get all students
+      responses:
+        '200':
+          description: List of students retrieved successfully
+  /students/{id}:
+    get:
+      summary: Get a specific student by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the student to retrieve
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Student retrieved successfully
+    patch:
+      summary: Update a specific student by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the student to update
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentUpdateInput'
+      responses:
+        '200':
+          description: Student updated successfully
+    delete:
+      summary: Delete a specific student by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the student to delete
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Student deleted successfully
+components:
+  schemas:
+    StudentInput:
+      type: object
+      properties:
+         fullName:
+          type: string
+          description: The name of the student
+         email:
+          type: string
+          description: The age of the student
+         grade:
+          type: string
+          description: The grade of the student
+    StudentUpdateInput:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The updated name of the student
+        age:
+          type: integer
+          description: The updated age of the student
+        grade:
+          type: string
+          description: The updated grade of the student
