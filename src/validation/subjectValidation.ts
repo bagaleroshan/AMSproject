@@ -1,4 +1,5 @@
 import Joi from "joi";
+import { Subject } from "../Schema/model";
 
 export const subjectValidation = Joi.object().keys({
   subjectName: Joi.string()
@@ -21,3 +22,4 @@ export const subjectValidation = Joi.object().keys({
     "string.base": "Input must be a number",
   }),
 });
+

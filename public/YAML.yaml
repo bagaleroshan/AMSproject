@@ -1,150 +1,36 @@
 openapi: 3.0.0
 info:
   title: Attendance Management API
-  description: API for managing Subject
+  description: API for managing students and subjects
   version: 1.0.0
 servers:
   - url: http://localhost:8000
 paths:
-  # /students:
-  #   post:
-  #     summary: Create a new student
-  #     requestBody:
-  #       required: true
-  #       content:
-  #         application/json:
-  #           schema:
-  #             $ref: "#/components/schemas/StudentInput"
-  #     responses:
-  #       "200":
-  #         description: Student created successfully
-  #   get:
-  #     summary: Get all students
-  #     responses:
-  #       "200":
-  #         description: List of students retrieved successfully
-  # /students/{id}:
-  #   get:
-  #     summary: Get a specific student by ID
-  #     parameters:
-  #       - in: path
-  #         name: id
-  #         required: true
-  #         description: ID of the student to retrieve
-  #         schema:
-  #           type: string
-  #     responses:
-  #       "200":
-  #         description: Student retrieved successfully
-  #   patch:
-  #     summary: Update a specific student by ID
-  #     parameters:
-  #       - in: path
-  #         name: id
-  #         required: true
-  #         description: ID of the student to update
-  #         schema:
-  #           type: string
-  #     requestBody:
-  #       required: true
-  #       content:
-  #         application/json:
-  #           schema:
-  #             $ref: "#/components/schemas/StudentUpdateInput"
-  #     responses:
-  #       "200":
-  #         description: Student updated successfully
-  #   delete:
-  #     summary: Delete a specific student by ID
-  #     parameters:
-  #       - in: path
-  #         name: id
-  #         required: true
-  #         description: ID of the student to delete
-  #         schema:
-  #           type: string
-  #     responses:
-  #       "200":
-  #         description: Student deleted successfully
-  # /students:
-  #   post:
-  #     summary: Create a new student
-  #     requestBody:
-  #       required: true
-  #       content:
-  #         application/json:
-  #           schema:
-  #             $ref: "#/components/schemas/StudentInput"
-  #     responses:
-  #       "200":
-  #         description: Student created successfully
-  #   get:
-  #     summary: Get all students
-  #     responses:
-  #       "200":
-  #         description: List of students retrieved successfully
-  # /students/{id}:
-  #   get:
-  #     summary: Get a specific student by ID
-  #     parameters:
-  #       - in: path
-  #         name: id
-  #         required: true
-  #         description: ID of the student to retrieve
-  #         schema:
-  #           type: string
-  #     responses:
-  #       "200":
-  #         description: Student retrieved successfully
-  #   patch:
-  #     summary: Update a specific student by ID
-  #     parameters:
-  #       - in: path
-  #         name: id
-  #         required: true
-  #         description: ID of the student to update
-  #         schema:
-  #           type: string
-  #     requestBody:
-  #       required: true
-  #       content:
-  #         application/json:
-  #           schema:
-  #             $ref: "#/components/schemas/StudentUpdateInput"
-  #     responses:
-  #       "200":
-  #         description: Student updated successfully
-  #   delete:
-  #     summary: Delete a specific student by ID
-  #     parameters:
-  #       - in: path
-  #         name: id
-  #         required: true
-  #         description: ID of the student to delete
-  #         schema:
-  #           type: string
-  #     responses:
-  #       "200":
-  #         description: Student deleted successfully
-  /subjects:
+  /students:
     post:
-      summary: create subject
+      tags:
+        - student
+      summary: Create a new student
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SubjectInput"
+              $ref: "#/components/schemas/StudentInput"
       responses:
         "200":
           description: Student created successfully
     get:
-      summary: Get all subjects
+      tags:
+        - student
+      summary: Get all students
       responses:
         "200":
           description: List of students retrieved successfully
-  /subjects/{id}:
+  /students/{id}:
     get:
+      tags:
+        - student
       summary: Get a specific student by ID
       parameters:
         - in: path
@@ -157,6 +43,8 @@ paths:
         "200":
           description: Student retrieved successfully
     patch:
+      tags:
+        - student
       summary: Update a specific student by ID
       parameters:
         - in: path
@@ -175,6 +63,8 @@ paths:
         "200":
           description: Student updated successfully
     delete:
+      tags:
+        - student
       summary: Delete a specific student by ID
       parameters:
         - in: path
@@ -186,59 +76,129 @@ paths:
       responses:
         "200":
           description: Student deleted successfully
+  /subjects:
+    post:
+      tags:
+        - subjects
+      summary: Create a new subject
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubjectInput"
+      responses:
+        "200":
+          description: Subject created successfully
+    get:
+      tags:
+        - subjects
+      summary: Get all subjects
+      responses:
+        "200":
+          description: List of subjects retrieved successfully
+  /subjects/{id}:
+    get:
+      tags:
+        - subjects
+      summary: Get a specific subject by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the subject to retrieve
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Subject retrieved successfully
+    patch:
+      tags:
+        - subjects
+      summary: Update a specific subject by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the subject to update
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubjectUpdateInput"
+      responses:
+        "200":
+          description: Subject updated successfully
+    delete:
+      tags:
+        - subjects
+      summary: Delete a specific subject by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the subject to delete
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Subject deleted successfully
 components:
   schemas:
-    # StudentInput:
-    #   type: object
-    #   properties:
-    #     fullName:
-    #       type: string
-    #       description: The name of the student
-    #     email:
-    #       type: string
-    #       description: The email of the student
-    #     course:
-    #       type: string
-    #       description: The course of the student
-    #     phoneNumber:
-    #       type: number
-    #       description: the contact info of student
-    # StudentUpdateInput:
-    #   type: object
-    #   properties:
-    #     fullName:
-    #       type: string
-    #       description: The updated name of the student
-    #     email:
-    #       type: integer
-    #       description: The updated age of the student
-    #     course:
-    #       type: string
-    #       description: The updated grade of the student
-    #     phoneNumber:
-    #       type: number
-    #       description: the contact info of student
+    StudentInput:
+      type: object
+      properties:
+        fullName:
+          type: string
+          description: The name of the student
+        email:
+          type: string
+          description: The email of the student
+        course:
+          type: string
+          description: The course of the student
+        phoneNumber:
+          type: integer
+          description: The contact info of the student
+    StudentUpdateInput:
+      type: object
+      properties:
+        fullName:
+          type: string
+          description: The updated name of the student
+        email:
+          type: string
+          description: The updated email of the student
+        course:
+          type: string
+          description: The updated course of the student
+        phoneNumber:
+          type: integer
+          description: The updated contact info of the student
     SubjectInput:
       type: object
       properties:
         subjectName:
           type: string
-          description: The name of the student
+          description: The name of the subject
         subjectCode:
           type: string
-          description: The age of the student
+          description: The code of the subject
         numberOfClasses:
-          type: number
-          description: The grade of the student
+          type: integer
+          description: The number of classes for the subject
     SubjectUpdateInput:
       type: object
       properties:
         subjectName:
           type: string
-          description: The name of the student
+          description: The updated name of the subject
         subjectCode:
           type: string
-          description: The age of the student
+          description: The updated code of the subject
         numberOfClasses:
-          type: number
-          description: The grade of the student
+          type: integer
+          description: The updated number of classes for the subject

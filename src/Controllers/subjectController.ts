@@ -3,6 +3,7 @@ import asyncHandler from "express-async-handler";
 
 import {
   createSubjectService,
+  findSubjectService,
   readAllSubjectService,
   readSpecificSubjectService,
   updateSubjectService,
@@ -44,3 +45,11 @@ export const deleteSubjectController = asyncHandler(
     successResponseData(res, "Successfully Deleted", 200, result);
   }
 );
+
+export const findSubject = asyncHandler(
+  async(req: any, res: Response)=>{
+    let result = await findSubjectService(req.query.findSubject)
+   successResponseData(res,"success",200,result)
+  }
+  
+)

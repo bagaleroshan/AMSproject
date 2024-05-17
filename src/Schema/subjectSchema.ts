@@ -8,7 +8,8 @@ export const subjectSchema :Schema = new Schema({
     subjectCode: {
         type:String,
         required:[true,"Subject Code is Required"],
-        lowercase:true
+        lowercase:true,
+        unique:true
         
     },
     numberOfClasses:{

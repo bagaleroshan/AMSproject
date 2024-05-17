@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   createSubjectController,
   deleteSubjectController,
+  findSubject,
   readAllSubjectController,
   readSpecificSubjectController,
   updateSubjectController,
@@ -13,8 +14,10 @@ export const subjectRouter = Router();
 
 subjectRouter
   .route("/")
-  .post(validation(subjectValidation),createSubjectController)
-  .get(readAllSubjectController);
+  .post(validation(subjectValidation), createSubjectController)
+  .get(findSubject)
+  // .get(readAllSubjectController);
+  
 
 subjectRouter
   .route("/:id")
