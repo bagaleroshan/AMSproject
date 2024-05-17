@@ -2,23 +2,28 @@ import { Router } from "express";
 
 import {
   createUserController,
+  deleteUserController,
   loginUserController,
+  myProfile,
+  readAllUserController,
+  readSpecificUserController,
+  updateUserController,
 } from "../Controllers/userController";
 import { validation } from "../middleware/validation";
 import { userValidation } from "../validation/userValidation";
 
 export const userRouter = Router();
 
-userRouter.route("/").post(validation(userValidation), createUserController);
-// .get(readAllUserController);
+userRouter
+  .route("/")
+  .post(validation(userValidation), createUserController)
+  .get(readAllUserController);
 
 userRouter.route("/login").post(loginUserController);
+userRouter.route("/my-profile").get(myProfile);
 
-// teacherRouter
-//   .route("/:id")
-//   .get(readSpecificUserController)
-//   .patch(updateUserController)
-
-//   .delete(deleteUserController);
-
-// teacherRouter.route("/verify-email");
+userRouter
+  .route("/:id")
+  .get(readSpecificUserController)
+  .patch(updateUserController)
+  .delete(deleteUserController);

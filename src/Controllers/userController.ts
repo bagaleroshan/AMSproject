@@ -48,7 +48,8 @@ export const createUserController = asyncHandler(
       res,
       "Successfully created User and Verification email has been sent.",
       201,
-      result
+      result,
+      ""
     );
   }
 );
@@ -57,24 +58,19 @@ export let loginUserController = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     let email = req.body.email;
     let password = req.body.password;
-    let user = await User.findOne({ email: email });
-    if (user) {
-      let dbPassword = user.password;
+    let result = await User.findOne({ email: email });
+    if (result) {
+      let dbPassword = result.password;
       let isValidPassword = await bcrypt.compare(password, dbPassword);
       if (isValidPassword === true) {
         let infoObj = {
-          _id: user._id,
+          _id: result._id,
         };
         let expiryInfo = {
           expiresIn: "1d",
         };
         let token = await jwt.sign(infoObj, secretKey, expiryInfo);
-        res.status(200).json({
-          success: true,
-          message: "Logged in successfully",
-          result: user,
-          token: token,
-        });
+        successResponseData(res, "Logged in Successfully", 200, result, token);
       } else {
         let error = new Error("Email or Password did not match.");
         throw error;
@@ -86,30 +82,41 @@ export let loginUserController = asyncHandler(
   }
 );
 
+export const myProfile = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    let tokenString = req.headers.authorization || "";
+    let token = tokenString.split(" ")[1];
+    let user: any = await jwt.verify(token, secretKey);
+    let userId = user._id;
+    let result = await User.findById(userId);
+    successResponseData(res, "Profile read successfully", 200, result, "");
+  }
+);
+
 export const readAllUserController = asyncHandler(
   async (req: Request, res: Response) => {
     const { page, limit, sort, select, find } = myMongooseQuerys(req.query);
     let result = await readAllUserService(page, limit, sort, select, find);
-    successResponseData(res, "Successfully Read All User", 200, result);
+    successResponseData(res, "Successfully Read All User", 200, result, "");
   }
 );
 
 export const readSpecificUserController = asyncHandler(
   async (req: Request, res: Response) => {
     let result = await readSpecificUserService(req.params.id);
-    successResponseData(res, "Read Successfully", 200, result);
+    successResponseData(res, "Read Successfully", 200, result, "");
   }
 );
 
 export const updateUserController = asyncHandler(
   async (req: Request, res: Response) => {
     let result = await updateUserService(req.params.id, req.body);
-    successResponseData(res, "Successfully Updated", 201, result);
+    successResponseData(res, "Successfully Updated", 201, result, "");
   }
 );
 export const deleteUserController = asyncHandler(
   async (req: Request, res: Response) => {
     let result = await deleteUserService(req.params.id);
-    successResponseData(res, "Successfully Deleted", 200, result);
+    successResponseData(res, "Successfully Deleted", 200, result, "");
   }
 );
