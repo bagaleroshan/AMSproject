@@ -20,8 +20,8 @@ export const createSubjectController = asyncHandler(
 
 export const readAllSubjectController = asyncHandler(
   async (req: Request, res: Response) => {
-    const { page, limit, sort, select, find } = myMongooseQuerys(req.query);
-    let result = await readAllSubjectService(page, limit, sort, select, find);
+    const { page, limit, sort, select, query, find } = myMongooseQuerys(req.query);
+    let result = await readAllSubjectService(page, limit, sort, select,query, find);
 
     successResponseData(res, "Successfully Read All Subjects", 200, result, "");
   }
