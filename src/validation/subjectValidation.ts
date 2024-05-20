@@ -22,4 +22,3 @@ export const subjectValidation = Joi.object().keys({
     "string.base": "Input must be a number",
   }),
 });
-

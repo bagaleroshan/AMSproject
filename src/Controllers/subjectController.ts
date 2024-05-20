@@ -3,13 +3,13 @@ import asyncHandler from "express-async-handler";
 
 import {
   createSubjectService,
-  findSubjectService,
   readAllSubjectService,
   readSpecificSubjectService,
   updateSubjectService,
 } from "../Services/subjectServices";
 import { deleteStudentService } from "../Services/studentService";
 import successResponseData from "../helper/successResponse";
+import { myMongooseQuerys } from "../utils/mongooseQuery";
 
 export const createSubjectController = asyncHandler(
   async (req: Request, res: Response) => {
@@ -20,7 +20,17 @@ export const createSubjectController = asyncHandler(
 
 export const readAllSubjectController = asyncHandler(
   async (req: Request, res: Response) => {
-    let result = await readAllSubjectService();
+    const { page, limit, sort, select, query, find } = myMongooseQuerys(
+      req.query
+    );
+    let result = await readAllSubjectService(
+      page,
+      limit,
+      sort,
+      select,
+      query,
+      find
+    );
     successResponseData(res, "Successfully Read All Subjects", 200, result);
   }
 );
@@ -46,10 +56,7 @@ export const deleteSubjectController = asyncHandler(
   }
 );
 
-export const findSubject = asyncHandler(
-  async(req: any, res: Response)=>{
-    let result = await findSubjectService(req.query.findSubject)
-   successResponseData(res,"success",200,result)
-  }
-  
-)
+// export const findSubject = asyncHandler(async (req: any, res: Response) => {
+//   let result = await findSubjectService(req.query.findSubject);
+//   successResponseData(res, "success", 200, result);
+// });
