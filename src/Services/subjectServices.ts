@@ -95,35 +95,3 @@ export let updateSubjectService = async (id: string, data: {}) => {
 export let deleteSubjectService = async (id: string) => {
   return await Subject.findByIdAndDelete(id);
 };
-
-// export const findSubjectService = async (query: string) => {
-//   const combinedField = await Subject.aggregate([
-//     {
-//       $project: {
-//         combinedData: {
-//           $concat: [
-//             "$subjectName",
-//             " ",
-//             "$subjectCode",
-//             " ",
-//             { $toString: "$numberOfClasses" },
-//           ],
-//         },
-//         subjectName: 1,
-//         subjectCode: 1,
-//         numberOfClasses: 1,
-//       },
-//     },
-//     {
-//       $match: { combinedData: { $regex: query } },
-//     },
-//     {
-//       $project: {
-//         combinedData: 0,
-//       },
-//     },
-//   ]);
-//   const result = combinedField;
-
-//   return result;
-// };
