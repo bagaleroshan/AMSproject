@@ -13,12 +13,11 @@ export const subjectRouter = Router();
 
 subjectRouter
   .route("/")
-  .post(validation(subjectValidation), createSubjectController)
-  // .get(findSubject)
+  .post(validation(subjectValidation),createSubjectController)
   .get(readAllSubjectController);
 
 subjectRouter
   .route("/:id")
   .get(readSpecificSubjectController)
   .patch(updateSubjectController)
-  .delete(deleteSubjectController);
+  .delete(deleteSubjectController)
