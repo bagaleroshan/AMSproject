@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
 import { mailPass, mailUser } from "./constant";
 import path from "path";
+import { string } from "joi";
 
 let transporterInfo = {
   host: "smtp.gmail.com",
@@ -23,7 +24,7 @@ export let sendEmail = async (mailInfo: {
   to: string[];
   subject: string;
   html: string;
-  attachments: iAttachment[];
+  attachments?: iAttachment[];
 }) => {
   try {
     let transporter = nodemailer.createTransport(transporterInfo);

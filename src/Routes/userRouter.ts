@@ -3,14 +3,20 @@ import { Router } from "express";
 import {
   createUserController,
   deleteUserController,
+  forgotPassword,
   loginUserController,
   myProfile,
   readAllUserController,
   readSpecificUserController,
+  resetPassword,
+  updatePassword,
+  updateProfile,
   updateUserController,
 } from "../Controllers/userController";
 import { validation } from "../middleware/validation";
 import { userValidation } from "../validation/userValidation";
+import isAuthenticated from "../middleware/isAuthenticated";
+import isAuthorized from "../middleware/isAuthorized";
 
 export const userRouter = Router();
 
@@ -20,10 +26,18 @@ userRouter
   .get(readAllUserController);
 
 userRouter.route("/login").post(loginUserController);
-userRouter.route("/my-profile").get(myProfile);
+userRouter.route("/my-profile").get(isAuthenticated, myProfile);
+userRouter.route("/update-profile").patch(isAuthenticated, updateProfile);
+userRouter.route("/update-password").patch(isAuthenticated, updatePassword);
+userRouter.route("/forgot-password").post(forgotPassword);
+userRouter.route("/reset-password").patch(isAuthenticated, resetPassword);
 
 userRouter
   .route("/:id")
-  .get(readSpecificUserController)
-  .patch(updateUserController)
-  .delete(deleteUserController);
+  .get(
+    isAuthenticated,
+    isAuthorized(["admin", "superAdmin"]),
+    readSpecificUserController
+  )
+  .patch(isAuthenticated, isAuthorized(["superAdmin"]), updateUserController)
+  .delete(isAuthenticated, isAuthorized(["superAdmin"]), deleteUserController);

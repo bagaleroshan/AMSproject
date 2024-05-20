@@ -5,7 +5,7 @@ const successResponseData = (
   message: string = "Successfully Completed",
   statusCode: number = 200,
   result: any,
-  token: string
+  token?: string
 ) => {
   if (token) {
     return res.status(statusCode).json({
