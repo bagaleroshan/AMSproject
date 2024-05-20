@@ -1,4 +1,5 @@
 import Joi from "joi";
+import { Subject } from "../Schema/model";
 
 export const subjectValidation = Joi.object().keys({
   subjectName: Joi.string()

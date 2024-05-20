@@ -1,6 +1,5 @@
 import { model } from "mongoose";
 import studentSchema from "./studentSchema";
-import { userSchema } from "./userSchema";
 import subjectSchema from "./subjectSchema";
 interface iSubject extends Document {
   subjectName: string;
@@ -18,16 +17,6 @@ export const Student: any = model<
   }
 >("Student", studentSchema);
 
-export const User: any = model<
-  typeof User & {
-    paginate: (
-      filter: any,
-      options: any,
-      callback?: (err: any, result: any) => void
-    ) => Promise<any>;
-  }
->("User", userSchema);
-
 export const Subject: any = model<
   typeof Subject & {
     paginate: (
@@ -37,5 +26,3 @@ export const Subject: any = model<
     ) => Promise<any>;
   }
 >("Subject", subjectSchema);
-
-// export const Subject = model<iSubject>("Subject", subjectSchema);

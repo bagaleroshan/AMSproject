@@ -60,8 +60,8 @@ export const htmlContent: string = `
                  }
                  .image-container img{
                    position: absolute;
-                   top: 0;
-                   left: 0;
+                   top: 50;
+                   
                  }
             </style>
         </head>

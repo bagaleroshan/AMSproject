@@ -9,6 +9,7 @@ export const readAllSubjectService = async (
   limit: number,
   sort: string,
   select: string,
+  query: string,
   find: {}
 ) => {
   const options = {
@@ -17,20 +18,64 @@ export const readAllSubjectService = async (
     sort,
     select,
   };
-  let result = await Subject.paginate(find, options);
-  const {
-    docs,
-    totalDocs,
-    totalPages,
-    page: currentPage,
-    hasPrevPage,
-    hasNextPage,
-  } = result;
+
+  // Create the match stage based on find and query parameters
+  let matchStage = { $match: find };
+  if (query) {
+    matchStage = {
+      $match: {
+        ...find,
+        combinedData: { $regex: query, $options: "i" }, // Case-insensitive search
+      },
+    };
+  }
+
+  // Aggregation pipeline to project combinedData and apply the match stage
+  const aggregationPipeline = [
+    {
+      $project: {
+        combinedData: {
+          $concat: [
+            "$subjectName",
+            " ",
+            "$subjectCode",
+            " ",
+            { $toString: "$numberOfClasses" },
+          ],
+        },
+        subjectName: 1,
+        subjectCode: 1,
+        numberOfClasses: 1,
+      },
+    },
+    matchStage,
+    {
+      $project: {
+        combinedData: 0,
+      },
+    },
+  ];
+
+  // Get the total number of matched documents
+  const matchedDocs = await Subject.aggregate(aggregationPipeline).exec();
+  const totalMatchedDocs = matchedDocs.length;
+
+  // Apply pagination and sorting to the matched documents
+  const paginatedResult = await Subject.aggregate(aggregationPipeline)
+    .sort(sort)
+    .skip((page - 1) * limit)
+    .limit(limit)
+    .exec();
+
+  const totalPages = Math.ceil(totalMatchedDocs / limit);
+  const hasPrevPage = page > 1;
+  const hasNextPage = page < totalPages;
+
   const data = {
-    results: docs,
-    totalDataInAPage: docs.length,
-    totalDataInWholePage: totalDocs,
-    currentPage: currentPage,
+    results: paginatedResult,
+    totalDataInAPage: paginatedResult.length,
+    totalDataInWholePage: totalMatchedDocs,
+    currentPage: page,
     totalPages: totalPages,
     hasPreviousPage: hasPrevPage,
     hasNextPage: hasNextPage,
