@@ -65,10 +65,21 @@ export const readAllSubjectService = async (
   const totalPages = Math.ceil(totalMatchedDocs / limit);
   const hasPrevPage = page > 1;
   const hasNextPage = page < totalPages;
-
+  if (query || find) {
+    const data = {
+      results: paginatedResult,
+      totalDataInAPage: paginatedResult.length,
+      totalDataInWholePage: totalMatchedDocs,
+      currentPage: page,
+      totalPages: totalPages,
+      hasPreviousPage: hasPrevPage,
+      hasNextPage: hasNextPage,
+    };
+    return data;
+  }
   const data = {
-    results: paginatedResult,
-    totalDataInAPage: paginatedResult.length,
+    results: matchedDocs,
+    totalDataInAPage: matchedDocs.length,
     totalDataInWholePage: totalMatchedDocs,
     currentPage: page,
     totalPages: totalPages,
