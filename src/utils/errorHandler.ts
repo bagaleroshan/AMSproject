@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import { Error } from "mongoose";
 
 export let errorHandler = (
   error: any,

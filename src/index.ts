@@ -5,6 +5,7 @@ import { studentRouter } from "./Routes/studentRouter";
 import { subjectRouter } from "./Routes/subjectRouter";
 import { connectToMongo } from "./connectDb/connectToMongo";
 import { port, staticFolder } from "./utils/constant";
+import { userRouter } from "./Routes/userRouter";
 import { errorHandler } from "./utils/errorHandler";
 import swaggerUi from "swagger-ui-express";
 import * as YAML from "yamljs";
@@ -27,6 +28,7 @@ app.use("/file", file);
 
 app.use("/students", studentRouter);
 
+app.use("/users", userRouter);
 app.use("/subjects", subjectRouter);
 
 app.use(errorHandler);
