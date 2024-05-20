@@ -17,9 +17,6 @@ app.use(cors());
 app.use(express.static(staticFolder));
 app.use(json());
 
-
-
-
 const swaggerDocument = YAML.load(path.join("./public", "YAML.yaml"));
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
