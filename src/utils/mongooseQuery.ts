@@ -8,7 +8,7 @@ export const myMongooseQuerys = (queryParams: Request["query"]) => {
     limit: Number(limit) || 10,
     sort: String(sort || "-createdAt").replaceAll(",", " "),
     select: String(select || "").replaceAll(",", " "),
-    query: String(query) || "",
+    query: String(query || ""),
     find: find || {},
   };
 };
