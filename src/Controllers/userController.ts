@@ -21,6 +21,7 @@ import { User } from "../Schema/model";
 import jwt from "jsonwebtoken";
 import { AuthenticatedRequest } from "../middleware/isAuthenticated";
 import { userInfo } from "os";
+import { renameIdField } from "../utils/PrimaryKeyFix";
 
 export const createUserController = asyncHandler(
   async (req: Request, res: Response) => {
@@ -73,7 +74,7 @@ export let loginUserController = asyncHandler(
         };
         let token = await jwt.sign(infoObj, secretKey, expiryInfo);
        
-        
+        renameIdField(result)
         successResponseData(res, "Logged in Successfully", 200, result, token);
       } else {
         let error = new Error("Email or Password did not match.");
