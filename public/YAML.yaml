@@ -126,6 +126,86 @@ paths:
   #     responses:
   #       "200":
   #         description: Student deleted successfully
+  /users/reset-password:
+    post:
+      summary: forgot password 
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/userForgotPasswordInput"
+      responses:
+        "200":
+          description: User password updated successfully
+  /users/update-password:
+    patch:
+      summary: update password 
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/userPasswordUpdateInput"
+      responses:
+        "200":
+          description: User password updated successfully
+  /users/update-profile:
+    patch:
+      summary: update user
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/userUpdateInput"
+      responses:
+        "200":
+          description: User updated successfully
+  /users:
+    post:
+      summary: create user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/userInput"
+      responses:
+        "200":
+          description: User created successfully
+    get:
+      summary: Get all users
+      responses:
+        "200":
+          description: List of users retrieved successfully
+  /users/login:
+    post:
+      summary: login user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/loginInput"
+      responses:
+        "200":
+          description: User login successfully
+  /users/my-profile:
+    get:
+      summary: Example Endpoint
+      description: Retrieves example data.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: A successful response
+      # Define security schemes
+
   /subjects:
     post:
       summary: create subject
@@ -246,6 +326,11 @@ paths:
                     type: string
                     example: An error occurred while processing the file
 components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     # StudentInput:
     #   type: object
@@ -277,6 +362,15 @@ components:
     #     phoneNumber:
     #       type: number
     #       description: the contact info of student
+    loginInput:
+      type: object
+      properties:
+        email:
+          type: string
+          description: The emial of the user
+        password:
+          type: string
+          description: The password of the user
     SubjectInput:
       type: object
       properties:
@@ -288,6 +382,36 @@ components:
           description: The age of the student
         numberOfClasses:
           type: number
+          description: The grade of the student
+    SubjectInput:
+      type: object
+      properties:
+        subjectName:
+          type: string
+          description: The name of the student
+        subjectCode:
+          type: string
+          description: The age of the student
+        numberOfClasses:
+          type: number
+          description: The grade of the student
+    userInput:
+      type: object
+      properties:
+        fullName:
+          type: string
+          description: The name of the student
+        email:
+          type: string
+          description: The age of the student
+        password:
+          type: string
+          description: The age of the student
+        phoneNumber:
+          type: string
+          description: The age of the student
+        role:
+          type: string
           description: The grade of the student
     SubjectUpdateInput:
       type: object
@@ -301,3 +425,36 @@ components:
         numberOfClasses:
           type: number
           description: The grade of the student
+    userUpdateInput:
+      type: object
+      properties:
+        fullName:
+          type: string
+          description: The name of the user
+        email:
+          type: string
+          description: The email of the user
+        phoneNumber:
+          type: string
+          description: The ph no of the phone
+        role:
+          type: string
+          description: The role of the user
+    userPasswordUpdateInput:
+      type: object
+      properties:
+        oldPassword:
+          type: string
+          description: The name of the user
+        newPassword:
+          type: string
+          description: The email of the user
+    userForgotPasswordInput:
+      type: object
+      properties:
+        email:
+          type: string
+          description: The email of the user
+     
+      
+    

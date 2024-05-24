@@ -136,7 +136,7 @@ export const updatePassword = asyncHandler(
 );
 
 export const forgotPassword = asyncHandler(
-  async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     let email = req.body.email;
     let result = await User.findOne({ email: email });
     if (result !== null) {
