@@ -8,6 +8,7 @@ export const searchAndPaginate = async (
   find: {},
   fields: string[]
 ) => {
+  const aggregationPipeline = [];
   let projection: { [key: string]: any } = {};
   if (fields && Array.isArray(fields)) {
     fields.forEach((field) => {
@@ -26,16 +27,39 @@ export const searchAndPaginate = async (
       },
     };
   }
+  aggregationPipeline.push(matchStage);
 
-  const aggregationPipeline = [
-    {
-      $project: projection,
-    },
-    matchStage,
-  ];
+  if (select) {
+    const selectFields: { [key: string]: number } = select
+      .split(" ")
+      .reduce((acc, field) => {
+        if (field.startsWith("-")) {
+          acc[field.substring(1)] = 0;
+        } else {
+          acc[field] = 1;
+        }
+        return acc;
+      }, {} as { [key: string]: number });
 
-  const matchedDocs = await Model.aggregate(aggregationPipeline).exec();
-  const totalMatchedDocs = matchedDocs.length;
+    aggregationPipeline.push({ $project: selectFields });
+  } else if (Object.keys(projection).length > 0) {
+    aggregationPipeline.push({ $project: projection });
+  }
+
+  if (sort) {
+    const sortFields: { [key: string]: number } = sort
+      .split(" ")
+      .reduce((acc, field) => {
+        const [key, order] = field.split(":");
+        acc[key] = order === "desc" ? -1 : 1;
+        return acc;
+      }, {} as { [key: string]: number });
+    aggregationPipeline.push({ $sort: sortFields });
+  }
+
+  const countPipeline = [...aggregationPipeline, { $count: "count" }];
+  const matchedDocs = await Model.aggregate(countPipeline).exec();
+  const totalMatchedDocs = matchedDocs[0]?.count || 0; // Handle case when matchedDocs is undefined
 
   const paginatedResult = await Model.aggregate(aggregationPipeline)
     .sort(sort)
