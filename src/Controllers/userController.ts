@@ -73,8 +73,7 @@ export let loginUserController = asyncHandler(
           expiresIn: "1d",
         };
         let token = await jwt.sign(infoObj, secretKey, expiryInfo);
-       
-        renameIdField(result)
+       result._doc.id=result._doc._id
         successResponseData(res, "Logged in Successfully", 200, result, token);
       } else {
         let error = new Error("Email or Password did not match.");
@@ -136,7 +135,7 @@ export const updatePassword = asyncHandler(
 );
 
 export const forgotPassword = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     let email = req.body.email;
     let result = await User.findOne({ email: email });
     if (result !== null) {

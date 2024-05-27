@@ -1,4 +1,5 @@
 import { Response } from "express";
+import { renameIdField } from "../utils/PrimaryKeyFix";
 
 const successResponseData = (
   res: Response,
@@ -7,6 +8,11 @@ const successResponseData = (
   result: any,
   token?: string
 ) => {
+
+  console.log(result)
+  //result._doc.id=result._doc._id
+  
+
   if (token) {
     return res.status(statusCode).json({
       success: true,

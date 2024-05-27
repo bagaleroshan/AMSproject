@@ -5,6 +5,7 @@ info:
   version: 1.0.0
 servers:
   - url: http://localhost:8000
+
 paths:
   # /students:
   #   post:
@@ -127,10 +128,24 @@ paths:
   #       "200":
   #         description: Student deleted successfully
   /users/reset-password:
+    patch:
+      summary: reset password 
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/userResetPasswordInput"
+      responses:
+        "200":
+          description: User password updated successfully
+  /users/forgot-password:
     post:
       summary: forgot password 
       requestBody:
-        required: false
+        required: true
         content:
           application/json:
             schema:
@@ -455,6 +470,12 @@ components:
         email:
           type: string
           description: The email of the user
+    userForgotPasswordInput:
+      type: object
+      properties:
+        password:
+          type: string
+          description: The password of the user
      
       
     
