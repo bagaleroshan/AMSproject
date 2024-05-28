@@ -37,7 +37,13 @@ userRouter
 userRouter.route("/update-password").patch(isAuthenticated, updatePassword);
 userRouter.route("/forgot-password").post(forgotPassword);
 userRouter.route("/reset-password").patch(isAuthenticated, resetPassword);
-
+userRouter
+  .route("/")
+  .get(
+    isAuthenticated,
+    isAuthorized(["admin", "superAdmin"]),
+    readAllUserController
+  );
 userRouter
   .route("/:id")
   .get(
@@ -45,5 +51,13 @@ userRouter
     isAuthorized(["admin", "superAdmin"]),
     readSpecificUserController
   )
-  .patch(isAuthenticated, isAuthorized(["superAdmin"]), updateUserController)
-  .delete(isAuthenticated, isAuthorized(["superAdmin"]), deleteUserController);
+  .patch(
+    isAuthenticated,
+    isAuthorized(["admin", "superAdmin"]),
+    updateUserController
+  )
+  .delete(
+    isAuthenticated,
+    isAuthorized(["admin", "superAdmin"]),
+    deleteUserController
+  );

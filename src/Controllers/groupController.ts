@@ -2,28 +2,28 @@ import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 
 import {
-  createSubjectService,
-  readAllSubjectService,
-  readSpecificSubjectService,
-  updateSubjectService,
-} from "../Services/subjectServices";
+  createGroupService,
+  readAllGroupService,
+  readSpecificGroupService,
+  updateGroupService,
+} from "../Services/groupServices";
 import { deleteStudentService } from "../Services/studentService";
 import successResponseData from "../helper/successResponse";
 import { myMongooseQuerys } from "../utils/mongooseQuery";
 
-export const createSubjectController = asyncHandler(
+export const createGroupController = asyncHandler(
   async (req: Request, res: Response) => {
-    let result = await createSubjectService(req.body);
-    successResponseData(res, "Successfully Subject created.", 201, result);
+    let result = await createGroupService(req.body);
+    successResponseData(res, "Group Successfully created.", 201, result);
   }
 );
 
-export const readAllSubjectController = asyncHandler(
+export const readAllGroupController = asyncHandler(
   async (req: Request, res: Response) => {
     const { page, limit, sort, select, query, find } = myMongooseQuerys(
       req.query
     );
-    let result = await readAllSubjectService(
+    let result = await readAllGroupService(
       page,
       limit,
       sort,
@@ -31,25 +31,25 @@ export const readAllSubjectController = asyncHandler(
       query,
       find
     );
-    successResponseData(res, "Successfully Read All Subjects", 200, result);
+    successResponseData(res, "Successfully Read All Groups", 200, result);
   }
 );
 
-export const readSpecificSubjectController = asyncHandler(
+export const readSpecificGroupController = asyncHandler(
   async (req: Request, res: Response) => {
-    let result = await readSpecificSubjectService(req.params.id);
+    let result = await readSpecificGroupService(req.params.id);
     successResponseData(res, "Successfully Read", 200, result);
   }
 );
 
-export const updateSubjectController = asyncHandler(
+export const updateGroupController = asyncHandler(
   async (req: Request, res: Response) => {
-    let result = await updateSubjectService(req.params.id, req.body);
+    let result = await updateGroupService(req.params.id, req.body);
     successResponseData(res, "Successfully Updated", 201, result);
   }
 );
 
-export const deleteSubjectController = asyncHandler(
+export const deleteGroupController = asyncHandler(
   async (req: Request, res: Response) => {
     let result = await deleteStudentService(req.params.id);
     successResponseData(res, "Successfully Deleted", 200, result);
