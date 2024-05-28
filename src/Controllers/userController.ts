@@ -47,7 +47,7 @@ export const createUserController = asyncHandler(
     });
     successResponseData(
       res,
-      "Successfully created User and Verification email has been sent.",
+      "Successfully created User and Please check your email.",
       201,
       result
     );
@@ -150,8 +150,8 @@ export const forgotPassword = asyncHandler(
         subject: "Forgot Password",
         html: `
         <h4>Please verify that its you trying to reset your password.</h4><br/>
-        <a href="${clientUrl}/users/reset-password?token=${token}">
-        ${clientUrl}/users/reset-password?token=${token}
+        <a href="${clientUrl}/reset-password?token=${token}">
+        ${clientUrl}/reset-password?token=${token}
         </a><br/>
         <h4>If you did not do this don't do anything.</h4><br/>
         `,
