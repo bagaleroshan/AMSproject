@@ -1,59 +1,73 @@
 import { User } from "../Schema/model";
+import { searchAndPaginate } from "../utils/searchAndPaginate";
 
-let createUserService = async (data: {}) => {
+export let createUserService = async (data: {}) => {
   return await User.create(data);
 };
-
-let readAllUserService = async (
+export const readAllUserService = async (
   page: number,
   limit: number,
   sort: string,
   select: string,
+  query: string,
   find: {}
 ) => {
-  const options = {
+  const userFields = ["fullName", "email", "phoneNumber", "role"];
+  const data = await searchAndPaginate(
+    User,
     page,
     limit,
     sort,
     select,
-  };
-  const result = await User.paginate(find, options);
-  const {
-    docs,
-    totalDocs,
-    totalPages,
-    page: currentPage,
-    hasPrevPage,
-    hasNextPage,
-  } = result;
-  const data = {
-    results: docs,
-    totalDataInAPage: docs.length,
-    totalDataInWholePage: totalDocs,
-    currentPage: currentPage,
-    totalPages: totalPages,
-    hasPreviousPage: hasPrevPage,
-    hasNextPage: hasNextPage,
-  };
-
+    query,
+    find,
+    userFields
+  );
   return data;
 };
-let readSpecificUserService = async (id: string) => {
+
+// let readAllUserService = async (
+//   page: number,
+//   limit: number,
+//   sort: string,
+//   select: string,
+//   find: {}
+// ) => {
+//   const options = {
+//     page,
+//     limit,
+//     sort,
+//     select,
+//   };
+//   const result = await User.paginate(find, options);
+//   const {
+//     docs,
+//     totalDocs,
+//     totalPages,
+//     page: currentPage,
+//     hasPrevPage,
+//     hasNextPage,
+//   } = result;
+//   const data = {
+//     results: docs,
+//     totalDataInAPage: docs.length,
+//     totalDataInWholePage: totalDocs,
+//     currentPage: currentPage,
+//     totalPages: totalPages,
+//     hasPreviousPage: hasPrevPage,
+//     hasNextPage: hasNextPage,
+//   };
+
+//   return data;
+// };
+export let readSpecificUserService = async (id: string) => {
   return await User.findById(id);
 };
 
-let updateUserService = async (id: string, data: {}) => {
+export let updateUserService = async (id: string, data: {}) => {
   return await User.findByIdAndUpdate(id, data, { new: true });
 };
 
-let deleteUserService = async (id: string) => {
+export let deleteUserService = async (id: string) => {
   return await User.findByIdAndDelete(id);
-};
-
-export {
-  createUserService,
-  readSpecificUserService,
-  readAllUserService,
-  updateUserService,
-  deleteUserService,
 };

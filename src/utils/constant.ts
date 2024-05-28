@@ -10,6 +10,7 @@ export const mailProvider = process.env.MAIL_PROVIDER || "Jenis Hona";
 export const secretKey = process.env.SECRET_KEY || "ams2024";
 export const clientUrl = process.env.CLIENT_URL || "http://localhost:5173";
 export const serverUrl = process.env.SERVER_URL || "http://localhost:8000";
+export const defaultPassword = process.env.DEFAULT_PASS;
 
 export const HttpStatus = {
   CONTINUE: 100,
