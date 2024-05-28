@@ -6,13 +6,15 @@ export let errorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  let statusCode = 500;
+  let statusCode = error.statusCode || 400;
+  let message = error.message || "Something went wrong.";
   if (error.code === 11000) {
     statusCode = 409;
+    message = "Duplicate key error";
   }
 
   res.status(statusCode).json({
     success: false,
-    message: error.message,
+    message: message,
   });
 };

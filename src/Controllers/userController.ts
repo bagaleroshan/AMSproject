@@ -21,6 +21,7 @@ import { User } from "../Schema/model";
 import jwt from "jsonwebtoken";
 import { AuthenticatedRequest } from "../middleware/isAuthenticated";
 import { userInfo } from "os";
+import throwError from "../helper/throwError";
 
 export const createUserController = asyncHandler(
   async (req: Request, res: Response) => {
@@ -109,13 +110,13 @@ export const updateProfile = asyncHandler(
 export const updatePassword = asyncHandler(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     let userId = req._id;
-    let oldPassword = req.body.oldPassword;
-    let newPassword = req.body.newPassword;
     let data = await User.findById(userId);
-    let dbPassword = data.password;
-    let isValidPassword = await bcrypt.compare(oldPassword, dbPassword);
+    let isValidPassword = await bcrypt.compare(
+      req.body.oldPassword,
+      data.password
+    );
     if (isValidPassword) {
-      let newHashPassword = await bcrypt.hash(newPassword, 10);
+      let newHashPassword = await bcrypt.hash(req.body.newPassword, 10);
 
       let result = await User.findByIdAndUpdate(
         userId,
@@ -127,6 +128,8 @@ export const updatePassword = asyncHandler(
         }
       );
       successResponseData(res, "Password updated successfully", 200, result);
+    } else {
+      throwError("Password did not match");
     }
   }
 );
@@ -150,7 +153,7 @@ export const forgotPassword = asyncHandler(
         subject: "Forgot Password",
         html: `
         <h4>Please verify that its you trying to reset your password.</h4><br/>
-        <a href="${clientUrl}/admin/reset-password?token=${token}">
+        <a href="${clientUrl}/reset-password?token=${token}">
         ${clientUrl}/reset-password?token=${token}
         </a><br/>
         <h4>If you did not do this don't do anything.</h4><br/>

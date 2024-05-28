@@ -14,20 +14,26 @@ import {
   updateUserController,
 } from "../Controllers/userController";
 import { validation } from "../middleware/validation";
-import { userValidation } from "../validation/userValidation";
 import isAuthenticated from "../middleware/isAuthenticated";
 import isAuthorized from "../middleware/isAuthorized";
+import { userValidation } from "../validation/userValidation";
 
 export const userRouter = Router();
 
 userRouter
   .route("/")
-  .post(validation(userValidation), createUserController)
+  .post(validation(userValidation({ isCreate: true })), createUserController)
   .get(readAllUserController);
 
 userRouter.route("/login").post(loginUserController);
 userRouter.route("/my-profile").get(isAuthenticated, myProfile);
-userRouter.route("/update-profile").patch(isAuthenticated, updateProfile);
+userRouter
+  .route("/update-profile")
+  .patch(
+    isAuthenticated,
+    validation(userValidation({ isCreate: false })),
+    updateProfile
+  );
 userRouter.route("/update-password").patch(isAuthenticated, updatePassword);
 userRouter.route("/forgot-password").post(forgotPassword);
 userRouter.route("/reset-password").patch(isAuthenticated, resetPassword);
