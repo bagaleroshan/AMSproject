@@ -15,6 +15,8 @@ const subjectSchema: Schema = new Schema({
     type: Number,
     required: [true, "Number of Classes is required"],
   },
+},{
+  timestamps: true,
 });
 
 subjectSchema.plugin(mongoosePaginate);

@@ -219,8 +219,14 @@ paths:
       responses:
         '200':
           description: A successful response
+  /students:
+    get:
+      summary: Example Endpoint
+      description: Retrieves example data.
+      responses:
+        '200':
+          description: A successful response
       # Define security schemes
-
   /subjects:
     post:
       summary: create subject

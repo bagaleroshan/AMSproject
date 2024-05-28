@@ -1,5 +1,6 @@
 import { Response } from "express";
-import { renameIdField } from "../utils/PrimaryKeyFix";
+import mongoose from "mongoose";
+import { dbUrl } from "../utils/constant";
 
 const successResponseData = (
   res: Response,
@@ -9,9 +10,15 @@ const successResponseData = (
   token?: string
 ) => {
 
-  console.log(result)
-  //result._doc.id=result._doc._id
-  
+ // console.log(result)
+ // result._doc.id=result._doc._id
+
+  mongoose.connect(dbUrl as string);
+  mongoose.connection.db.collection('subjects').updateMany({}, [{ $set: { id: "$_id" } }])
+
+ mongoose.connection.db.collection('users').updateMany({}, [{ $set: { id: "$_id" } }])
+ mongoose.connect(dbUrl as string);
+ mongoose.connection.db.collection('students').updateMany({}, [{ $set: { id: "$_id" } }])
 
   if (token) {
     return res.status(statusCode).json({

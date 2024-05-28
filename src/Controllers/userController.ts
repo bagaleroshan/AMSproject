@@ -22,6 +22,7 @@ import jwt from "jsonwebtoken";
 import { AuthenticatedRequest } from "../middleware/isAuthenticated";
 import { userInfo } from "os";
 import { renameIdField } from "../utils/PrimaryKeyFix";
+import userSchema from "../Schema/userSchema";
 
 export const createUserController = asyncHandler(
   async (req: Request, res: Response) => {
@@ -73,7 +74,6 @@ export let loginUserController = asyncHandler(
           expiresIn: "1d",
         };
         let token = await jwt.sign(infoObj, secretKey, expiryInfo);
-       result._doc.id=result._doc._id
         successResponseData(res, "Logged in Successfully", 200, result, token);
       } else {
         let error = new Error("Email or Password did not match.");
@@ -190,7 +190,9 @@ export const readAllUserController = asyncHandler(
   async (req: Request, res: Response) => {
     const { page, limit, sort, select, find } = myMongooseQuerys(req.query);
     let result = await readAllUserService(page, limit, sort, select, find);
+      
 
+    
     successResponseData(res, "Successfully Read All User", 200, result);
   }
 );

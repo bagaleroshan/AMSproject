@@ -21,6 +21,7 @@ export const studentSchema = new Schema(
       type: String,
       required: [true, "phoneNumber field is required"],
     },
+    
   },
   {
     timestamps: true,
