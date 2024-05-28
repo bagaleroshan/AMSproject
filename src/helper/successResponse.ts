@@ -7,18 +7,25 @@ const successResponseData = (
   result: any,
   token?: string
 ) => {
+  const hideFields = (data: any) => {
+    const { password, createdAt, updatedAt, ...rest } = data;
+    return rest;
+  };
+  const filteredResult = result._doc
+    ? hideFields(result._doc)
+    : hideFields(result);
   if (token) {
     return res.status(statusCode).json({
       success: true,
       message: message,
-      result: result,
+      result: filteredResult,
       token: token,
     });
   }
   return res.status(statusCode).json({
     success: true,
     message: message,
-    result: result,
+    result: filteredResult,
   });
 };
 export default successResponseData;

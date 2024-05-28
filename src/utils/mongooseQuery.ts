@@ -2,7 +2,6 @@ import { Request } from "express";
 
 export const myMongooseQuerys = (queryParams: Request["query"]) => {
   let { page, limit, sort, select, query, ...find } = queryParams;
-
   return {
     page: Number(page) || 1,
     limit: Number(limit) || 10,

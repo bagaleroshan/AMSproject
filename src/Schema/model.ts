@@ -2,6 +2,7 @@ import { model } from "mongoose";
 import studentSchema from "./studentSchema";
 import { userSchema } from "./userSchema";
 import subjectSchema from "./subjectSchema";
+import groupSchema from "./groupSchema";
 interface iSubject extends Document {
   subjectName: string;
   subjectCode: string;
@@ -37,5 +38,15 @@ export const Subject: any = model<
     ) => Promise<any>;
   }
 >("Subject", subjectSchema);
+
+export const Group: any = model<
+  typeof Group & {
+    paginate: (
+      filter: any,
+      options: any,
+      callback?: (err: any, result: any) => void
+    ) => Promise<any>;
+  }
+>("Group", groupSchema);
 
 // export const Subject = model<iSubject>("Subject", subjectSchema);
