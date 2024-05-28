@@ -6,19 +6,23 @@ export const userSchema = new Schema(
     fullName: {
       type: String,
       required: [true, "fullName field is required"],
+      trim: true,
     },
     email: {
       type: String,
       unique: true,
       required: [true, "email field is required"],
+      trim: true,
     },
     password: {
       type: String,
       required: [true, "password field is required"],
+      trim: true,
     },
     phoneNumber: {
       type: String,
       required: [true, "phoneNumber field is required"],
+      trim: true,
     },
     role: {
       type: String,

@@ -10,6 +10,7 @@ import { errorHandler } from "./utils/errorHandler";
 import swaggerUi from "swagger-ui-express";
 import * as YAML from "yamljs";
 import path from "path";
+import { groupRouter } from "./Routes/groupRouter";
 
 const app: Express = express();
 connectToMongo();
@@ -27,6 +28,7 @@ app.use("/students", studentRouter);
 
 app.use("/users", userRouter);
 app.use("/subjects", subjectRouter);
+app.use("/groups", groupRouter);
 
 app.use(errorHandler);
 

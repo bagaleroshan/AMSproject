@@ -1,6 +1,8 @@
 import bcrypt from "bcrypt";
 import { NextFunction, Request, Response } from "express";
 import asyncHandler from "express-async-handler";
+import jwt from "jsonwebtoken";
+import { User } from "../Schema/model";
 import {
   createUserService,
   deleteUserService,
@@ -9,6 +11,7 @@ import {
   updateUserService,
 } from "../Services/userService";
 import successResponseData from "../helper/successResponse";
+import { AuthenticatedRequest } from "../middleware/isAuthenticated";
 import {
   clientUrl,
   mailProvider,
@@ -17,12 +20,6 @@ import {
 } from "../utils/constant";
 import { myMongooseQuerys } from "../utils/mongooseQuery";
 import { attachments, sendEmail } from "../utils/sendMail";
-import { User } from "../Schema/model";
-import jwt from "jsonwebtoken";
-import { AuthenticatedRequest } from "../middleware/isAuthenticated";
-import { userInfo } from "os";
-import { renameIdField } from "../utils/PrimaryKeyFix";
-import userSchema from "../Schema/userSchema";
 
 export const createUserController = asyncHandler(
   async (req: Request, res: Response) => {
