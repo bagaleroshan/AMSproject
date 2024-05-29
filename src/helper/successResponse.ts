@@ -24,14 +24,14 @@ const successResponseData = (
     return res.status(statusCode).json({
       success: true,
       message: message,
-      result: filteredResult,
+      result: result,
       token: token,
     });
   }
   return res.status(statusCode).json({
     success: true,
     message: message,
-    result: filteredResult,
+    result: result,
   });
 };
 export default successResponseData;

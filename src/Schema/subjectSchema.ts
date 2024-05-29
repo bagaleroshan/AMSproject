@@ -19,6 +19,7 @@ const subjectSchema: Schema = new Schema(
       type: Number,
       required: [true, "numberOfClasses is required"],
     },
+    
   },
   {
     timestamps: true,

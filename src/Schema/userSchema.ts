@@ -29,6 +29,10 @@ export const userSchema = new Schema(
       required: [true, "role field is required"],
       // enum: ["admin", "teacher"],
     },
+    isPasswordChanged: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
