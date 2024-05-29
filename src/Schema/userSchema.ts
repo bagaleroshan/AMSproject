@@ -28,6 +28,10 @@ export const userSchema = new Schema(
       type: String,
       required: [true, "role field is required"],
     },
+    isPasswordChanged: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

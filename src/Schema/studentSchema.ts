@@ -12,7 +12,12 @@ export const studentSchema = new Schema(
       unique: true,
       required: [true, "email field is required"],
     },
-
+    attentance: [
+      {
+        date: String,
+        isPresent: Boolean,
+      },
+    ],
     course: {
       type: String,
       required: [true, "course field is required"],

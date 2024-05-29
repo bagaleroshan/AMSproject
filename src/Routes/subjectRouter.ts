@@ -14,7 +14,10 @@ export const subjectRouter = Router();
 
 subjectRouter
   .route("/")
-  .post(validation(subjectValidation), createSubjectController)
+  .post(
+    validation(subjectValidation({ isCreate: true })),
+    createSubjectController
+  )
   .get(
     validateQueryParams(["subjectName", "subjectCode", "query"]),
     readAllSubjectController
@@ -23,5 +26,8 @@ subjectRouter
 subjectRouter
   .route("/:id")
   .get(readSpecificSubjectController)
-  .patch(updateSubjectController)
+  .patch(
+    validation(subjectValidation({ isCreate: false })),
+    updateSubjectController
+  )
   .delete(deleteSubjectController);

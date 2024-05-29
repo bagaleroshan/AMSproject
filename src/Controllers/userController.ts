@@ -14,6 +14,7 @@ import successResponseData from "../helper/successResponse";
 import { AuthenticatedRequest } from "../middleware/isAuthenticated";
 import {
   clientUrl,
+  defaultPassword,
   mailProvider,
   mailUser,
   secretKey,
@@ -23,9 +24,8 @@ import { attachments, sendEmail } from "../utils/sendMail";
 import throwError from "../helper/throwError";
 
 export const createUserController = asyncHandler(
-  async (req: Request, res: Response) => {
-    let defaultPassword: string = "Password@123";
-    let password = await bcrypt.hash(defaultPassword, 10);
+  async (req: AuthenticatedRequest, res: Response) => {
+    let password = await bcrypt.hash(defaultPassword as string, 10);
     let data = { ...req.body, password };
     let result = await createUserService(data);
     await sendEmail({
@@ -48,7 +48,7 @@ export const createUserController = asyncHandler(
     });
     successResponseData(
       res,
-      "Successfully created User and Verification email has been sent.",
+      "Successfully created User and Please check your email.",
       201,
       result
     );
@@ -121,6 +121,7 @@ export const updatePassword = asyncHandler(
         userId,
         {
           password: newHashPassword,
+          isPasswordChanged: true,
         },
         {
           new: true,
@@ -187,8 +188,17 @@ export const resetPassword = asyncHandler(
 
 export const readAllUserController = asyncHandler(
   async (req: Request, res: Response) => {
-    const { page, limit, sort, select, find } = myMongooseQuerys(req.query);
-    let result = await readAllUserService(page, limit, sort, select, find);
+    const { page, limit, sort, select, query, find } = myMongooseQuerys(
+      req.query
+    );
+    let result = await readAllUserService(
+      page,
+      limit,
+      sort,
+      select,
+      query,
+      find
+    );
     successResponseData(res, "Successfully Read All User", 200, result);
   }
 );
