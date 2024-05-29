@@ -35,9 +35,7 @@ export const userValidation = Joi.object()
       }),
     phoneNumber: Joi.string()
       .custom((value, msg: any) => {
-        if (
-          value.match(/^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/)
-        ) {
+        if (value.match(/^(?:\+977[-\s]?)?(?:98\d{8}|97\d{8}|0[1-9]\d{8})$/)) {
           return true;
         } else {
           return msg.message("Invalid phoneNumber");

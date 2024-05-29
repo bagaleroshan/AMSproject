@@ -7,13 +7,12 @@ export let errorHandler = (
   next: NextFunction
 ) => {
   let statusCode = 500;
-  let message = "An unexpected error occurred";
+  let message = error.message || "An unexpected error occurred";
   if (error.code === 11000) {
     statusCode = 409;
     const field = Object.keys(error.keyPattern)[0];
     message = `${field} already exists.`;
   }
-
   res.status(statusCode).json({
     success: false,
     message: message,
