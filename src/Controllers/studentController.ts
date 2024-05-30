@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import {
+  addAttendance,
   createStudentService,
   deleteStudentService,
   readAllStudentService,
@@ -11,6 +12,11 @@ import { emailSender } from "../helper/emailSender";
 import successResponseData from "../helper/successResponse";
 import { myMongooseQuerys } from "../utils/mongooseQuery";
 
+
+interface Attendance {
+  date: string;
+  isPresent: boolean;
+}
 export const createStudentController = asyncHandler(
   async (req: Request, res: Response) => {
     let result = await createStudentService(req.body);
@@ -45,9 +51,16 @@ export const updateStudentController = asyncHandler(
     successResponseData(res, "Successfully Updated", 201, result);
   }
 );
+export const addStudentAttendenceController = asyncHandler(
+  async (req: Request, res: Response) => {
+    let result = await addAttendance(req.params.id, req.body);
+    successResponseData(res, "Successfully Updated", 201, result);
+  }
+);
 export const deleteStudentController = asyncHandler(
   async (req: Request, res: Response) => {
     let result = await deleteStudentService(req.params.id);
     successResponseData(res, "Successfully Deleted", 200, result);
   }
 );
+

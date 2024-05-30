@@ -223,9 +223,25 @@ paths:
     get:
       summary: Example Endpoint
       description: Retrieves example data.
+      security:
+        - BearerAuth: []
       responses:
         '200':
           description: A successful response
+    post:
+      summary: create subject
+      description: Retrieves example data.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StudentInput"
+      responses:
+        "200":
+          description: Student created successfully
       # Define security schemes
   /subjects:
     post:
@@ -466,10 +482,10 @@ components:
       properties:
         oldPassword:
           type: string
-          description: The name of the user
+          description: The oldPassword of the user
         newPassword:
           type: string
-          description: The email of the user
+          description: The newPassword of the user
     userForgotPasswordInput:
       type: object
       properties:
@@ -482,6 +498,21 @@ components:
         password:
           type: string
           description: The password of the user
+    StudentInput:
+      type: object
+      properties:
+        fullName:
+          type: string
+          description: The fullName of the user
+        course:
+          type: string
+          description: The course of the user
+        phoneNumber:
+          type: string
+          description: The phoneNumber of the user
+        email:
+          type: string
+          description: The email of the user
      
       
     
