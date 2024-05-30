@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import {
+  addStudentGroupController,
   createGroupController,
   deleteGroupController,
   readAllGroupController,
@@ -9,6 +10,7 @@ import {
 } from "../Controllers/groupController";
 import isAuthenticated from "../middleware/isAuthenticated";
 import isAuthorized from "../middleware/isAuthorized";
+import groupStudentValidation from "../middleware/groupStudentValidaton";
 
 export const groupRouter = Router();
 
@@ -24,6 +26,11 @@ groupRouter.route("/").get(
   // isAuthorized(["admin", "superAdmin"]),
   readAllGroupController
 );
+
+groupRouter
+  .route("/add/:id")
+  .patch(groupStudentValidation, addStudentGroupController);
+
 groupRouter
   .route("/:id")
   .get(

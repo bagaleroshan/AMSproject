@@ -127,6 +127,9 @@ export const updatePassword = asyncHandler(
         }
       );
       successResponseData(res, "Password updated successfully", 200, result);
+    } else {
+      let error = new Error("Old Password did not match.");
+      throw error;
     }
   }
 );

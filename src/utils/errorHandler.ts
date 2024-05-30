@@ -6,7 +6,7 @@ export let errorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  let statusCode = 500;
+  let statusCode = 400;
   let message = error.message || "An unexpected error occurred";
   if (error.code === 11000) {
     statusCode = 409;

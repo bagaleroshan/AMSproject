@@ -66,3 +66,10 @@ export let updateGroupService = async (id: string, data: {}) => {
 export let deleteGroupService = async (id: string) => {
   return await Group.findByIdAndDelete(id);
 };
+export let addStudentGroupService = async (id: string, students: string) => {
+  return await Group.findByIdAndUpdate(
+    id,
+    { $push: { students } },
+    { new: true }
+  );
+};
