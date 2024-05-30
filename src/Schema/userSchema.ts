@@ -27,7 +27,6 @@ export const userSchema = new Schema(
     role: {
       type: String,
       required: [true, "role field is required"],
-      // enum: ["admin", "teacher"],
     },
     isPasswordChanged: {
       type: Boolean,
