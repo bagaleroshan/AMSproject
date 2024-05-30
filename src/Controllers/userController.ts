@@ -21,9 +21,10 @@ import {
 } from "../utils/constant";
 import { myMongooseQuerys } from "../utils/mongooseQuery";
 import { attachments, sendEmail } from "../utils/sendMail";
+import throwError from "../helper/throwError";
 
 export const createUserController = asyncHandler(
-  async (req: Request, res: Response) => {
+  async (req: AuthenticatedRequest, res: Response) => {
     let password = await bcrypt.hash(defaultPassword as string, 10);
     let data = { ...req.body, password };
     let result = await createUserService(data);
@@ -108,13 +109,13 @@ export const updateProfile = asyncHandler(
 export const updatePassword = asyncHandler(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     let userId = req._id;
-    let oldPassword = req.body.oldPassword;
-    let newPassword = req.body.newPassword;
     let data = await User.findById(userId);
-    let dbPassword = data.password;
-    let isValidPassword = await bcrypt.compare(oldPassword, dbPassword);
+    let isValidPassword = await bcrypt.compare(
+      req.body.oldPassword,
+      data.password
+    );
     if (isValidPassword) {
-      let newHashPassword = await bcrypt.hash(newPassword, 10);
+      let newHashPassword = await bcrypt.hash(req.body.newPassword, 10);
 
       let result = await User.findByIdAndUpdate(
         userId,
@@ -127,6 +128,8 @@ export const updatePassword = asyncHandler(
         }
       );
       successResponseData(res, "Password updated successfully", 200, result);
+    } else {
+      throwError("Password did not match");
     }
   }
 );
