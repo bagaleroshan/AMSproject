@@ -29,7 +29,6 @@ export const studentValidation = Joi.object()
       })
       .required()
       .lowercase(),
-    course: Joi.string().required().lowercase(),
     phoneNumber: Joi.string().required(),
   })
   .unknown(false);

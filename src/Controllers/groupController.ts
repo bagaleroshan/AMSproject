@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 
 import {
+  addStudentGroupService,
   createGroupService,
   readAllGroupService,
   readSpecificGroupService,
@@ -53,5 +54,12 @@ export const deleteGroupController = asyncHandler(
   async (req: Request, res: Response) => {
     let result = await deleteStudentService(req.params.id);
     successResponseData(res, "Successfully Deleted", 200, result);
+  }
+);
+
+export const addStudentGroupController = asyncHandler(
+  async (req: Request, res: Response) => {
+    let result = await addStudentGroupService(req.params.id, req.body.students);
+    successResponseData(res, "Successfully Added", 201, result);
   }
 );
