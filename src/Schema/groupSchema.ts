@@ -22,6 +22,7 @@ const groupSchema: Schema = new Schema(
       {
         type: Schema.ObjectId,
         ref: "User",
+        unique: true,
       },
     ],
     startTime: {
