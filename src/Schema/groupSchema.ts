@@ -20,9 +20,18 @@ const groupSchema: Schema = new Schema(
     },
     students: [
       {
-        type: Schema.ObjectId,
-        ref: "User",
-        unique: true,
+        studentId: {
+          type: Schema.ObjectId,
+          ref: "Student",
+        },
+        // attendance: {
+        //   date: {
+        //     type: Date,
+        //   },
+        //   status: {
+        //     type: Boolean,
+        //   },
+        // },
       },
     ],
     startTime: {
