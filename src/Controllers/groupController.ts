@@ -59,7 +59,10 @@ export const deleteGroupController = asyncHandler(
 
 export const addStudentGroupController = asyncHandler(
   async (req: Request, res: Response) => {
-    let result = await addStudentGroupService(req.params.id, req.body.students);
+    const { students } = req.body;
+    const studentArray =
+      typeof students === "string" ? students.split(",") : students;
+    let result = await addStudentGroupService(req.params.id, studentArray);
     successResponseData(res, "Successfully Added", 201, result);
   }
 );
