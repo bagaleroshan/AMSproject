@@ -13,6 +13,7 @@ export let errorHandler = (
     const field = Object.keys(error.keyPattern)[0];
     message = `${field} already exists.`;
   }
+  console.log(error);
 
   res.status(statusCode).json({
     success: false,

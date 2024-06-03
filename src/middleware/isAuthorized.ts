@@ -3,7 +3,7 @@ import { AuthenticatedRequest } from "./isAuthenticated";
 import { NextFunction, Response } from "express";
 import { User } from "../Schema/model";
 
-let isAuthorized = (roles: string[]) =>
+const isAuthorized = (roles: string[]) =>
   asyncHandler(
     async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
       let _id = req._id;
