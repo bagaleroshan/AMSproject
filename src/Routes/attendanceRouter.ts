@@ -6,14 +6,15 @@ import {
   readAllAttendanceController,
   readSpecificAttendanceController,
 } from "../Controllers/attendanceController";
+import isAuthenticated from "../middleware/isAuthenticated";
 
 export const attendanceRouter = Router();
 
-attendanceRouter.route("/").post(
-  // isAuthenticated,
-  // isAuthorized(["admin", "superAdmin"]),
-  createAttendanceController
-);
+// attendanceRouter.route("/").post(
+//   // isAuthenticated,
+//   // isAuthorized(["admin", "superAdmin"]),
+//   createAttendanceController
+// );
 // attendanceRouter.route("/").post(validation(attendanceValidation), createAttendanceController);
 
 attendanceRouter.route("/").get(
@@ -24,10 +25,10 @@ attendanceRouter.route("/").get(
 
 attendanceRouter
   .route("/:id")
-  .get(
+  .post(
     // isAuthenticated,
     // isAuthorized(["admin", "superAdmin"]),
-    readSpecificAttendanceController
+    createAttendanceController
   )
   .delete(
     // isAuthenticated,

@@ -1,43 +1,36 @@
 import { Attendance, Group } from "../Schema/model";
 import { searchAndPaginate } from "../utils/searchAndPaginate";
-
 interface IAttendance {
+  date: Date;
   studentId: string;
   status: boolean;
 }
-
-interface IGroupData {
-  groupId: string;
-  attendances: IAttendance[];
-}
-
-export const createAttendanceService = async (data: IGroupData) => {
-  const { groupId, attendances } = data;
-
-  // Find the group by ID
-  const group = await Group.findById(groupId).populate("students.studentId");
+export const createAttendanceService = async (
+  groupId: string,
+  data: IAttendance[]
+) => {
+  const group = await Group.findById(groupId);
   if (!group) {
     throw new Error("Group not found");
   }
-
-  // Validate that all student IDs in the attendance request belong to the group
-  const validStudentIds = group.students.map(
-    (student: any) => student.studentId
-  );
-  const invalidStudents = attendances.filter(
-    (attendance) => !validStudentIds.includes(attendance.studentId.toString())
-  );
-  if (invalidStudents.length > 0) {
-    throw new Error("Student does not exist on this group.");
-  }
-  return await Attendance.create({
-    date: new Date().toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-    }),
+  let today = new Date().toLocaleString().split(",")[0];
+  const existingAttendances = await Attendance.find({
+    date: today,
     groupId,
-    attendances,
   });
+  if (existingAttendances.length > 0) {
+    throw new Error(`Attendance has already been taken today.`);
+  }
+  const attendanceData = data.map((student) => {
+    const date = student.date;
+    return {
+      date: date,
+      groupId,
+      studentId: student.studentId,
+      status: student.status,
+    };
+  });
+  return await Attendance.insertMany(attendanceData);
 };
 
 export const readAllAttendanceService = async (
