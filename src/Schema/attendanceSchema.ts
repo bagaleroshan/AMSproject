@@ -5,26 +5,22 @@ const attendanceSchema: Schema = new Schema(
   {
     date: {
       required: [true, "date is Required"],
-      type: String,
-      unique: true,
+      type: Date,
     },
     groupId: {
-      required: [true, "group is Required"],
+      required: [true, "groupId is Required"],
       type: Schema.ObjectId,
       ref: "Group",
     },
-    attendances: [
-      {
-        studentId: {
-          type: Schema.ObjectId,
-          ref: "Student",
-        },
-        status: {
-          type: Boolean,
-          default: false,
-        },
-      },
-    ],
+    studentId: {
+      required: [true, "studentId is Required"],
+      type: Schema.ObjectId,
+      ref: "Group",
+    },
+    status: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

@@ -6,9 +6,9 @@ const groupStudentValidation = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     let group = await Group.findById(req.params.id);
     if (!group) {
-      res.status(404).json({ message: "Group not found" });
-      return;
+      throw new Error("Group not Found.");
     }
+
     const students =
       typeof req.body.students === "string"
         ? req.body.students.split(",")

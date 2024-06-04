@@ -10,30 +10,9 @@ import {
 import successResponseData from "../helper/successResponse";
 import { myMongooseQuerys } from "../utils/mongooseQuery";
 
-function getFormattedDate() {
-  const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "June",
-    "July",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
-  const today = new Date();
-  const month = months[today.getMonth()];
-  const day = today.getDate();
-  return `${month}/${day}`;
-}
-
 export const createAttendanceController = asyncHandler(
   async (req: Request, res: Response) => {
-    let result = await createAttendanceService(req.body);
+    let result = await createAttendanceService(req.params.id, req.body);
     successResponseData(res, "Attendance Successfully created.", 201, result);
   }
 );

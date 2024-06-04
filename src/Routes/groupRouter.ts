@@ -8,9 +8,6 @@ import {
   readSpecificGroupController,
   updateGroupController,
 } from "../Controllers/groupController";
-import isAuthenticated from "../middleware/isAuthenticated";
-import isAuthorized from "../middleware/isAuthorized";
-import groupStudentValidation from "../middleware/groupStudentValidaton";
 
 export const groupRouter = Router();
 
@@ -27,9 +24,7 @@ groupRouter.route("/").get(
   readAllGroupController
 );
 
-groupRouter
-  .route("/add/:id")
-  .patch(groupStudentValidation, addStudentGroupController);
+groupRouter.route("/add/:id").patch(addStudentGroupController);
 
 groupRouter
   .route("/:id")

@@ -48,12 +48,15 @@ export const addStudentGroupService = async (
   id: string,
   students: string[]
 ) => {
-  return await Group.findByIdAndUpdate(
-    id,
-    { $addToSet: { students: { $each: students } } },
-    { new: true }
-  )
-    .populate("subject")
-    .populate("teacher")
-    .populate("students");
+  const group = await Group.findById(id);
+  if (!group) {
+    throw new Error("Group not found");
+  } else {
+    let outStudent = [...new Set([...group.students, ...students])];
+    return await Group.findByIdAndUpdate(
+      id,
+      { students: outStudent },
+      { new: true }
+    );
+  }
 };
