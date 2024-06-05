@@ -21,7 +21,6 @@ import {
 } from "../utils/constant";
 import { myMongooseQuerys } from "../utils/mongooseQuery";
 import { attachments, sendEmail } from "../utils/sendMail";
-import throwError from "../helper/throwError";
 
 export const createUserController = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {

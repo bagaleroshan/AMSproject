@@ -1,3 +1,4 @@
+type FieldType = "string" | "number";
 export const searchAndPaginate = async (
   Model: any,
   page: number,
@@ -59,7 +60,7 @@ export const searchAndPaginate = async (
 
   const countPipeline = [...aggregationPipeline, { $count: "count" }];
   const matchedDocs = await Model.aggregate(countPipeline).exec();
-  const totalMatchedDocs = matchedDocs[0]?.count || 0; // Handle case when matchedDocs is undefined
+  const totalMatchedDocs = matchedDocs[0]?.count || 0;
 
   const paginatedResult = await Model.aggregate(aggregationPipeline)
     .sort(sort)

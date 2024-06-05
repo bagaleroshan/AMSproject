@@ -7,6 +7,7 @@ import {
   readSpecificAttendanceController,
 } from "../Controllers/attendanceController";
 import isAuthenticated from "../middleware/isAuthenticated";
+import isAuthorized from "../middleware/isAuthorized";
 
 export const attendanceRouter = Router();
 
@@ -27,11 +28,11 @@ attendanceRouter
   .route("/:id")
   .post(
     // isAuthenticated,
-    // isAuthorized(["admin", "superAdmin"]),
+    // isAuthorized(["teacher", "admin", "superAdmin"]),
     createAttendanceController
   )
   .delete(
-    // isAuthenticated,
-    // isAuthorized(["admin", "superAdmin"]),
+    isAuthenticated,
+    isAuthorized(["admin", "superAdmin"]),
     deleteAttendanceController
   );
