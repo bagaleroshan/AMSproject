@@ -1,28 +1,38 @@
 import { Attendance, Group } from "../Schema/model";
 import { searchAndPaginate } from "../utils/searchAndPaginate";
+
 interface IAttendance {
-  date: Date;
   studentId: string;
   status: boolean;
 }
-export const createAttendanceService = async (
-  groupId: string,
-  data: IAttendance[]
-) => {
+interface IData {
+  date: string;
+  attendance: IAttendance[];
+}
+export const createAttendanceService = async (groupId: string, data: IData) => {
   const group = await Group.findById(groupId);
   if (!group) {
     throw new Error("Group not found");
   }
-  let today = new Date().toLocaleString().split(",")[0];
+  const startOfDay = new Date();
+  startOfDay.setHours(0, 0, 0, 0);
+
+  const endOfDay = new Date(startOfDay);
+  endOfDay.setDate(endOfDay.getDate() + 1);
+  endOfDay.setHours(0, 0, 0, 0);
+
   const existingAttendances = await Attendance.find({
-    date: today,
+    date: {
+      $gte: startOfDay,
+      $lt: endOfDay,
+    },
     groupId,
   });
   if (existingAttendances.length > 0) {
     throw new Error(`Attendance has already been taken today.`);
   }
-  const attendanceData = data.map((student) => {
-    const date = student.date;
+  const date = data.date;
+  const attendanceData = data.attendance.map((student) => {
     return {
       date: date,
       groupId,
@@ -41,7 +51,7 @@ export const readAllAttendanceService = async (
   query: string,
   find: {}
 ) => {
-  const attendanceFields = ["date", "groupId", "attendances"];
+  const attendanceFields = ["date", "groupId", "studentId"];
   const data = await searchAndPaginate(
     Attendance,
     page,

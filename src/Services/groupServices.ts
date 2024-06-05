@@ -32,6 +32,9 @@ export const readAllGroupService = async (
   );
   return data;
 };
+export const getGroupsByTeacherId = async (teacherId: any) => {
+  return await Group.find({ teacher: teacherId });
+};
 
 export let readSpecificGroupService = async (id: string) => {
   return await Group.findById(id);

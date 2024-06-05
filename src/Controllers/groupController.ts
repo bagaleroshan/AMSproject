@@ -4,6 +4,7 @@ import asyncHandler from "express-async-handler";
 import {
   addStudentGroupService,
   createGroupService,
+  getGroupsByTeacherId,
   readAllGroupService,
   readSpecificGroupService,
   updateGroupService,
@@ -11,6 +12,7 @@ import {
 import { deleteStudentService } from "../Services/studentService";
 import successResponseData from "../helper/successResponse";
 import { myMongooseQuerys } from "../utils/mongooseQuery";
+import { AuthenticatedRequest } from "../middleware/isAuthenticated";
 
 export const createGroupController = asyncHandler(
   async (req: Request, res: Response) => {
@@ -32,6 +34,13 @@ export const readAllGroupController = asyncHandler(
       query,
       find
     );
+    successResponseData(res, "Successfully Read All Groups", 200, result);
+  }
+);
+export const readAllRelatedGroupController = asyncHandler(
+  async (req: AuthenticatedRequest, res: Response) => {
+    const teacherId = req._id;
+    const result = await getGroupsByTeacherId(teacherId);
     successResponseData(res, "Successfully Read All Groups", 200, result);
   }
 );

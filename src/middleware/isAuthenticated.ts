@@ -16,7 +16,6 @@ const isAuthenticated = asyncHandler(
     let token = tokenString.split(" ")[1];
     let user: any = await jwt.verify(token, secretKey);
     req._id = user._id;
-
     next();
   }
 );
