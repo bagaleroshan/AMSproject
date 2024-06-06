@@ -3,6 +3,7 @@ import mongoosePaginate from "mongoose-paginate-v2";
 
 const groupSchema: Schema = new Schema(
   {
+    
     subject: {
       required: [true, "subject is Required"],
       type: Schema.ObjectId,
@@ -20,8 +21,7 @@ const groupSchema: Schema = new Schema(
     },
     students: [
       {
-        type: Schema.ObjectId,
-        ref: "User",
+        type: String,
       },
     ],
     startTime: {

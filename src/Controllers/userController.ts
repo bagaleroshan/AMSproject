@@ -21,7 +21,6 @@ import {
 } from "../utils/constant";
 import { myMongooseQuerys } from "../utils/mongooseQuery";
 import { attachments, sendEmail } from "../utils/sendMail";
-import throwError from "../helper/throwError";
 
 export const createUserController = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
@@ -130,7 +129,8 @@ export const updatePassword = asyncHandler(
       );
       successResponseData(res, "Password updated successfully", 200, result);
     } else {
-      throwError("Password did not match");
+      let error = new Error("Old Password did not match.");
+      throw error;
     }
   }
 );

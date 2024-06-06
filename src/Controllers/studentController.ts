@@ -32,8 +32,17 @@ export const createStudentController = asyncHandler(
 
 export const readAllStudentController = asyncHandler(
   async (req: Request, res: Response) => {
-    const { page, limit, sort, select,query, find } = myMongooseQuerys(req.query);
-    let result = await readAllStudentService(page, limit, sort, select,query, find);
+    const { page, limit, sort, select, query, find } = myMongooseQuerys(
+      req.query
+    );
+    let result = await readAllStudentService(
+      page,
+      limit,
+      sort,
+      select,
+      query,
+      find
+    );
     successResponseData(res, "Successfully Read All Student", 200, result);
   }
 );

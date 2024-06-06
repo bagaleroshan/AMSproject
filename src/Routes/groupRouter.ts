@@ -1,9 +1,11 @@
 import { Router } from "express";
 
 import {
+  addStudentGroupController,
   createGroupController,
   deleteGroupController,
   readAllGroupController,
+  readAllRelatedGroupController,
   readSpecificGroupController,
   updateGroupController,
 } from "../Controllers/groupController";
@@ -24,20 +26,25 @@ groupRouter.route("/").get(
   // isAuthorized(["admin", "superAdmin"]),
   readAllGroupController
 );
+
+groupRouter.route("/addStudent/:id").patch(addStudentGroupController);
+groupRouter
+  .route("/teacher")
+  .get(isAuthenticated, readAllRelatedGroupController);
 groupRouter
   .route("/:id")
   .get(
-    // isAuthenticated,
-    // isAuthorized(["admin", "superAdmin"]),
+    isAuthenticated,
+    isAuthorized(["admin", "superAdmin"]),
     readSpecificGroupController
   )
   .patch(
-    // isAuthenticated,
-    // isAuthorized(["admin", "superAdmin"]),
+    isAuthenticated,
+    isAuthorized(["admin", "superAdmin"]),
     updateGroupController
   )
   .delete(
-    // isAuthenticated,
-    // isAuthorized(["admin", "superAdmin"]),
+    isAuthenticated,
+    isAuthorized(["admin", "superAdmin"]),
     deleteGroupController
   );

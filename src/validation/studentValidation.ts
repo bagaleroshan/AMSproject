@@ -25,7 +25,7 @@ export const studentValidation = Joi.object()
         if (value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
           return true;
         }
-        return msg.message("Please provide a valid email.");
+        return msg.message("Invalid Email.");
       })
       .required()
       .lowercase(),

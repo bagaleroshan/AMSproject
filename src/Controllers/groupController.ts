@@ -2,7 +2,9 @@ import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 
 import {
+  addStudentGroupService,
   createGroupService,
+  getGroupsByTeacherId,
   readAllGroupService,
   readSpecificGroupService,
   updateGroupService,
@@ -10,6 +12,7 @@ import {
 import { deleteStudentService } from "../Services/studentService";
 import successResponseData from "../helper/successResponse";
 import { myMongooseQuerys } from "../utils/mongooseQuery";
+import { AuthenticatedRequest } from "../middleware/isAuthenticated";
 
 export const createGroupController = asyncHandler(
   async (req: Request, res: Response) => {
@@ -34,6 +37,13 @@ export const readAllGroupController = asyncHandler(
     successResponseData(res, "Successfully Read All Groups", 200, result);
   }
 );
+export const readAllRelatedGroupController = asyncHandler(
+  async (req: AuthenticatedRequest, res: Response) => {
+    const teacherId = req._id;
+    const result = await getGroupsByTeacherId(teacherId);
+    successResponseData(res, "Successfully Read All Groups", 200, result);
+  }
+);
 
 export const readSpecificGroupController = asyncHandler(
   async (req: Request, res: Response) => {
@@ -53,5 +63,12 @@ export const deleteGroupController = asyncHandler(
   async (req: Request, res: Response) => {
     let result = await deleteStudentService(req.params.id);
     successResponseData(res, "Successfully Deleted", 200, result);
+  }
+);
+
+export const addStudentGroupController = asyncHandler(
+  async (req: Request, res: Response) => {
+    let result = await addStudentGroupService(req.params.id, req.body.students);
+    successResponseData(res, "Successfully Added", 201, result);
   }
 );

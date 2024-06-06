@@ -14,12 +14,12 @@ export const studentSchema = new Schema(
       required: [true, "email field is required"],
       trim: true,
     },
-    attentance: [
-      {
-        date: String,
-        isPresent: Boolean,
-      },
-    ],
+    // attentance: [
+    //   {
+    //     date: String,
+    //     isPresent: Boolean,
+    //   },
+    // ],
     phoneNumber: {
       type: String,
       required: [true, "phoneNumber field is required"],
