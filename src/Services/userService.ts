@@ -12,7 +12,12 @@ export const readAllUserService = async (
   query: string,
   find: {}
 ) => {
-  const userFields = ["fullName", "email", "phoneNumber", "role"];
+  const userFields = [
+    { field: "fullName", type: "string" },
+    { field: "email", type: "string" },
+    { field: "phoneNumber", type: "string" },
+    { field: "role", type: "string" },
+  ];
   const data = await searchAndPaginate(
     User,
     page,

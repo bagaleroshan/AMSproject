@@ -5,7 +5,7 @@ import {
   createGroupController,
   deleteGroupController,
   readAllGroupController,
-  readAllRelatedGroupController,
+  readRelatedGroupController,
   readSpecificGroupController,
   updateGroupController,
 } from "../Controllers/groupController";
@@ -28,9 +28,7 @@ groupRouter.route("/").get(
 );
 
 groupRouter.route("/addStudent/:id").patch(addStudentGroupController);
-groupRouter
-  .route("/teacher")
-  .get(isAuthenticated, readAllRelatedGroupController);
+groupRouter.route("/teacher").get(isAuthenticated, readRelatedGroupController);
 groupRouter
   .route("/:id")
   .get(

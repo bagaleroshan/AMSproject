@@ -51,7 +51,11 @@ export const readAllAttendanceService = async (
   query: string,
   find: {}
 ) => {
-  const attendanceFields = ["date", "groupId", "studentId"];
+  const attendanceFields = [
+    { field: "date", type: "string" },
+    { field: "groupId", type: "string" },
+    { field: "studentId", type: "string" },
+  ];
   const data = await searchAndPaginate(
     Attendance,
     page,
