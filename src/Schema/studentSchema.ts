@@ -20,11 +20,6 @@ export const studentSchema = new Schema(
         isPresent: Boolean,
       },
     ],
-    course: {
-      type: String,
-      required: [true, "course field is required"],
-      trim: true,
-    },
     phoneNumber: {
       type: String,
       required: [true, "phoneNumber field is required"],

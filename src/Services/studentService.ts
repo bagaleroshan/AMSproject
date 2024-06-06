@@ -1,4 +1,5 @@
 import { Student } from "../Schema/model";
+import { searchAndPaginate } from "../utils/searchAndPaginate";
 
 let createStudentService = async (data: {}) => {
   return await Student.create(data);
@@ -7,38 +8,25 @@ interface Attendance {
   date: string;
   isPresent: boolean;
 }
-let readAllStudentService = async (
+let readAllStudentService =  async (
   page: number,
   limit: number,
   sort: string,
   select: string,
+  query: string,
   find: {}
 ) => {
-  const options = {
+  const studentFields = ["fullName", "email", "phoneNumber"];
+  const data = await searchAndPaginate(
+    Student,
     page,
     limit,
     sort,
     select,
-  };
-  const result = await Student.paginate(find, options);
-  const {
-    docs,
-    totalDocs,
-    totalPages,
-    page: currentPage,
-    hasPrevPage,
-    hasNextPage,
-  } = result;
-  const data = {
-    results: docs,
-    totalDataInAPage: docs.length,
-    totalDataInWholePage: totalDocs,
-    currentPage: currentPage,
-    totalPages: totalPages,
-    hasPreviousPage: hasPrevPage,
-    hasNextPage: hasNextPage,
-  };
-
+    query,
+    find,
+    studentFields
+  );
   return data;
 };
 let readSpecificStudentService = async (id: string) => {

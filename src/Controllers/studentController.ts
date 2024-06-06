@@ -20,10 +20,10 @@ interface Attendance {
 export const createStudentController = asyncHandler(
   async (req: Request, res: Response) => {
     let result = await createStudentService(req.body);
-    await emailSender(req.body.email);
+   
     successResponseData(
       res,
-      "Successfully created Student and Verification email has been sent.",
+      "Successfully created Student.",
       201,
       result
     );
@@ -32,8 +32,8 @@ export const createStudentController = asyncHandler(
 
 export const readAllStudentController = asyncHandler(
   async (req: Request, res: Response) => {
-    const { page, limit, sort, select, find } = myMongooseQuerys(req.query);
-    let result = await readAllStudentService(page, limit, sort, select, find);
+    const { page, limit, sort, select,query, find } = myMongooseQuerys(req.query);
+    let result = await readAllStudentService(page, limit, sort, select,query, find);
     successResponseData(res, "Successfully Read All Student", 200, result);
   }
 );
