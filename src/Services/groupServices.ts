@@ -14,11 +14,11 @@ export const readAllGroupService = async (
   find: {}
 ) => {
   const groupFields = [
-    "teacher",
-    "subject",
-    "groupName",
-    "startTime",
-    "endTime",
+    { field: "teacher", type: "string" },
+    { field: "subject", type: "string" },
+    { field: "groupName", type: "string" },
+    { field: "startTime", type: "string" },
+    { field: "endTime", type: "string" },
   ];
   const data = await searchAndPaginate(
     Group,
@@ -32,8 +32,34 @@ export const readAllGroupService = async (
   );
   return data;
 };
-export const getGroupsByTeacherId = async (teacherId: any) => {
-  return await Group.find({ teacher: teacherId });
+
+export const readGroupsByTeacherId = async (
+  page: number,
+  limit: number,
+  sort: string,
+  select: string,
+  query: string,
+  find: {}
+) => {
+  const groupFields = [
+    { field: "teacher", type: "string" },
+    { field: "subject", type: "string" },
+    { field: "groupName", type: "string" },
+    { field: "startTime", type: "string" },
+    { field: "endTime", type: "string" },
+  ];
+  console.log(find);
+  const data = await searchAndPaginate(
+    Group,
+    page,
+    limit,
+    sort,
+    select,
+    query,
+    find,
+    groupFields
+  );
+  return data;
 };
 
 export let readSpecificGroupService = async (id: string) => {

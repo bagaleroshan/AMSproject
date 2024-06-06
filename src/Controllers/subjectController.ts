@@ -3,11 +3,11 @@ import asyncHandler from "express-async-handler";
 
 import {
   createSubjectService,
+  deleteSubjectService,
   readAllSubjectService,
   readSpecificSubjectService,
   updateSubjectService,
 } from "../Services/subjectServices";
-import { deleteStudentService } from "../Services/studentService";
 import successResponseData from "../helper/successResponse";
 import { myMongooseQuerys } from "../utils/mongooseQuery";
 
@@ -51,7 +51,7 @@ export const updateSubjectController = asyncHandler(
 
 export const deleteSubjectController = asyncHandler(
   async (req: Request, res: Response) => {
-    let result = await deleteStudentService(req.params.id);
+    let result = await deleteSubjectService(req.params.id);
     successResponseData(res, "Successfully Deleted", 200, result);
   }
 );
