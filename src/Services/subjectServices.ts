@@ -13,7 +13,11 @@ export const readAllSubjectService = async (
   query: string,
   find: {}
 ) => {
-  const subjectFields = ["subjectName", "subjectCode", "numberOfClasses"];
+  const subjectFields = [
+    { field: "subjectName", type: "string" },
+    { field: "subjectCode", type: "string" },
+    { field: "numberOfClasses", type: "number" }
+  ];
   const data = await searchAndPaginate(
     Subject,
     page,

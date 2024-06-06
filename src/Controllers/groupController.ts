@@ -1,19 +1,23 @@
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
-
+import { Types } from "mongoose";
 import {
   addStudentGroupService,
   createGroupService,
-  getGroupsByTeacherId,
   readAllGroupService,
+  readGroupsByTeacherId,
   readSpecificGroupService,
   updateGroupService,
 } from "../Services/groupServices";
 import { deleteStudentService } from "../Services/studentService";
 import successResponseData from "../helper/successResponse";
-import { myMongooseQuerys } from "../utils/mongooseQuery";
 import { AuthenticatedRequest } from "../middleware/isAuthenticated";
+import { myMongooseQuerys } from "../utils/mongooseQuery";
 
+interface FindQuery {
+  teacher?: Types.ObjectId;
+  [key: string]: any;
+}
 export const createGroupController = asyncHandler(
   async (req: Request, res: Response) => {
     let result = await createGroupService(req.body);
@@ -37,11 +41,26 @@ export const readAllGroupController = asyncHandler(
     successResponseData(res, "Successfully Read All Groups", 200, result);
   }
 );
-export const readAllRelatedGroupController = asyncHandler(
+
+export const readRelatedGroupController = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
+    const { page, limit, sort, select, query, find } = myMongooseQuerys(
+      req.query
+    );
+    const { ObjectId } = Types;
     const teacherId = req._id;
-    const result = await getGroupsByTeacherId(teacherId);
-    successResponseData(res, "Successfully Read All Groups", 200, result);
+    const teacherObjectId =
+      typeof teacherId === "string" ? new ObjectId(teacherId) : teacherId;
+    const findQuery: FindQuery = { ...find, teacher: teacherObjectId };
+    let result = await readGroupsByTeacherId(
+      page,
+      limit,
+      sort,
+      select,
+      query,
+      findQuery
+    );
+    successResponseData(res, "Read Group Successfull.", 200, result);
   }
 );
 

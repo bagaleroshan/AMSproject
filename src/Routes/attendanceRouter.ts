@@ -27,8 +27,8 @@ attendanceRouter.route("/").get(
 attendanceRouter
   .route("/:id")
   .post(
-    // isAuthenticated,
-    // isAuthorized(["teacher", "admin", "superAdmin"]),
+    isAuthenticated,
+    // isAuthorized(["teacher"]),
     createAttendanceController
   )
   .delete(

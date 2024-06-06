@@ -1,4 +1,3 @@
-type FieldType = "string" | "number";
 export const searchAndPaginate = async (
   Model: any,
   page: number,
@@ -7,23 +6,24 @@ export const searchAndPaginate = async (
   select: string,
   query: string,
   find: {},
-  fields: string[]
+  fields: { field: string; type: string }[]
 ) => {
   const aggregationPipeline = [];
   let projection: { [key: string]: any } = {};
-  if (fields && Array.isArray(fields)) {
-    fields.forEach((field) => {
-      projection[field] = 1;
-    });
-  }
 
+  fields.forEach(({ field }) => {
+    projection[field] = 1;
+  });
   let matchStage = { $match: find };
   if (query) {
     matchStage = {
       $match: {
         ...find,
-        $or: fields.map((field) => ({
-          [field]: { $regex: query, $options: "i" },
+        $or: fields.map(({ field, type }) => ({
+          [field]:
+            type === "string"
+              ? { $regex: query, $options: "i" }
+              : Number(query),
         })),
       },
     };
@@ -62,8 +62,8 @@ export const searchAndPaginate = async (
   const matchedDocs = await Model.aggregate(countPipeline).exec();
   const totalMatchedDocs = matchedDocs[0]?.count || 0;
 
+  console.log("Above final Result:", aggregationPipeline);
   const paginatedResult = await Model.aggregate(aggregationPipeline)
-    .sort(sort)
     .skip((page - 1) * limit)
     .limit(limit)
     .exec();

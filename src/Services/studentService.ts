@@ -16,7 +16,11 @@ let readAllStudentService =  async (
   query: string,
   find: {}
 ) => {
-  const studentFields = ["fullName", "email", "phoneNumber"];
+  const studentFields = [
+    { field: "fullName", type: "string" },
+    { field: "email", type: "string" },
+    { field: "phoneNumber", type: "string" },
+  ];
   const data = await searchAndPaginate(
     Student,
     page,
