@@ -5,12 +5,12 @@ import {
   createGroupController,
   deleteGroupController,
   readAllGroupController,
+  readRelatedGroupController,
   readSpecificGroupController,
   updateGroupController,
 } from "../Controllers/groupController";
 import isAuthenticated from "../middleware/isAuthenticated";
 import isAuthorized from "../middleware/isAuthorized";
-import groupStudentValidation from "../middleware/groupStudentValidaton";
 
 export const groupRouter = Router();
 
@@ -27,24 +27,22 @@ groupRouter.route("/").get(
   readAllGroupController
 );
 
-groupRouter
-  .route("/add/:id")
-  .patch(groupStudentValidation, addStudentGroupController);
-
+groupRouter.route("/addStudent/:id").patch(addStudentGroupController);
+groupRouter.route("/teacher").get(isAuthenticated, readRelatedGroupController);
 groupRouter
   .route("/:id")
   .get(
-    // isAuthenticated,
-    // isAuthorized(["admin", "superAdmin"]),
+    isAuthenticated,
+    isAuthorized(["admin", "superAdmin"]),
     readSpecificGroupController
   )
   .patch(
-    // isAuthenticated,
-    // isAuthorized(["admin", "superAdmin"]),
+    isAuthenticated,
+    isAuthorized(["admin", "superAdmin"]),
     updateGroupController
   )
   .delete(
-    // isAuthenticated,
-    // isAuthorized(["admin", "superAdmin"]),
+    isAuthenticated,
+    isAuthorized(["admin", "superAdmin"]),
     deleteGroupController
   );

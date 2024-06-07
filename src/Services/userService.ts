@@ -12,7 +12,12 @@ export const readAllUserService = async (
   query: string,
   find: {}
 ) => {
-  const userFields = ["fullName", "email", "phoneNumber", "role"];
+  const userFields = [
+    { field: "fullName", type: "string" },
+    { field: "email", type: "string" },
+    { field: "phoneNumber", type: "string" },
+    { field: "role", type: "string" },
+  ];
   const data = await searchAndPaginate(
     User,
     page,
@@ -26,40 +31,6 @@ export const readAllUserService = async (
   return data;
 };
 
-// let readAllUserService = async (
-//   page: number,
-//   limit: number,
-//   sort: string,
-//   select: string,
-//   find: {}
-// ) => {
-//   const options = {
-//     page,
-//     limit,
-//     sort,
-//     select,
-//   };
-//   const result = await User.paginate(find, options);
-//   const {
-//     docs,
-//     totalDocs,
-//     totalPages,
-//     page: currentPage,
-//     hasPrevPage,
-//     hasNextPage,
-//   } = result;
-//   const data = {
-//     results: docs,
-//     totalDataInAPage: docs.length,
-//     totalDataInWholePage: totalDocs,
-//     currentPage: currentPage,
-//     totalPages: totalPages,
-//     hasPreviousPage: hasPrevPage,
-//     hasNextPage: hasNextPage,
-//   };
-
-//   return data;
-// };
 export let readSpecificUserService = async (id: string) => {
   return await User.findById(id);
 };

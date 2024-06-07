@@ -20,9 +20,7 @@ const groupSchema: Schema = new Schema(
     },
     students: [
       {
-        type: Schema.ObjectId,
-        ref: "User",
-        unique: true,
+        type: String,
       },
     ],
     startTime: {

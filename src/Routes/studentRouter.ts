@@ -7,7 +7,7 @@ import {
   updateStudentController,
 } from "../Controllers/studentController";
 import { studentValidation } from "../validation/studentValidation";
-import { validateQueryParams, validation } from "../middleware/validation";
+import { validation } from "../middleware/validation";
 
 export const studentRouter = Router();
 export const numRouter = Router();
@@ -15,7 +15,7 @@ export const numRouter = Router();
 studentRouter
   .route("/")
   .post(validation(studentValidation), createStudentController)
-  .get(validateQueryParams(['apple']),readAllStudentController);
+  .get(readAllStudentController);
 
 studentRouter
   .route("/:id")

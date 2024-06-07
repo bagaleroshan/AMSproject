@@ -9,17 +9,16 @@ const successResponseData = (
   result: any,
   token?: string
 ) => {
-  const hideFields = (data: any) => {
-    const { password, createdAt, updatedAt,_id, ...rest } = data;
-    return rest;
-  };
   mongoose.connect(dbUrl as string);
-  mongoose.connection.db.collection('subjects').updateMany({}, [{ $set: { id: "$_id" } }])
- mongoose.connection.db.collection('users').updateMany({}, [{ $set: { id: "$_id" } }])
- mongoose.connection.db.collection('students').updateMany({}, [{ $set: { id: "$_id" } }])
-  const filteredResult = result._doc
-    ? hideFields(result._doc)
-    : hideFields(result);
+  mongoose.connection.db
+    .collection("subjects")
+    .updateMany({}, [{ $set: { id: "$_id" } }]);
+  mongoose.connection.db
+    .collection("users")
+    .updateMany({}, [{ $set: { id: "$_id" } }]);
+  mongoose.connection.db
+    .collection("students")
+    .updateMany({}, [{ $set: { id: "$_id" } }]);
   if (token) {
     return res.status(statusCode).json({
       success: true,

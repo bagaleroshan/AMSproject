@@ -3,6 +3,7 @@ import studentSchema from "./studentSchema";
 import { userSchema } from "./userSchema";
 import subjectSchema from "./subjectSchema";
 import groupSchema from "./groupSchema";
+import attendanceSchema from "./attendanceSchema";
 interface iSubject extends Document {
   subjectName: string;
   subjectCode: string;
@@ -48,5 +49,14 @@ export const Group: any = model<
     ) => Promise<any>;
   }
 >("Group", groupSchema);
+export const Attendance: any = model<
+  typeof Attendance & {
+    paginate: (
+      filter: any,
+      options: any,
+      callback?: (err: any, result: any) => void
+    ) => Promise<any>;
+  }
+>("Attendance", attendanceSchema);
 
 // export const Subject = model<iSubject>("Subject", subjectSchema);

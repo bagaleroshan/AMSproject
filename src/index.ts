@@ -11,6 +11,7 @@ import swaggerUi from "swagger-ui-express";
 import * as YAML from "yamljs";
 import path from "path";
 import { groupRouter } from "./Routes/groupRouter";
+import { attendanceRouter } from "./Routes/attendanceRouter";
 
 const app: Express = express();
 connectToMongo();
@@ -29,15 +30,10 @@ app.use("/students", studentRouter);
 app.use("/users", userRouter);
 app.use("/subjects", subjectRouter);
 app.use("/groups", groupRouter);
+app.use("/attendances", attendanceRouter);
 
 app.use(errorHandler);
-
-
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
 });
-
-
-
-
