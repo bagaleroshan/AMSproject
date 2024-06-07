@@ -14,18 +14,3 @@ export const validation = (validationSchema: any) => {
     }
   };
 };
-
-
-export const validateQueryParams = (allowedParams: string[]) => {
-  return (req: Request, res: Response, next: NextFunction) => {
-    const queryParams = Object.keys(req.query);
-    const invalidParams = queryParams.filter(param => !allowedParams.includes(param));
-
-    if (invalidParams.length > 0) {
-      return res.status(400).json({ error: `Invalid query parameters: ${invalidParams.join(', ')}` });
-    }
-    next();
-  };
-};
-
-// Define allowed query parameters
