@@ -7,20 +7,13 @@ import {
   readSpecificStudentService,
   updateStudentService,
 } from "../Services/studentService";
-import { emailSender } from "../helper/emailSender";
 import successResponseData from "../helper/successResponse";
 import { myMongooseQuerys } from "../utils/mongooseQuery";
 
 export const createStudentController = asyncHandler(
   async (req: Request, res: Response) => {
     let result = await createStudentService(req.body);
-    await emailSender(req.body.email);
-    successResponseData(
-      res,
-      "Successfully created Student and Verification email has been sent.",
-      201,
-      result
-    );
+    successResponseData(res, "Student created Successfully.", 201, result);
   }
 );
 

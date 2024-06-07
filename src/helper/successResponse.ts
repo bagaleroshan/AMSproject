@@ -19,6 +19,12 @@ const successResponseData = (
   mongoose.connection.db
     .collection("students")
     .updateMany({}, [{ $set: { id: "$_id" } }]);
+  mongoose.connection.db
+    .collection("groups")
+    .updateMany({}, [{ $set: { id: "$_id" } }]);
+  mongoose.connection.db
+    .collection("attendances")
+    .updateMany({}, [{ $set: { id: "$_id" } }]);
   if (token) {
     return res.status(statusCode).json({
       success: true,

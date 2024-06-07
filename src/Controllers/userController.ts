@@ -114,6 +114,14 @@ export const updatePassword = asyncHandler(
       data.password
     );
     if (isValidPassword) {
+      let isPasswordSame = await bcrypt.compare(
+        req.body.newPassword,
+        data.password
+      );
+      if (isPasswordSame) {
+        let err = new Error("Old password and New password are same.");
+        throw err;
+      }
       let newHashPassword = await bcrypt.hash(req.body.newPassword, 10);
 
       let result = await User.findByIdAndUpdate(
@@ -148,7 +156,7 @@ export const forgotPassword = asyncHandler(
       let token = await jwt.sign(infoObj, secretKey, expiryInfo);
 
       await sendEmail({
-        from: "jenishona",
+        from: `${mailProvider} <${mailUser}>`,
         to: email,
         subject: "Forgot Password?",
         html: `
@@ -157,8 +165,10 @@ export const forgotPassword = asyncHandler(
         ${clientUrl}/reset-password?token=${token}
         </a><br/>
         <h4>If you did not request a password reset, no further action is required.</h4><br/>
+        <br/>
+        <img src="cid:unique_image_cid" width= "100" height = "100">
         `,
-        attachments,
+        attachments: attachments,
       });
       successResponseData(
         res,
@@ -166,6 +176,9 @@ export const forgotPassword = asyncHandler(
         201,
         result
       );
+    } else {
+      let err = new Error("Email did not match with our database.");
+      throw err;
     }
   }
 );
