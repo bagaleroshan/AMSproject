@@ -9,11 +9,20 @@ interface IData {
   date: string;
   attendance: IAttendance[];
 }
-export const createAttendanceService = async (groupId: string, data: IData) => {
+export const createAttendanceService = async (
+  groupId: string,
+  teacherId: any,
+  data: IData
+) => {
   const group = await Group.findById(groupId);
   if (!group) {
     throw new Error("Group not found");
   }
+  console.log(group.teacher +''+teacherId)
+  if (group.teacher!=teacherId) {
+    throw new Error("You are not authorized to take attendance for this group.");
+  }
+// fix
   const startOfDay = new Date();
   startOfDay.setHours(0, 0, 0, 0);
 

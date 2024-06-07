@@ -34,6 +34,12 @@ app.use("/attendances", attendanceRouter);
 
 app.use(errorHandler);
 
+
+
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
 });
+
+
+
+

@@ -9,10 +9,17 @@ import {
 } from "../Services/attendanceServices";
 import successResponseData from "../helper/successResponse";
 import { myMongooseQuerys } from "../utils/mongooseQuery";
+import { AuthenticatedRequest } from "../middleware/isAuthenticated";
 
 export const createAttendanceController = asyncHandler(
-  async (req: Request, res: Response) => {
-    let result = await createAttendanceService(req.params.id, req.body);
+  async (req: AuthenticatedRequest, res: Response) => {
+    let teacherId = req._id;
+    console.log( req._id)
+    let result = await createAttendanceService(
+      req.params.id,
+      teacherId,
+      req.body
+    );
     successResponseData(res, "Attendance Successfully created.", 201, result);
   }
 );

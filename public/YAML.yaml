@@ -5,6 +5,7 @@ info:
   version: 1.0.0
 servers:
   - url: http://localhost:8000
+
 paths:
   # /students:
   #   post:
@@ -126,6 +127,122 @@ paths:
   #     responses:
   #       "200":
   #         description: Student deleted successfully
+  /users/reset-password:
+    patch:
+      summary: reset password 
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/userResetPasswordInput"
+      responses:
+        "200":
+          description: User password updated successfully
+  /users/forgot-password:
+    post:
+      summary: forgot password 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/userForgotPasswordInput"
+      responses:
+        "200":
+          description: User password updated successfully
+  /users/update-password:
+    patch:
+      summary: update password 
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/userPasswordUpdateInput"
+      responses:
+        "200":
+          description: User password updated successfully
+  /users/update-profile:
+    patch:
+      summary: update user
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/userUpdateInput"
+      responses:
+        "200":
+          description: User updated successfully
+  /users:
+    post:
+      summary: create user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/userInput"
+      responses:
+        "200":
+          description: User created successfully
+    get:
+      summary: Get all users
+      responses:
+        "200":
+          description: List of users retrieved successfully
+  /users/login:
+    post:
+      summary: login user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/loginInput"
+      responses:
+        "200":
+          description: User login successfully
+  /users/my-profile:
+    get:
+      summary: Example Endpoint
+      description: Retrieves example data.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: A successful response
+  /students:
+    get:
+      summary: Example Endpoint
+      description: Retrieves example data.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: A successful response
+    post:
+      summary: create subject
+      description: Retrieves example data.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StudentInput"
+      responses:
+        "200":
+          description: Student created successfully
+      # Define security schemes
   /subjects:
     post:
       summary: create subject
@@ -186,7 +303,71 @@ paths:
       responses:
         "200":
           description: Student deleted successfully
+  /file/single:
+    post:
+      summary: Uploads a file
+      description: Uploads a file to the server.
+      parameters:
+        - name: location
+          in: query
+          required: false
+          description: location uploading the file
+          schema:
+            type: string
+        - name: validExtension
+          in: query
+          required: false
+          description: Type of upload
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                document:
+                  type: string
+                  format: binary
+                  description: The file to upload
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: File uploaded successfully
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Invalid file format
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: An error occurred while processing the file
 components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     # StudentInput:
     #   type: object
@@ -218,6 +399,15 @@ components:
     #     phoneNumber:
     #       type: number
     #       description: the contact info of student
+    loginInput:
+      type: object
+      properties:
+        email:
+          type: string
+          description: The emial of the user
+        password:
+          type: string
+          description: The password of the user
     SubjectInput:
       type: object
       properties:
@@ -229,6 +419,36 @@ components:
           description: The age of the student
         numberOfClasses:
           type: number
+          description: The grade of the student
+    SubjectInput:
+      type: object
+      properties:
+        subjectName:
+          type: string
+          description: The name of the student
+        subjectCode:
+          type: string
+          description: The age of the student
+        numberOfClasses:
+          type: number
+          description: The grade of the student
+    userInput:
+      type: object
+      properties:
+        fullName:
+          type: string
+          description: The name of the student
+        email:
+          type: string
+          description: The age of the student
+        password:
+          type: string
+          description: The age of the student
+        phoneNumber:
+          type: string
+          description: The age of the student
+        role:
+          type: string
           description: The grade of the student
     SubjectUpdateInput:
       type: object
@@ -242,3 +462,57 @@ components:
         numberOfClasses:
           type: number
           description: The grade of the student
+    userUpdateInput:
+      type: object
+      properties:
+        fullName:
+          type: string
+          description: The name of the user
+        email:
+          type: string
+          description: The email of the user
+        phoneNumber:
+          type: string
+          description: The ph no of the phone
+        role:
+          type: string
+          description: The role of the user
+    userPasswordUpdateInput:
+      type: object
+      properties:
+        oldPassword:
+          type: string
+          description: The oldPassword of the user
+        newPassword:
+          type: string
+          description: The newPassword of the user
+    userForgotPasswordInput:
+      type: object
+      properties:
+        email:
+          type: string
+          description: The email of the user
+    userForgotPasswordInput:
+      type: object
+      properties:
+        password:
+          type: string
+          description: The password of the user
+    StudentInput:
+      type: object
+      properties:
+        fullName:
+          type: string
+          description: The fullName of the user
+        course:
+          type: string
+          description: The course of the user
+        phoneNumber:
+          type: string
+          description: The phoneNumber of the user
+        email:
+          type: string
+          description: The email of the user
+     
+      
+    
