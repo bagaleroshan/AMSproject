@@ -31,27 +31,27 @@ export const readAllSubjectController = asyncHandler(
       query,
       find
     );
-    successResponseData(res, "Successfully Read All Subjects", 200, result);
+    successResponseData(res, "Successfully Read All Subjects.", 200, result);
   }
 );
 
 export const readSpecificSubjectController = asyncHandler(
   async (req: Request, res: Response) => {
     let result = await readSpecificSubjectService(req.params.id);
-    successResponseData(res, "Successfully Read", 200, result);
+    successResponseData(res, "Successfully Read.", 200, result);
   }
 );
 
 export const updateSubjectController = asyncHandler(
   async (req: Request, res: Response) => {
     let result = await updateSubjectService(req.params.id, req.body);
-    successResponseData(res, "Successfully Updated", 201, result);
+    successResponseData(res, "Successfully Updated.", 201, result);
   }
 );
 
 export const deleteSubjectController = asyncHandler(
   async (req: Request, res: Response) => {
     let result = await deleteSubjectService(req.params.id);
-    successResponseData(res, "Successfully Deleted", 200, result);
+    successResponseData(res, "Successfully Deleted.", 200, result);
   }
 );

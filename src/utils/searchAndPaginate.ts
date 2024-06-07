@@ -62,7 +62,6 @@ export const searchAndPaginate = async (
   const matchedDocs = await Model.aggregate(countPipeline).exec();
   const totalMatchedDocs = matchedDocs[0]?.count || 0;
 
-  console.log("Above final Result:", aggregationPipeline);
   const paginatedResult = await Model.aggregate(aggregationPipeline)
     .skip((page - 1) * limit)
     .limit(limit)

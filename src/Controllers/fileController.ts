@@ -8,46 +8,22 @@ export let singleFileController = async (req: Request, res: Response) => {
       res.json({
         success: true,
         result: link,
-        message: "file uploaded succesfully",
+        message: "File uploaded succesfully.",
       });
     } else if (req.file) {
       link = `http://localhost:8000/${req.file.filename}`;
       res.json({
         success: true,
         result: link,
-        message: "file uploaded succesfully",
+        message: "File uploaded succesfully.",
       });
     } else {
       res.json({
         success: false,
 
-        message: "Unsucessful",
+        message: "Unsuccessfull.",
       });
     }
-    // let dir: any = req.file?.destination.split("/");
-    // console.log(dir);
-
-    // if (req.file && dir[2]) {
-    //   let link = `http://localhost:8000/${dir[2]}/${req.file.filename}`;
-    //   res.json({
-    //     success: true,
-    //     result: link,
-    //     message: "file uploaded succesfully",
-    //   });
-    // } else if (req.file) {
-    //   let link = `http://localhost:8000/${req.file.filename}`;
-    //   res.json({
-    //     success: true,
-    //     result: link,
-    //     message: "Files uploaded succesfully",
-    //   });
-    // } else {
-    //   console.log("error in uploading");
-    //   res.status(400).json({
-    //     success: false,
-    //     message: `Error uploading file`,
-    //   });
-    // }
   } catch (error) {
     res.status(400).json({ message: (error as Error).message });
   }
@@ -76,12 +52,12 @@ export let multipleFileController = async (req: any, res: Response) => {
       );
 
       if (link.length === 0) {
-        throw new Error("file not supported");
+        throw new Error("file not supported.");
       } else
         res.status(200).json({
           success: true,
           result: link,
-          message: "files uploaded sucessfully ",
+          message: "Files uploaded successfully.",
           filesNotUploaded: req.body.error ? req.body.error : "",
         });
     }
