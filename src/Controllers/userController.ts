@@ -65,7 +65,6 @@ export let loginUserController = asyncHandler(
       if (isValidPassword === true) {
         let infoObj = {
           _id: result._id,
-          
         };
         let expiryInfo = {
           expiresIn: "1d",
@@ -207,7 +206,6 @@ export const readAllUserController = asyncHandler(
 export const readSpecificUserController = asyncHandler(
   async (req: Request, res: Response) => {
     let result = await readSpecificUserService(req.params.id);
-    delete result.password;
     successResponseData(res, "Read Successfully", 200, result);
   }
 );
@@ -215,14 +213,12 @@ export const readSpecificUserController = asyncHandler(
 export const updateUserController = asyncHandler(
   async (req: Request, res: Response) => {
     let result = await updateUserService(req.params.id, req.body);
-    delete result.password;
     successResponseData(res, "Successfully Updated", 201, result);
   }
 );
 export const deleteUserController = asyncHandler(
   async (req: Request, res: Response) => {
     let result = await deleteUserService(req.params.id);
-
     successResponseData(res, "Successfully Deleted", 200, result);
   }
 );

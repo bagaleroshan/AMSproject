@@ -66,52 +66,6 @@ paths:
       responses:
         '200':
           description: Student deleted successfully
-  /upload:
-    post:
-      summary: Uploads a file
-      description: Uploads a file to the server.
-      requestBody:
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                file:
-                  type: string
-                  format: binary
-                  description: The file to upload
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: File uploaded successfully
-        '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: Invalid file format
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: An error occurred while processing the file
 components:
   schemas:
     StudentInput:
@@ -127,18 +81,6 @@ components:
           type: string
           description: The grade of the student
     StudentUpdateInput:
-      type: object
-      properties:
-        name:
-          type: string
-          description: The updated name of the student
-        age:
-          type: integer
-          description: The updated age of the student
-        grade:
-          type: string
-          description: The updated grade of the student
-    FileInput:
       type: object
       properties:
         name:
