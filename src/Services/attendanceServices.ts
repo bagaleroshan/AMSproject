@@ -22,7 +22,7 @@ export const createAttendanceService = async (
   if (group.teacher!=teacherId) {
     throw new Error("You are not authorized to take attendance for this group.");
   }
-
+// fix
   const startOfDay = new Date();
   startOfDay.setHours(0, 0, 0, 0);
 
