@@ -48,7 +48,6 @@ export const readGroupsByTeacherId = async (
     { field: "startTime", type: "string" },
     { field: "endTime", type: "string" },
   ];
-  console.log(find);
   const data = await searchAndPaginate(
     Group,
     page,

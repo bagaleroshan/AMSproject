@@ -30,20 +30,20 @@ export const readAllAttendanceController = asyncHandler(
       query,
       find
     );
-    successResponseData(res, "Successfully Read All Attendances", 200, result);
+    successResponseData(res, "Successfully Read All Attendances.", 200, result);
   }
 );
 
 export const readSpecificAttendanceController = asyncHandler(
   async (req: Request, res: Response) => {
     let result = await readSpecificAttendanceService(req.params.id);
-    successResponseData(res, "Successfully Read", 200, result);
+    successResponseData(res, "Successfully Read.", 200, result);
   }
 );
 
 export const deleteAttendanceController = asyncHandler(
   async (req: Request, res: Response) => {
     let result = await deleteAttendanceService(req.params.id);
-    successResponseData(res, "Successfully Deleted", 200, result);
+    successResponseData(res, "Successfully Deleted.", 200, result);
   }
 );

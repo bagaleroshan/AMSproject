@@ -37,26 +37,26 @@ export const readAllStudentController = asyncHandler(
       query,
       find
     );
-    successResponseData(res, "Successfully Read All Student", 200, result);
+    successResponseData(res, "Successfully Read All Student.", 200, result);
   }
 );
 
 export const readSpecificStudentController = asyncHandler(
   async (req: Request, res: Response) => {
     let result = await readSpecificStudentService(req.params.id);
-    successResponseData(res, "Read Successfully", 200, result);
+    successResponseData(res, "Read Successfully.", 200, result);
   }
 );
 
 export const updateStudentController = asyncHandler(
   async (req: Request, res: Response) => {
     let result = await updateStudentService(req.params.id, req.body);
-    successResponseData(res, "Successfully Updated", 201, result);
+    successResponseData(res, "Successfully Updated.", 201, result);
   }
 );
 export const deleteStudentController = asyncHandler(
   async (req: Request, res: Response) => {
     let result = await deleteStudentService(req.params.id);
-    successResponseData(res, "Successfully Deleted", 200, result);
+    successResponseData(res, "Successfully Deleted.", 200, result);
   }
 );

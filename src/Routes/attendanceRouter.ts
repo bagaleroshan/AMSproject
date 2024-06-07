@@ -16,7 +16,6 @@ export const attendanceRouter = Router();
 //   // isAuthorized(["admin", "superAdmin"]),
 //   createAttendanceController
 // );
-// attendanceRouter.route("/").post(validation(attendanceValidation), createAttendanceController);
 
 attendanceRouter.route("/").get(
   // isAuthenticated,
