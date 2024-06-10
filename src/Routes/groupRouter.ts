@@ -19,15 +19,20 @@ groupRouter.route("/").post(
   // isAuthorized(["admin", "superAdmin"]),
   createGroupController
 );
-// groupRouter.route("/").post(validation(groupValidation), createGroupController);
 
-groupRouter.route("/").get(
+groupRouter
+  .route("/")
+  .get(
+    isAuthenticated,
+    isAuthorized(["admin", "superAdmin"]),
+    readAllGroupController
+  );
+
+groupRouter.route("/addStudent/:id").patch(
   // isAuthenticated,
-  // isAuthorized(["admin", "superAdmin"]),
-  readAllGroupController
+  // isAuthorized(["teacher", "admin", "superAdmin"]),
+  addStudentGroupController
 );
-
-groupRouter.route("/addStudent/:id").patch(addStudentGroupController);
 groupRouter.route("/teacher").get(isAuthenticated, readRelatedGroupController);
 groupRouter
   .route("/:id")
