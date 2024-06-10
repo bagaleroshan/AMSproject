@@ -5,6 +5,7 @@ import {
   deleteAttendanceController,
   readAllAttendanceController,
   readSpecificAttendanceController,
+  updateSpecificAttendanceController,
 } from "../Controllers/attendanceController";
 import isAuthenticated from "../middleware/isAuthenticated";
 import isAuthorized from "../middleware/isAuthorized";
@@ -39,5 +40,5 @@ attendanceRouter
   .patch(
     isAuthenticated,
     isAuthorized(["admin", "superAdmin"]),
-    deleteAttendanceController
+    updateSpecificAttendanceController
   );
