@@ -7,126 +7,111 @@ servers:
   - url: http://localhost:8000
 
 paths:
-  # /students:
-  #   post:
-  #     summary: Create a new student
-  #     requestBody:
-  #       required: true
-  #       content:
-  #         application/json:
-  #           schema:
-  #             $ref: "#/components/schemas/StudentInput"
-  #     responses:
-  #       "200":
-  #         description: Student created successfully
-  #   get:
-  #     summary: Get all students
-  #     responses:
-  #       "200":
-  #         description: List of students retrieved successfully
-  # /students/{id}:
-  #   get:
-  #     summary: Get a specific student by ID
-  #     parameters:
-  #       - in: path
-  #         name: id
-  #         required: true
-  #         description: ID of the student to retrieve
-  #         schema:
-  #           type: string
-  #     responses:
-  #       "200":
-  #         description: Student retrieved successfully
-  #   patch:
-  #     summary: Update a specific student by ID
-  #     parameters:
-  #       - in: path
-  #         name: id
-  #         required: true
-  #         description: ID of the student to update
-  #         schema:
-  #           type: string
-  #     requestBody:
-  #       required: true
-  #       content:
-  #         application/json:
-  #           schema:
-  #             $ref: "#/components/schemas/StudentUpdateInput"
-  #     responses:
-  #       "200":
-  #         description: Student updated successfully
-  #   delete:
-  #     summary: Delete a specific student by ID
-  #     parameters:
-  #       - in: path
-  #         name: id
-  #         required: true
-  #         description: ID of the student to delete
-  #         schema:
-  #           type: string
-  #     responses:
-  #       "200":
-  #         description: Student deleted successfully
-  # /students:
-  #   post:
-  #     summary: Create a new student
-  #     requestBody:
-  #       required: true
-  #       content:
-  #         application/json:
-  #           schema:
-  #             $ref: "#/components/schemas/StudentInput"
-  #     responses:
-  #       "200":
-  #         description: Student created successfully
-  #   get:
-  #     summary: Get all students
-  #     responses:
-  #       "200":
-  #         description: List of students retrieved successfully
-  # /students/{id}:
-  #   get:
-  #     summary: Get a specific student by ID
-  #     parameters:
-  #       - in: path
-  #         name: id
-  #         required: true
-  #         description: ID of the student to retrieve
-  #         schema:
-  #           type: string
-  #     responses:
-  #       "200":
-  #         description: Student retrieved successfully
-  #   patch:
-  #     summary: Update a specific student by ID
-  #     parameters:
-  #       - in: path
-  #         name: id
-  #         required: true
-  #         description: ID of the student to update
-  #         schema:
-  #           type: string
-  #     requestBody:
-  #       required: true
-  #       content:
-  #         application/json:
-  #           schema:
-  #             $ref: "#/components/schemas/StudentUpdateInput"
-  #     responses:
-  #       "200":
-  #         description: Student updated successfully
-  #   delete:
-  #     summary: Delete a specific student by ID
-  #     parameters:
-  #       - in: path
-  #         name: id
-  #         required: true
-  #         description: ID of the student to delete
-  #         schema:
-  #           type: string
-  #     responses:
-  #       "200":
-  #         description: Student deleted successfully
+  /groups/teacher:
+    get:
+      summary: get teachers groups
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: User updated successfully
+  /groups/addStudent/{id}:
+    patch:
+      summary: add    students
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the student to retrieve
+          schema:
+            type: string
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/addStudentInput"
+      responses:
+        "200":
+          description: User updated successfully
+  /groups/{id}:
+    patch:
+      summary: update the info of group
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the student to retrieve
+          schema:
+            type: string
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/groupUpdateInput"
+      responses:
+        "200":
+          description: User updated successfully
+    get:      
+      summary: get a group 
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the student to retrieve
+          schema:
+            type: string
+      security:
+        - BearerAuth: []
+     
+      responses:
+        "200":
+          description: User updated successfully
+  /groups/{id}:
+    patch:
+      summary: update user
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/groupUpdateInput"
+      responses:
+        "200":
+          description: User updated successfully
+    get:      
+      summary: update user
+      security:
+        - BearerAuth: []
+     
+      responses:
+        "200":
+          description: User updated successfully
+  /groups:
+    post:
+      summary: crate a group
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/groupInput"
+      responses:
+        "200":
+          description: gruoup created successfully
+    get:
+      responses:
+        "200":
+          description: gruoup get successfully
   /users/reset-password:
     patch:
       summary: reset password 
@@ -513,6 +498,48 @@ components:
         email:
           type: string
           description: The email of the user
-     
+    groupInput:
+      type: object
+      properties:
+        subject:
+          type: string
+          description: The subject of the group
+        teacher:
+          type: string
+          description: The teacher of the group
+        groupName:
+          type: string
+          description: The groupName of the group
+        startTime:
+          type: string
+          description: The start time of the group
+        endTime:
+          type: string
+          description: The end time of the group
+    groupUpdateInput:
+      type: object
+      properties:
+        subject:
+          type: string
+          description: The subject of the group
+        teacher:
+          type: string
+          description: The teacher of the group
+        groupName:
+          type: string
+          description: The groupName of the group
+        startTime:
+          type: string
+          description: The start time of the group
+        endTime:
+          type: string
+          description: The end time of the group
+    addStudentInput:
+      type: object
+      properties:
+        students:
+          type: array
+            
+              
       
     

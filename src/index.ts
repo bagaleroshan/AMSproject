@@ -22,6 +22,11 @@ app.use(json());
 const swaggerDocument = YAML.load(path.join("./public", "YAML.yaml"));
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use(
+  "/api-docs/groups",
+  swaggerUi.serve,
+  swaggerUi.setup(YAML.load(path.join("./public", "YAML.yaml")))
+);
 
 app.use("/file", file);
 
@@ -34,12 +39,6 @@ app.use("/attendances", attendanceRouter);
 
 app.use(errorHandler);
 
-
-
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
 });
-
-
-
-

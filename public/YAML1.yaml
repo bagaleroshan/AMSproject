@@ -1,0 +1,65 @@
+openapi: 3.0.0
+info:
+  title: Attendance Management API
+  description: API for managing Subject
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000
+
+paths:
+  /groups:
+    post:
+      summary: reset password
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/groupInput"
+      responses:
+        "200":
+          description: gruoup created successfully
+    get:
+      responses:
+        "200":
+          description: gruoup get successfully
+  /groups/{id}:
+    get:
+      summary: Get a specific student by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the group to retrieve
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Student retrieved successfully
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    groupInput:
+      type: object
+      properties:
+        subject:
+          type: string
+          description: The subject of the group
+        teacher:
+          type: string
+          description: The teacher of the group
+        groupName:
+          type: string
+          description: The groupName of the group
+        startTime:
+          type: string
+          description: The start time of the group
+        endTime:
+          type: string
+          description: The end time of the group
