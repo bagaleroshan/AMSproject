@@ -51,6 +51,48 @@ export const createAttendanceService = async (
   });
   return await Attendance.insertMany(attendanceData);
 };
+export const updateAttendanceService = async (
+  groupId: string,
+  teacherId: any,
+  data: IData
+) => {
+  const group = await Group.findByIdandUpdate(groupId);
+  if (!group) {
+    throw new Error("Group not found");
+  }
+  console.log(group.teacher +''+teacherId)
+  if (group.teacher!=teacherId) {
+    throw new Error("You are not authorized to take attendance for this group.");
+  }
+// fix
+  const startOfDay = new Date();
+  startOfDay.setHours(0, 0, 0, 0);
+
+  const endOfDay = new Date(startOfDay);
+  endOfDay.setDate(endOfDay.getDate() + 1);
+  endOfDay.setHours(0, 0, 0, 0);
+
+  const existingAttendances = await Attendance.find({
+    date: {
+      $gte: startOfDay,
+      $lt: endOfDay,
+    },
+    groupId,
+  });
+  if (existingAttendances.length > 0) {
+    throw new Error(`Attendance has already been taken today.`);
+  }
+  const date = data.date;
+  const attendanceData = data.attendance.map((student) => {
+    return {
+      date: date,
+      groupId,
+      studentId: student.studentId,
+      status: student.status,
+    };
+  });
+  return await Attendance.insertMany(attendanceData);
+};
 
 export const readAllAttendanceService = async (
   page: number,

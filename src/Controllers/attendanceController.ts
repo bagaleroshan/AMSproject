@@ -6,6 +6,7 @@ import {
   readAllAttendanceService,
   readSpecificAttendanceService,
   deleteAttendanceService,
+  updateAttendanceService,
 } from "../Services/attendanceServices";
 import successResponseData from "../helper/successResponse";
 import { myMongooseQuerys } from "../utils/mongooseQuery";
@@ -45,6 +46,18 @@ export const readSpecificAttendanceController = asyncHandler(
   async (req: Request, res: Response) => {
     let result = await readSpecificAttendanceService(req.params.id);
     successResponseData(res, "Successfully Read", 200, result);
+  }
+);
+export const updateSpecificAttendanceController = asyncHandler(
+  async (req: AuthenticatedRequest, res: Response) => {
+    let teacherId = req._id;
+    console.log( req._id)
+    let result = await updateAttendanceService(
+      req.params.id,
+      teacherId,
+      req.body
+    );
+    successResponseData(res, "Attendance Successfully created.", 201, result);
   }
 );
 

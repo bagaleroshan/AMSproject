@@ -87,7 +87,7 @@ paths:
         "200":
           description: User updated successfully
     get:      
-      summary: update user
+      summary: get group
       security:
         - BearerAuth: []
      

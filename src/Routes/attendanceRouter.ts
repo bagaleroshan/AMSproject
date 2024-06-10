@@ -35,4 +35,9 @@ attendanceRouter
     isAuthenticated,
     isAuthorized(["admin", "superAdmin"]),
     deleteAttendanceController
+  )
+  .patch(
+    isAuthenticated,
+    isAuthorized(["admin", "superAdmin"]),
+    deleteAttendanceController
   );
