@@ -23,6 +23,10 @@ const groupSchema: Schema = new Schema(
         type: String,
       },
     ],
+    active: {
+      type: Boolean,
+      default: false,
+    },
     startTime: {
       type: String,
       required: true,

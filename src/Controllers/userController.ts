@@ -177,8 +177,7 @@ export const forgotPassword = asyncHandler(
         result
       );
     } else {
-      let err = new Error("Email did not match with our database.");
-      throw err;
+      throw new Error("Email did not match with our database.");
     }
   }
 );

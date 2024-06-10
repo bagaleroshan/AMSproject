@@ -22,8 +22,12 @@ export const userRouter = Router();
 
 userRouter
   .route("/")
-  .post(validation(userValidation({ isCreate: true })), createUserController)
-  .get(readAllUserController);
+  .post(
+    isAuthenticated,
+    isAuthorized(["admin", "superAdmin"]),
+    validation(userValidation({ isCreate: true })),
+    createUserController
+  );
 
 userRouter.route("/login").post(loginUserController);
 userRouter.route("/my-profile").get(isAuthenticated, myProfile);
@@ -36,13 +40,7 @@ userRouter
   );
 userRouter.route("/update-password").patch(isAuthenticated, updatePassword);
 userRouter.route("/forgot-password").post(forgotPassword);
-userRouter
-  .route("/reset-password")
-  .patch(
-    isAuthenticated,
-    validation(userValidation({ isCreate: false })),
-    resetPassword
-  );
+userRouter.route("/reset-password").patch(isAuthenticated, resetPassword);
 userRouter
   .route("/")
   .get(
