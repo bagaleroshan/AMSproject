@@ -229,8 +229,8 @@ export const updateUserController = asyncHandler(
   }
 );
 export const deleteUserController = asyncHandler(
-  async (req: Request, res: Response) => {
-    let result = await deleteUserService(req.params.id);
+  async (req: AuthenticatedRequest, res: Response) => {
+    let result = await deleteUserService(req.params.id, req._id as string);
     successResponseData(res, "Successfully Deleted.", 200, result);
   }
 );

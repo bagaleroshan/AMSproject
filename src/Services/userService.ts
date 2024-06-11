@@ -1,4 +1,4 @@
-import { User } from "../Schema/model";
+import { Group, User } from "../Schema/model";
 import { searchAndPaginate } from "../utils/searchAndPaginate";
 
 export let createUserService = async (data: {}) => {
@@ -39,6 +39,18 @@ export let updateUserService = async (id: string, data: {}) => {
   return await User.findByIdAndUpdate(id, data, { new: true });
 };
 
-export let deleteUserService = async (id: string) => {
+export let deleteUserService = async (id: string, loggedInUserId: string) => {
+  if (id === loggedInUserId) {
+    throw new Error("You cannot delete yourself.");
+  }
+  const teacherAssignedToGroup = await Group.findOne({
+    teacher: id,
+  });
+  console.log("results", teacherAssignedToGroup);
+  if (teacherAssignedToGroup) {
+    throw new Error(
+      "Teacher cannot be deleted as it is associated with a group."
+    );
+  }
   return await User.findByIdAndDelete(id);
 };

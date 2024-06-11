@@ -60,4 +60,8 @@ userRouter
     isAuthorized(["admin", "superAdmin"]),
     updateUserController
   )
-  .delete(isAuthenticated, isAuthorized(["superAdmin"]), deleteUserController);
+  .delete(
+    isAuthenticated,
+    isAuthorized(["admin", "superAdmin"]),
+    deleteUserController
+  );

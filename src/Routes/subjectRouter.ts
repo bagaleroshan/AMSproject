@@ -9,25 +9,41 @@ import {
 import { validation } from "../middleware/validation";
 import { subjectValidation } from "../validation/subjectValidation";
 import validateQueryParams from "../middleware/validateQueryParams";
+import isAuthenticated from "../middleware/isAuthenticated";
+import isAuthorized from "../middleware/isAuthorized";
 
 export const subjectRouter = Router();
 
 subjectRouter
   .route("/")
   .post(
+    isAuthenticated,
+    isAuthorized(["admin", "superAdmin"]),
     validation(subjectValidation({ isCreate: true })),
     createSubjectController
   )
   .get(
+    isAuthenticated,
+    isAuthorized(["admin", "superAdmin"]),
     validateQueryParams(["subjectName", "subjectCode", "query"]),
     readAllSubjectController
   );
 
 subjectRouter
   .route("/:id")
-  .get(readSpecificSubjectController)
+  .get(
+    isAuthenticated,
+    isAuthorized(["admin", "superAdmin"]),
+    readSpecificSubjectController
+  )
   .patch(
+    isAuthenticated,
+    isAuthorized(["admin", "superAdmin"]),
     validation(subjectValidation({ isCreate: false })),
     updateSubjectController
   )
-  .delete(deleteSubjectController);
+  .delete(
+    isAuthenticated,
+    isAuthorized(["admin", "superAdmin"]),
+    deleteSubjectController
+  );

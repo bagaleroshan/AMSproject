@@ -1,4 +1,4 @@
-import { Student } from "../Schema/model";
+import { Group, Student } from "../Schema/model";
 import { searchAndPaginate } from "../utils/searchAndPaginate";
 
 let createStudentService = async (data: {}) => {
@@ -39,6 +39,15 @@ let updateStudentService = async (id: string, data: {}) => {
 };
 
 let deleteStudentService = async (id: string) => {
+  const studentAssignedToGroup = await Group.findOne({
+    students: id,
+  });
+
+  if (studentAssignedToGroup) {
+    throw new Error(
+      "Student cannot be deleted as it is associated with a group."
+    );
+  }
   return await Student.findByIdAndDelete(id);
 };
 
