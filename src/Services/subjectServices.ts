@@ -1,5 +1,6 @@
-import { Subject } from "../Schema/model";
+import { Group, Subject } from "../Schema/model";
 import { searchAndPaginate } from "../utils/searchAndPaginate";
+import { subject } from "../utils/sendMail";
 
 export const createSubjectService = async (data: {}) => {
   return await Subject.create(data);
@@ -16,7 +17,7 @@ export const readAllSubjectService = async (
   const subjectFields = [
     { field: "subjectName", type: "string" },
     { field: "subjectCode", type: "string" },
-    { field: "numberOfClasses", type: "number" }
+    { field: "numberOfClasses", type: "number" },
   ];
   const data = await searchAndPaginate(
     Subject,
@@ -28,6 +29,7 @@ export const readAllSubjectService = async (
     find,
     subjectFields
   );
+  console.log(sort);
   return data;
 };
 
@@ -40,5 +42,13 @@ export let updateSubjectService = async (id: string, data: {}) => {
 };
 
 export let deleteSubjectService = async (id: string) => {
+  const subjectAssignedToGroup = await Group.findOne({
+    subject: id,
+  });
+  if (subjectAssignedToGroup) {
+    throw new Error(
+      "Subject cannot be deleted as it is associated with a group."
+    );
+  }
   return await Subject.findByIdAndDelete(id);
 };

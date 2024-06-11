@@ -20,7 +20,11 @@ attendanceRouter
 
 attendanceRouter
   .route("/:groupId")
-  .post(isAuthenticated, isAuthorized(["teacher"]), createAttendanceController)
+  .post(
+    isAuthenticated,
+    isAuthorized(["teacher", "admin"]),
+    createAttendanceController
+  )
   .delete(
     isAuthenticated,
     isAuthorized(["admin", "superAdmin"]),

@@ -14,11 +14,13 @@ import isAuthorized from "../middleware/isAuthorized";
 
 export const groupRouter = Router();
 
-groupRouter.route("/").post(
-  // isAuthenticated,
-  // isAuthorized(["admin", "superAdmin"]),
-  createGroupController
-);
+groupRouter
+  .route("/")
+  .post(
+    isAuthenticated,
+    isAuthorized(["admin", "superAdmin"]),
+    createGroupController
+  );
 
 groupRouter
   .route("/")
@@ -28,11 +30,13 @@ groupRouter
     readAllGroupController
   );
 
-groupRouter.route("/addStudent/:id").patch(
-  // isAuthenticated,
-  // isAuthorized(["teacher", "admin", "superAdmin"]),
-  addStudentGroupController
-);
+groupRouter
+  .route("/addStudent/:id")
+  .patch(
+    isAuthenticated,
+    isAuthorized(["admin", "superAdmin"]),
+    addStudentGroupController
+  );
 groupRouter.route("/teacher").get(isAuthenticated, readRelatedGroupController);
 groupRouter
   .route("/:id")
