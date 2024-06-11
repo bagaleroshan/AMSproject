@@ -41,7 +41,6 @@ export const subjectValidation = ({ isCreate }: { isCreate: boolean }) =>
 
     numberOfClasses: Joi.number()
       .required()
-      .min(10)
       .max(500)
       .when("", {
         is: () => {

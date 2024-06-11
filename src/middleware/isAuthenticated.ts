@@ -11,7 +11,7 @@ const isAuthenticated = asyncHandler(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     let tokenString = req.headers.authorization || "";
     if (!tokenString) {
-      throw new Error("No token provided");
+      throw new Error("Please Log in first.");
     }
     let token = tokenString.split(" ")[1];
     let user: any = await jwt.verify(token, secretKey);

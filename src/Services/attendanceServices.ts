@@ -9,11 +9,8 @@ interface IData {
   date: string;
   attendance: IAttendance[];
 }
-export const createAttendanceService = async (groupId: string, data: IData) => {
-  const group = await Group.findById(groupId);
-  if (!group) {
-    throw new Error("Group not found");
-  }
+
+const existingAttendancesFunction = async (groupId: string) => {
   const startOfDay = new Date();
   startOfDay.setHours(0, 0, 0, 0);
 
@@ -21,15 +18,41 @@ export const createAttendanceService = async (groupId: string, data: IData) => {
   endOfDay.setDate(endOfDay.getDate() + 1);
   endOfDay.setHours(0, 0, 0, 0);
 
-  const existingAttendances = await Attendance.find({
+  return await Attendance.find({
     date: {
       $gte: startOfDay,
       $lt: endOfDay,
     },
     groupId,
   });
+};
+
+export const createAttendanceService = async (
+  groupId: string,
+  teacherId: string,
+  data: IData
+) => {
+  const group = await Group.findById(groupId).populate("subject");
+  if (!group) {
+    throw new Error("Group not found.");
+  }
+  if (group.teacher.toString() !== teacherId) {
+    throw new Error(
+      "You are not authorized to take attendance for this group."
+    );
+  }
+  const attendanceTaken = await Attendance.find({
+    groupId: groupId,
+    studentId: group.students[0],
+  });
+  if (group.subject.numberOfClasses === attendanceTaken.length) {
+    await Group.findByIdAndUpdate(groupId, { active: false });
+    throw new Error("Maximum number of classes has been reached.");
+  }
+  const existingAttendances = await existingAttendancesFunction(groupId);
+
   if (existingAttendances.length > 0) {
-    throw new Error(`Attendance has already been taken today.`);
+    throw new Error(`Attendance has already been taken for the day.`);
   }
   const date = data.date;
   const attendanceData = data.attendance.map((student) => {
@@ -40,7 +63,19 @@ export const createAttendanceService = async (groupId: string, data: IData) => {
       status: student.status,
     };
   });
-  return await Attendance.insertMany(attendanceData);
+  const createdAttendance = await Attendance.insertMany(attendanceData);
+
+  if (attendanceTaken.length === 0) {
+    await Group.findByIdAndUpdate(groupId, { active: true });
+  }
+  const totalAttendance = await Attendance.find({
+    groupId: groupId,
+    studentId: group.students[0],
+  });
+  if (totalAttendance.length >= group.subject.numberOfClasses) {
+    await Group.findByIdAndUpdate(groupId, { active: false });
+  }
+  return createdAttendance;
 };
 
 export const readAllAttendanceService = async (
@@ -68,6 +103,9 @@ export const readAllAttendanceService = async (
   );
   return data;
 };
+// export const updateAttendanceService =async()=>{
+//   return await Attendance.findByIdAndUpdate()
+// }
 
 export const readSpecificAttendanceService = async (id: string) => {
   return await Attendance.findById(id);

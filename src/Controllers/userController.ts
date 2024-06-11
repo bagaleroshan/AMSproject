@@ -70,7 +70,7 @@ export let loginUserController = asyncHandler(
           expiresIn: "1d",
         };
         let token = await jwt.sign(infoObj, secretKey, expiryInfo);
-        successResponseData(res, "Logged in Successfully", 200, result, token);
+        successResponseData(res, "Logged in Successfully.", 200, result, token);
       } else {
         let error = new Error("Email or Password did not match.");
         throw error;
@@ -86,7 +86,7 @@ export const myProfile = asyncHandler(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     let userId = req._id;
     let result = await User.findById(userId);
-    successResponseData(res, "Profile read successfully", 200, result);
+    successResponseData(res, "Profile read successfully.", 200, result);
   }
 );
 
@@ -101,7 +101,7 @@ export const updateProfile = asyncHandler(
     let result = await User.findByIdAndUpdate(userId, data, {
       new: true,
     });
-    successResponseData(res, "Profile updated successfully", 201, result);
+    successResponseData(res, "Profile updated successfully.", 201, result);
   }
 );
 
@@ -114,6 +114,14 @@ export const updatePassword = asyncHandler(
       data.password
     );
     if (isValidPassword) {
+      let isPasswordSame = await bcrypt.compare(
+        req.body.newPassword,
+        data.password
+      );
+      if (isPasswordSame) {
+        let err = new Error("Old password and New password are same.");
+        throw err;
+      }
       let newHashPassword = await bcrypt.hash(req.body.newPassword, 10);
 
       let result = await User.findByIdAndUpdate(
@@ -126,7 +134,7 @@ export const updatePassword = asyncHandler(
           new: true,
         }
       );
-      successResponseData(res, "Password updated successfully", 200, result);
+      successResponseData(res, "Password updated successfully.", 200, result);
     } else {
       let error = new Error("Old Password did not match.");
       throw error;
@@ -148,17 +156,19 @@ export const forgotPassword = asyncHandler(
       let token = await jwt.sign(infoObj, secretKey, expiryInfo);
 
       await sendEmail({
-        from: "jenishona",
+        from: `${mailProvider} <${mailUser}>`,
         to: email,
-        subject: "Forgot Password",
+        subject: "Forgot Password?",
         html: `
         <h4>Please verify that its you trying to reset your password.</h4><br/>
         <a href="${clientUrl}/reset-password?token=${token}">
         ${clientUrl}/reset-password?token=${token}
         </a><br/>
-        <h4>If you did not do this don't do anything.</h4><br/>
+        <h4>If you did not request a password reset, no further action is required.</h4><br/>
+        <br/>
+        <img src="cid:unique_image_cid" width= "100" height = "100">
         `,
-        attachments,
+        attachments: attachments,
       });
       successResponseData(
         res,
@@ -166,6 +176,8 @@ export const forgotPassword = asyncHandler(
         201,
         result
       );
+    } else {
+      throw new Error("Email did not match with our database.");
     }
   }
 );
@@ -182,7 +194,7 @@ export const resetPassword = asyncHandler(
         new: true,
       }
     );
-    successResponseData(res, "Password reset successfully", 201, result);
+    successResponseData(res, "Password reset successfully.", 201, result);
   }
 );
 
@@ -199,26 +211,26 @@ export const readAllUserController = asyncHandler(
       query,
       find
     );
-    successResponseData(res, "Successfully Read All User", 200, result);
+    successResponseData(res, "Successfully Read All User.", 200, result);
   }
 );
 
 export const readSpecificUserController = asyncHandler(
   async (req: Request, res: Response) => {
     let result = await readSpecificUserService(req.params.id);
-    successResponseData(res, "Read Successfully", 200, result);
+    successResponseData(res, "Read Successfully.", 200, result);
   }
 );
 
 export const updateUserController = asyncHandler(
   async (req: Request, res: Response) => {
     let result = await updateUserService(req.params.id, req.body);
-    successResponseData(res, "Successfully Updated", 201, result);
+    successResponseData(res, "Successfully Updated.", 201, result);
   }
 );
 export const deleteUserController = asyncHandler(
   async (req: Request, res: Response) => {
     let result = await deleteUserService(req.params.id);
-    successResponseData(res, "Successfully Deleted", 200, result);
+    successResponseData(res, "Successfully Deleted.", 200, result);
   }
 );

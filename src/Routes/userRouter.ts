@@ -22,8 +22,12 @@ export const userRouter = Router();
 
 userRouter
   .route("/")
-  .post(validation(userValidation({ isCreate: true })), createUserController)
-  .get(readAllUserController);
+  .post(
+    isAuthenticated,
+    isAuthorized(["admin", "superAdmin"]),
+    validation(userValidation({ isCreate: true })),
+    createUserController
+  );
 
 userRouter.route("/login").post(loginUserController);
 userRouter.route("/my-profile").get(isAuthenticated, myProfile);
@@ -56,8 +60,4 @@ userRouter
     isAuthorized(["admin", "superAdmin"]),
     updateUserController
   )
-  .delete(
-    isAuthenticated,
-    isAuthorized(["admin", "superAdmin"]),
-    deleteUserController
-  );
+  .delete(isAuthenticated, isAuthorized(["superAdmin"]), deleteUserController);
