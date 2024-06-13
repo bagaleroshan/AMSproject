@@ -1,6 +1,5 @@
 import { Group, Subject } from "../Schema/model";
 import { searchAndPaginate } from "../utils/searchAndPaginate";
-import { subject } from "../utils/sendMail";
 
 export const createSubjectService = async (data: {}) => {
   return await Subject.create(data);
@@ -29,7 +28,6 @@ export const readAllSubjectService = async (
     find,
     subjectFields
   );
-  console.log(sort);
   return data;
 };
 

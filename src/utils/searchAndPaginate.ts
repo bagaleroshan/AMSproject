@@ -14,6 +14,7 @@ export const searchAndPaginate = async (
   fields.forEach(({ field }) => {
     projection[field] = 1;
   });
+
   let matchStage = { $match: find };
   if (query) {
     matchStage = {
@@ -49,12 +50,16 @@ export const searchAndPaginate = async (
 
   if (sort) {
     const sortFields: { [key: string]: number } = sort
-      .split(" ")
+      .split(",")
       .reduce((acc, field) => {
-        const [key, order] = field.split(":");
-        acc[key] = order === "desc" ? -1 : 1;
+        if (field.startsWith("-")) {
+          acc[field.substring(1)] = -1;
+        } else {
+          acc[field] = 1;
+        }
         return acc;
       }, {} as { [key: string]: number });
+    console.log("Sort Fields: ", sortFields);
     aggregationPipeline.push({ $sort: sortFields });
   }
 

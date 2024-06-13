@@ -1,4 +1,5 @@
 import { Group } from "../Schema/model";
+import { IgroupData } from "../helper/interfaces";
 import { searchAndPaginate } from "../utils/searchAndPaginate";
 
 export const createGroupService = async (data: {}) => {
@@ -67,6 +68,13 @@ export let readSpecificGroupService = async (id: string) => {
 
 export let updateGroupService = async (id: string, data: {}) => {
   return await Group.findByIdAndUpdate(id, data, { new: true });
+};
+export let changeTeacherInGroupService = async (
+  id: string,
+  data: IgroupData
+) => {
+  const { teacher } = data;
+  return await Group.findByIdAndUpdate(id, teacher, { new: true });
 };
 
 export let deleteGroupService = async (id: string) => {
