@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import {
   addStudentGroupController,
+  changeTeacherInGroupController,
   createGroupController,
   deleteGroupController,
   readAllGroupController,
@@ -36,6 +37,13 @@ groupRouter
     isAuthenticated,
     isAuthorized(["admin", "superAdmin"]),
     addStudentGroupController
+  );
+groupRouter
+  .route("/changeTeacher/:id")
+  .patch(
+    isAuthenticated,
+    isAuthorized(["admin", "superAdmin"]),
+    changeTeacherInGroupController
   );
 groupRouter.route("/teacher").get(isAuthenticated, readRelatedGroupController);
 groupRouter

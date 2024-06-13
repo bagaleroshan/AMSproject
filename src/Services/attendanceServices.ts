@@ -1,5 +1,5 @@
 import { group } from "console";
-import { Attendance, Group } from "../Schema/model";
+import { Attendance, Group, User } from "../Schema/model";
 import { searchAndPaginate } from "../utils/searchAndPaginate";
 
 interface IAttendance {
@@ -10,17 +10,42 @@ interface IData {
   date: string;
   attendance: IAttendance[];
 }
-
-const groupData = async (groupId: string, teacherId: string) => {
+const groupData = async (
+  groupId: string,
+  teacherId: string,
+  role: string,
+  date: string
+) => {
   const group = await Group.findById(groupId).populate("subject");
   if (!group) {
     throw new Error("Group not found.");
   }
-  if (group.teacher.toString() !== teacherId) {
-    throw new Error(
-      "You are not authorized to take attendance for this group."
-    );
+
+  const today = new Date().toISOString().split("T")[0];
+  const dateOnly = new Date(date).toISOString().split("T")[0];
+
+  // Find the first attendance date
+  const firstAttendance = await Attendance.findOne({ groupId }).sort({ date: 1 });
+
+  // Use the first attendance date as the starting point
+  const startDate = firstAttendance ? new Date(firstAttendance.date).toISOString().split("T")[0] : null;
+
+  if (role === "teacher") {
+    if (group.teacher.toString() !== teacherId) {
+      throw new Error("You are not authorized to take attendance for this group.");
+    }
+    if (dateOnly !== today) {
+      throw new Error("Teachers can only take attendance for today.");
+    }
+  } else if (role === "admin") {
+    if (!startDate && dateOnly !== today) {
+      throw new Error("First attendance must be taken today.");
+    }
+    if (startDate && (dateOnly < startDate || dateOnly > today)) {
+      throw new Error("Invalid Date.");
+    }
   }
+
   return group;
 };
 const isClassCrossedLimit = async (groupId: string, group: any) => {
@@ -32,26 +57,51 @@ const isClassCrossedLimit = async (groupId: string, group: any) => {
     throw new Error("Maximum number of classes has been reached.");
   }
 };
-const isAttendanceTakenToday = async (groupId: string) => {
-  const startOfDay = new Date();
-  startOfDay.setHours(0, 0, 0, 0);
+const isAttendanceTaken = async (
+  groupId: string,
+  date: string,
+  role: string
+) => {
+  const providedDate = new Date(date);
+  const startOfProvidedDate = new Date(providedDate);
+  startOfProvidedDate.setHours(0, 0, 0, 0);
 
-  const endOfDay = new Date(startOfDay);
-  endOfDay.setDate(endOfDay.getDate() + 1);
-  endOfDay.setHours(0, 0, 0, 0);
+  const endOfProvidedDate = new Date(startOfProvidedDate);
+  endOfProvidedDate.setDate(startOfProvidedDate.getDate() + 1);
 
-  const _existingAttendances = await Attendance.find({
+  const today = new Date();
+  const startOfToday = new Date(today);
+  startOfToday.setHours(0, 0, 0, 0);
+
+  const endOfToday = new Date(startOfToday);
+  endOfToday.setDate(startOfToday.getDate() + 1);
+
+  const existingAttendances = await Attendance.find({
     date: {
-      $gte: startOfDay,
-      $lt: endOfDay,
+      $gte: startOfProvidedDate,
+      $lt: endOfProvidedDate,
     },
-    groupId,
+    groupId: groupId,
   });
-  if (_existingAttendances.length > 0) {
-    throw new Error(`Attendance has already been taken for the day.`);
+
+  if (
+    role === "teacher" &&
+    date === startOfToday.toISOString().split("T")[0] &&
+    existingAttendances.length > 0
+  ) {
+    throw new Error(`Attendance has already been taken for today.`);
+  }
+
+  if (
+    role === "admin" &&
+    date !== startOfToday.toISOString().split("T")[0] &&
+    existingAttendances.length > 0
+  ) {
+    throw new Error(`Attendance has already been taken for the provided date.`);
   }
 };
-const attendanceData = async (groupId: string, data: IData) => {
+
+const attendanceData = (groupId: string, data: IData) => {
   return data.attendance.map((student) => {
     return {
       date: data.date,
@@ -76,12 +126,14 @@ const toggleActiveGroup = async (groupId: string, group: any) => {
 };
 export const createAttendanceService = async (
   groupId: string,
-  teacherId: string,
+  userId: string,
   data: IData
 ) => {
-  let group = await groupData(groupId, teacherId);
+  const user = await User.findById(userId);
+  const role = user.role;
+  let group = await groupData(groupId, userId, role, data.date);
   await isClassCrossedLimit(groupId, group);
-  await isAttendanceTakenToday(groupId);
+  await isAttendanceTaken(groupId, data.date, role);
   let _data = attendanceData(groupId, data);
   const createdAttendance = await Attendance.insertMany(_data);
   toggleActiveGroup(groupId, group);

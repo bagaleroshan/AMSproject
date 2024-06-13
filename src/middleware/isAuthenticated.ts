@@ -6,7 +6,6 @@ import asyncHandler from "express-async-handler";
 export interface AuthenticatedRequest extends Request {
   _id?: string;
 }
-
 const isAuthenticated = asyncHandler(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     let tokenString = req.headers.authorization || "";

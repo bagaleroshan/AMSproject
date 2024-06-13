@@ -7,12 +7,14 @@ export const userSchema = new Schema(
       type: String,
       required: [true, "fullName field is required"],
       trim: true,
+      lowercase: true,
     },
     email: {
       type: String,
       unique: true,
       required: [true, "email field is required"],
       trim: true,
+      lowercase: true,
     },
     password: {
       type: String,
@@ -27,6 +29,7 @@ export const userSchema = new Schema(
     role: {
       type: String,
       required: [true, "role field is required"],
+      lowercase: true,
     },
     isPasswordChanged: {
       type: Boolean,
