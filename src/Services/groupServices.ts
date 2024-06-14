@@ -87,7 +87,17 @@ export const readGroupsByTeacherId = async (
 };
 
 export let readSpecificGroupService = async (id: string) => {
-  return await Group.findById(id);
+  // return await Group.findById(id).populate("subject");
+
+  return await Group.findById(id)
+    .populate({
+      path: "subject",
+      model: "Subject",
+    })
+    .populate({
+      path: "teacher",
+      model: "User",
+    });
 };
 
 export let updateGroupService = async (id: string, data: {}) => {

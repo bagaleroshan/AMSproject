@@ -83,7 +83,6 @@ const isAttendanceTaken = async (
     },
     groupId: groupId,
   });
-  console.log(existingAttendances);
   if (
     role === "teacher" &&
     date !== startOfToday.toISOString().split("T")[0] &&
