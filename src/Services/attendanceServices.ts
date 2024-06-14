@@ -44,7 +44,7 @@ const groupData = async (
       throw new Error("First attendance must be taken.");
     }
     if (startDate && (dateOnly < startDate || dateOnly > today)) {
-      throw new Error("Invalid Date.");
+      throw new Error("Attendance cannot be taken on provided date.");
     }
   }
   return group;
@@ -83,10 +83,10 @@ const isAttendanceTaken = async (
     },
     groupId: groupId,
   });
-
+  console.log(existingAttendances);
   if (
     role === "teacher" &&
-    date === startOfToday.toISOString().split("T")[0] &&
+    date !== startOfToday.toISOString().split("T")[0] &&
     existingAttendances.length > 0
   ) {
     throw new Error(`Attendance has already been taken for today.`);
@@ -165,10 +165,13 @@ export const readAllAttendanceService = async (
   );
   return data;
 };
-export const readSpecificAttendanceService = async (id: string) => {
-  return await Attendance.findById(id);
-};
+// export const readSpecificAttendanceService = async (id: string) => {
+//   return await Attendance.findById(id);
+// };
 
-export const deleteAttendanceService = async (id: string) => {
-  return await Attendance.findByIdAndDelete(id);
-};
+// export const updateAttendanceService = async (id: string, data: {}) => {
+//   return await Attendance.findByIdAndUpdate();
+// };
+// export const deleteAttendanceService = async (id: string) => {
+//   return await Attendance.findByIdAndDelete(id);
+// };
