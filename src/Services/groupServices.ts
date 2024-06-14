@@ -93,13 +93,6 @@ export let readSpecificGroupService = async (id: string) => {
 export let updateGroupService = async (id: string, data: {}) => {
   return await Group.findByIdAndUpdate(id, data, { new: true });
 };
-export let changeTeacherInGroupService = async (
-  id: string,
-  data: IgroupData
-) => {
-  const { teacher } = data;
-  return await Group.findByIdAndUpdate(id, teacher, { new: true });
-};
 
 export let deleteGroupService = async (id: string) => {
   return await Group.findByIdAndDelete(id);
