@@ -169,6 +169,9 @@ export const readSpecificAttendanceService = async (id: string) => {
   return await Attendance.findById(id);
 };
 
+export const updateAttendanceService = async (id: string, data: {}) => {
+  return await Attendance.findByIdAndUpdate();
+};
 export const deleteAttendanceService = async (id: string) => {
   return await Attendance.findByIdAndDelete(id);
 };

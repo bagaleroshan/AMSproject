@@ -5,6 +5,7 @@ import {
   createAttendanceService,
   deleteAttendanceService,
   readAllAttendanceService,
+  updateAttendanceService,
 } from "../Services/attendanceServices";
 import successResponseData from "../helper/successResponse";
 import { AuthenticatedRequest } from "../middleware/isAuthenticated";
@@ -38,12 +39,12 @@ export const readAllAttendanceController = asyncHandler(
     successResponseData(res, "Successfully Read All Attendances.", 200, result);
   }
 );
-// export const updateAttendanceController = asyncHandler(
-//   async (req: Request, res: Response) => {
-//     let result = await updateAttendanceService(req.params.id, req.body);
-//     successResponseData(res, "Successfully Updated.", 201, result);
-//   }
-// );
+export const updateAttendanceController = asyncHandler(
+  async (req: Request, res: Response) => {
+    let result = await updateAttendanceService(req.params.id, req.body);
+    successResponseData(res, "Successfully Updated.", 201, result);
+  }
+);
 
 export const deleteAttendanceController = asyncHandler(
   async (req: Request, res: Response) => {

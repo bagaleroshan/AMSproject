@@ -5,6 +5,7 @@ import {
   addStudentGroupService,
   changeTeacherInGroupService,
   createGroupService,
+  deleteGroupService,
   readAllGroupService,
   readGroupsByTeacherId,
   readSpecificGroupService,
@@ -87,7 +88,7 @@ export const changeTeacherInGroupController = asyncHandler(
 
 export const deleteGroupController = asyncHandler(
   async (req: Request, res: Response) => {
-    let result = await deleteStudentService(req.params.id);
+    let result = await deleteGroupService(req.params.id);
     successResponseData(res, "Successfully Deleted.", 200, result);
   }
 );
