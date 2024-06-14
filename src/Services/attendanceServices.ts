@@ -24,28 +24,29 @@ const groupData = async (
   const today = new Date().toISOString().split("T")[0];
   const dateOnly = new Date(date).toISOString().split("T")[0];
 
-  // Find the first attendance date
-  const firstAttendance = await Attendance.findOne({ groupId }).sort({ date: 1 });
+  const firstAttendance = await Attendance.find({ groupId }).sort("date");
 
-  // Use the first attendance date as the starting point
-  const startDate = firstAttendance ? new Date(firstAttendance.date).toISOString().split("T")[0] : null;
+  const startDate = firstAttendance[0]
+    ? new Date(firstAttendance[0].date).toISOString().split("T")[0]
+    : null;
 
   if (role === "teacher") {
     if (group.teacher.toString() !== teacherId) {
-      throw new Error("You are not authorized to take attendance for this group.");
+      throw new Error(
+        "You are not authorized to take attendance for this group."
+      );
     }
     if (dateOnly !== today) {
       throw new Error("Teachers can only take attendance for today.");
     }
   } else if (role === "admin") {
     if (!startDate && dateOnly !== today) {
-      throw new Error("First attendance must be taken today.");
+      throw new Error("First attendance must be taken.");
     }
     if (startDate && (dateOnly < startDate || dateOnly > today)) {
       throw new Error("Invalid Date.");
     }
   }
-
   return group;
 };
 const isClassCrossedLimit = async (groupId: string, group: any) => {
@@ -75,7 +76,6 @@ const isAttendanceTaken = async (
 
   const endOfToday = new Date(startOfToday);
   endOfToday.setDate(startOfToday.getDate() + 1);
-
   const existingAttendances = await Attendance.find({
     date: {
       $gte: startOfProvidedDate,
