@@ -1,4 +1,4 @@
-import { Group, Student } from "../Schema/model";
+import { Attendance, Group, Student } from "../Schema/model";
 import { searchAndPaginate } from "../utils/searchAndPaginate";
 
 let createStudentService = async (data: {}) => {
@@ -42,13 +42,19 @@ let deleteStudentService = async (id: string) => {
   const studentAssignedToGroup = await Group.findOne({
     students: id,
   });
+  const attendanceCount = await Attendance.countDocuments({
+    studentId: id,
+    status: true,
+  });
 
-  if (studentAssignedToGroup) {
-    throw new Error(
-      "Student cannot be deleted as it is associated with a group."
-    );
+  if (studentAssignedToGroup && attendanceCount >= 15) {
+    throw new Error("Student cannot be deleted as are assigned to a group.");
   }
-  return await Student.findByIdAndDelete(id);
+  const deletedStudent = await Student.findByIdAndDelete(id);
+  if (!deletedStudent) {
+    throw new Error("Student not found.");
+  }
+  return deletedStudent;
 };
 
 export {

@@ -1,5 +1,5 @@
 import { Group } from "../Schema/model";
-import { IgroupData } from "../helper/interfaces";
+import { ILookup, IgroupData } from "../helper/interfaces";
 import { searchAndPaginate } from "../utils/searchAndPaginate";
 
 export const createGroupService = async (data: {}) => {
@@ -21,6 +21,20 @@ export const readAllGroupService = async (
     { field: "startTime", type: "string" },
     { field: "endTime", type: "string" },
   ];
+  const lookups: ILookup[] = [
+    {
+      from: "users",
+      localField: "teacher",
+      foreignField: "id",
+      as: "teacher",
+    },
+    {
+      from: "subjects",
+      localField: "subject",
+      foreignField: "id",
+      as: "subject",
+    },
+  ];
   const data = await searchAndPaginate(
     Group,
     page,
@@ -29,7 +43,8 @@ export const readAllGroupService = async (
     select,
     query,
     find,
-    groupFields
+    groupFields,
+    lookups
   );
   return data;
 };
@@ -49,6 +64,14 @@ export const readGroupsByTeacherId = async (
     { field: "startTime", type: "string" },
     { field: "endTime", type: "string" },
   ];
+  const lookups: ILookup[] = [
+    {
+      from: "subjects",
+      localField: "subject",
+      foreignField: "id",
+      as: "subject",
+    },
+  ];
   const data = await searchAndPaginate(
     Group,
     page,
@@ -57,7 +80,8 @@ export const readGroupsByTeacherId = async (
     select,
     query,
     find,
-    groupFields
+    groupFields,
+    lookups
   );
   return data;
 };

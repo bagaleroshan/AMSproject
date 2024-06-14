@@ -13,3 +13,10 @@ export interface IuserData {
 export interface IgroupData {
   teacher?: string;
 }
+
+export interface ILookup {
+  from: string;
+  localField: string;
+  foreignField: string;
+  as: string;
+}
