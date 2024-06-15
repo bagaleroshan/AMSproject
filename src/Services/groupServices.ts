@@ -1,5 +1,5 @@
 import { Group } from "../Schema/model";
-import { ILookup, IgroupData } from "../helper/interfaces";
+import { ILookup } from "../helper/interfaces";
 import { searchAndPaginate } from "../utils/searchAndPaginate";
 
 export const createGroupService = async (data: {}) => {
@@ -87,8 +87,6 @@ export const readGroupsByTeacherId = async (
 };
 
 export let readSpecificGroupService = async (id: string) => {
-  // return await Group.findById(id).populate("subject");
-
   return await Group.findById(id)
     .populate({
       path: "subject",
