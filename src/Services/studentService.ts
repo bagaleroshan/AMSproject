@@ -39,17 +39,19 @@ let updateStudentService = async (id: string, data: {}) => {
 };
 
 let deleteStudentService = async (id: string) => {
-  const studentAssignedToGroup = await Group.findOne({
+  const studentAssignedToGroup = await Group.find({
     students: id,
   });
-  const attendanceCount = await Attendance.countDocuments({
+  const attendanceRecords = await Attendance.find({
     studentId: id,
     status: true,
   });
 
-  if (studentAssignedToGroup && attendanceCount >= 15) {
+  if (studentAssignedToGroup && attendanceRecords.length >= 15) {
     throw new Error("Student cannot be deleted as are assigned to a group.");
   }
+  await Attendance.deleteMany({ studentId: id });
+  await Group.updateMany({ students: id }, { $pull: { students: id } });
   const deletedStudent = await Student.findByIdAndDelete(id);
   if (!deletedStudent) {
     throw new Error("Student not found.");
