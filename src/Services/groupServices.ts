@@ -1,4 +1,4 @@
-import { Group } from "../Schema/model";
+import { Group, Student } from "../Schema/model";
 import { ILookup } from "../helper/interfaces";
 import { searchAndPaginate } from "../utils/searchAndPaginate";
 
@@ -95,6 +95,10 @@ export let readSpecificGroupService = async (id: string) => {
     .populate({
       path: "teacher",
       model: "User",
+    })
+    .populate({
+      path: "students",
+      model: "Student",
     });
 };
 
@@ -114,10 +118,18 @@ export const addStudentGroupService = async (
     throw new Error("Group not found");
   } else {
     let outStudent = [...new Set([...group.students, ...students])];
-    return await Group.findByIdAndUpdate(
+    let updatedGroup = await Group.findByIdAndUpdate(
       id,
       { students: outStudent },
       { new: true }
     );
+    for (const studentId of students) {
+      await Student.findByIdAndUpdate(
+        studentId,
+        { $addToSet: { groups: id } },
+        { new: true }
+      );
+    }
+    return updatedGroup;
   }
 };

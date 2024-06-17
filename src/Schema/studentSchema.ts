@@ -18,6 +18,12 @@ export const studentSchema = new Schema(
       type: String,
       required: [true, "phoneNumber field is required"],
     },
+    groups: [
+      {
+        type: Schema.ObjectId,
+        ref: "Group",
+      },
+    ],
   },
   {
     timestamps: true,
