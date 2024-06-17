@@ -95,6 +95,10 @@ export let readSpecificGroupService = async (id: string) => {
     .populate({
       path: "teacher",
       model: "User",
+    })
+    .populate({
+      path: "students",
+      model: "Student",
     });
 };
 
