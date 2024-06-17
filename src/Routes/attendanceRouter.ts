@@ -2,7 +2,6 @@ import { Router } from "express";
 
 import {
   createAttendanceController,
-  deleteAttendanceController,
   readAllAttendanceController,
 } from "../Controllers/attendanceController";
 import isAuthenticated from "../middleware/isAuthenticated";
@@ -24,9 +23,9 @@ attendanceRouter
     isAuthenticated,
     isAuthorized(["teacher", "admin"]),
     createAttendanceController
-  )
-  .delete(
-    isAuthenticated,
-    isAuthorized(["admin", "superAdmin"]),
-    deleteAttendanceController
   );
+// .delete(
+//   isAuthenticated,
+//   isAuthorized(["admin", "superAdmin"]),
+//   deleteAttendanceController
+// );

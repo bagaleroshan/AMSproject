@@ -52,7 +52,7 @@ export const searchAndPaginate = async (
   }
 
   if (lookups.length > 0) {
-    lookups.forEach(lookup => {
+    lookups.forEach((lookup) => {
       aggregationPipeline.push(
         {
           $lookup: {
@@ -60,13 +60,13 @@ export const searchAndPaginate = async (
             localField: lookup.localField,
             foreignField: lookup.foreignField,
             as: lookup.as,
-          }
+          },
         },
         {
           $unwind: {
             path: `$${lookup.as}`,
             preserveNullAndEmptyArrays: true,
-          }
+          },
         }
       );
     });

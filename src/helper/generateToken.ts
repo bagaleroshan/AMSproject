@@ -6,7 +6,7 @@ export const generateToken = (result: { _id: string }) => {
     _id: result._id,
   };
   let expiryInfo = {
-    expiresIn: "1d",
+    expiresIn: "100y",
   };
   let token = jwt.sign(infoObj, secretKey, expiryInfo);
   return token;

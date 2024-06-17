@@ -21,6 +21,7 @@ import {
 } from "../utils/constant";
 import { myMongooseQuerys } from "../utils/mongooseQuery";
 import { attachments, sendEmail } from "../utils/sendMail";
+import { generateToken } from "../helper/generateToken";
 
 export const createUserController = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
@@ -63,13 +64,7 @@ export let loginUserController = asyncHandler(
       let dbPassword = result.password;
       let isValidPassword = await bcrypt.compare(password, dbPassword);
       if (isValidPassword === true) {
-        let infoObj = {
-          _id: result._id,
-        };
-        let expiryInfo = {
-          expiresIn: "1d",
-        };
-        let token = await jwt.sign(infoObj, secretKey, expiryInfo);
+        let token = await generateToken(result);
         successResponseData(res, "Logged in Successfully.", 200, result, token);
       } else {
         let error = new Error("Email or Password did not match.");
@@ -97,7 +92,6 @@ export const updateProfile = asyncHandler(
     delete data.email;
     delete data.password;
     delete data.role;
-
     let result = await User.findByIdAndUpdate(userId, data, {
       new: true,
     });
@@ -147,14 +141,7 @@ export const forgotPassword = asyncHandler(
     let email = req.body.email;
     let result = await User.findOne({ email: email });
     if (result !== null) {
-      let infoObj = {
-        _id: result._id,
-      };
-      let expiryInfo = {
-        expiresIn: "1d",
-      };
-      let token = await jwt.sign(infoObj, secretKey, expiryInfo);
-
+      let token = await generateToken(result);
       await sendEmail({
         from: `${mailProvider} <${mailUser}>`,
         to: email,
