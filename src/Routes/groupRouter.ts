@@ -37,6 +37,7 @@ groupRouter
     isAuthorized(["admin", "superAdmin"]),
     addStudentGroupController
   );
+
 groupRouter.route("/teacher").get(isAuthenticated, readRelatedGroupController);
 groupRouter
   .route("/:id")

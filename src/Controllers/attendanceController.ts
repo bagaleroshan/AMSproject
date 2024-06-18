@@ -3,8 +3,8 @@ import asyncHandler from "express-async-handler";
 
 import {
   createAttendanceService,
-  deleteAttendanceService,
   readAllAttendanceService,
+  readSpecificAttendanceService,
 } from "../Services/attendanceServices";
 import successResponseData from "../helper/successResponse";
 import { AuthenticatedRequest } from "../middleware/isAuthenticated";
@@ -38,6 +38,13 @@ export const readAllAttendanceController = asyncHandler(
     successResponseData(res, "Successfully Read All Attendances.", 200, result);
   }
 );
+
+export const readSpecificStudentController = asyncHandler(
+  async (req: Request, res: Response) => {
+    let result = await readSpecificAttendanceService(req.params.groupId);
+    successResponseData(res, "Read Successfully.", 200, result);
+  }
+);
 // export const updateAttendanceController = asyncHandler(
 //   async (req: Request, res: Response) => {
 //     let result = await updateAttendanceService(req.params.id, req.body);
@@ -45,9 +52,9 @@ export const readAllAttendanceController = asyncHandler(
 //   }
 // );
 
-export const deleteAttendanceController = asyncHandler(
-  async (req: Request, res: Response) => {
-    let result = await deleteAttendanceService(req.params.id);
-    successResponseData(res, "Successfully Deleted.", 200, result);
-  }
-);
+// export const deleteAttendanceController = asyncHandler(
+//   async (req: Request, res: Response) => {
+//     let result = await deleteAttendanceService(req.params.id);
+//     successResponseData(res, "Successfully Deleted.", 200, result);
+//   }
+// );

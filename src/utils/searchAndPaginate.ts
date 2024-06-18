@@ -1,3 +1,5 @@
+import { ILookup } from "../helper/interfaces";
+
 export const searchAndPaginate = async (
   Model: any,
   page: number,
@@ -6,7 +8,8 @@ export const searchAndPaginate = async (
   select: string,
   query: string,
   find: {},
-  fields: { field: string; type: string }[]
+  fields: { field: string; type: string }[],
+  lookups: ILookup[] = []
 ) => {
   const aggregationPipeline = [];
   let projection: { [key: string]: any } = {};
@@ -14,6 +17,7 @@ export const searchAndPaginate = async (
   fields.forEach(({ field }) => {
     projection[field] = 1;
   });
+
   let matchStage = { $match: find };
   if (query) {
     matchStage = {
@@ -47,17 +51,40 @@ export const searchAndPaginate = async (
     aggregationPipeline.push({ $project: projection });
   }
 
+  if (lookups.length > 0) {
+    lookups.forEach((lookup) => {
+      aggregationPipeline.push(
+        {
+          $lookup: {
+            from: lookup.from,
+            localField: lookup.localField,
+            foreignField: lookup.foreignField,
+            as: lookup.as,
+          },
+        },
+        {
+          $unwind: {
+            path: `$${lookup.as}`,
+            preserveNullAndEmptyArrays: true,
+          },
+        }
+      );
+    });
+  }
+
   if (sort) {
     const sortFields: { [key: string]: number } = sort
-      .split(" ")
+      .split(",")
       .reduce((acc, field) => {
-        const [key, order] = field.split(":");
-        acc[key] = order === "desc" ? -1 : 1;
+        if (field.startsWith("-")) {
+          acc[field.substring(1)] = -1;
+        } else {
+          acc[field] = 1;
+        }
         return acc;
       }, {} as { [key: string]: number });
     aggregationPipeline.push({ $sort: sortFields });
   }
-
   const countPipeline = [...aggregationPipeline, { $count: "count" }];
   const matchedDocs = await Model.aggregate(countPipeline).exec();
   const totalMatchedDocs = matchedDocs[0]?.count || 0;

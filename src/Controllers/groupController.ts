@@ -4,12 +4,12 @@ import { Types } from "mongoose";
 import {
   addStudentGroupService,
   createGroupService,
+  deleteGroupService,
   readAllGroupService,
   readGroupsByTeacherId,
   readSpecificGroupService,
   updateGroupService,
 } from "../Services/groupServices";
-import { deleteStudentService } from "../Services/studentService";
 import successResponseData from "../helper/successResponse";
 import { AuthenticatedRequest } from "../middleware/isAuthenticated";
 import { myMongooseQuerys } from "../utils/mongooseQuery";
@@ -80,7 +80,7 @@ export const updateGroupController = asyncHandler(
 
 export const deleteGroupController = asyncHandler(
   async (req: Request, res: Response) => {
-    let result = await deleteStudentService(req.params.id);
+    let result = await deleteGroupService(req.params.id);
     successResponseData(res, "Successfully Deleted.", 200, result);
   }
 );
