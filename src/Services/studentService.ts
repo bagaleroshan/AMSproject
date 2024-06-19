@@ -17,6 +17,7 @@ let readAllStudentService = async (
     { field: "fullName", type: "string" },
     { field: "email", type: "string" },
     { field: "phoneNumber", type: "string" },
+    { field: "groups", type: "string" },
   ];
   const data = await searchAndPaginate(
     Student,
