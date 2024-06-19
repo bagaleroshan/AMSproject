@@ -97,7 +97,7 @@ export const attendanceData = (groupId: string, data: IData) => {
       date: data.date,
       groupId,
       studentId: student.studentId,
-      status: student.status,
+      present: student.present,
     };
   });
 };

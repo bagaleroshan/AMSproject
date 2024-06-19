@@ -59,7 +59,7 @@ export const updateSpecificStudentController = asyncHandler(
       let accumulator = await accumulatorPromise;
 
       // Update the document and push the result to accumulator
-      let updatedDoc = await Attendance.findByIdAndUpdate(num.attendenceId, { status: num.status }, { new: true });
+      let updatedDoc = await Attendance.findByIdAndUpdate(num.attendenceId, { present: num.present }, { new: true });
       accumulator.push({ success: (updatedDoc)  });
       return accumulator;
     }, Promise.resolve([]) as any);
