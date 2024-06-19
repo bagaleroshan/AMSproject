@@ -58,16 +58,9 @@ export const readSpecificAttendanceService = async (
 ) => {
   return await getAttendanceByDate(groupId, date);
 };
-export const updateSpecificAttendanceService = async (
-  AttendenceData:[{}]
-) => {
-  console.log('fasfdsfas')
-  return await AttendenceData.map((val,i)=>{return  console.log(val)})
+export const updateSpecificAttendanceService = async (AttendenceData: [{}]) => {
+  console.log("fasfdsfas");
+  return await AttendenceData.map((val, i) => {
+    return console.log(val);
+  });
 };
-
-// export const updateAttendanceService = async (id: string, data: {}) => {
-//   return await Attendance.findByIdAndUpdate();
-// };
-// export const deleteAttendanceService = async (id: string) => {
-//   return await Attendance.findByIdAndDelete(id);
-// };

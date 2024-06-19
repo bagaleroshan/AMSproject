@@ -1,17 +1,16 @@
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 
+import { Attendance } from "../Schema/model";
 import {
   createAttendanceService,
   readAllAttendanceService,
   readSpecificAttendanceService,
-  updateSpecificAttendanceService,
 } from "../Services/attendanceServices";
+import { IUAttendance } from "../helper/interfaces";
 import successResponseData from "../helper/successResponse";
 import { AuthenticatedRequest } from "../middleware/isAuthenticated";
 import { myMongooseQuerys } from "../utils/mongooseQuery";
-import { Attendance } from "../Schema/model";
-import { IAttendance, IUAttendance } from "../helper/interfaces";
 
 export const createAttendanceController = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
@@ -54,15 +53,22 @@ export const readSpecificStudentController = asyncHandler(
 export const updateSpecificStudentController = asyncHandler(
   async (req: Request, res: Response) => {
     let numbers: IUAttendance[] = req.body.Students;
-    let result = await numbers.reduce(async (accumulatorPromise, num, index) => {
-      // Wait for the accumulator to resolve before proceeding
-      let accumulator = await accumulatorPromise;
-
-      // Update the document and push the result to accumulator
-      let updatedDoc = await Attendance.findByIdAndUpdate(num.attendenceId, { present: num.present }, { new: true });
-      accumulator.push({ success: (updatedDoc)  });
-      return accumulator;
-    }, Promise.resolve([]) as any);
+    let result = await numbers.reduce(
+      async (accumulatorPromise, num, index) => {
+        // Wait for the accumulator to resolve before proceeding
+        let accumulator = await accumulatorPromise;
+ 
+        // Update the document and push the result to accumulator
+        let updatedDoc = await Attendance.findByIdAndUpdate(
+          num.attendenceId,
+          { present: num.present },
+          { new: true }
+        );
+        accumulator.push({ success: updatedDoc });
+        return accumulator;
+      },
+      Promise.resolve([]) as any
+    );
     successResponseData(res, "Updated Successfully.", 200, result);
   }
 );
