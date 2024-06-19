@@ -4,7 +4,7 @@ import { searchAndPaginate } from "../utils/searchAndPaginate";
 
 interface IAttendance {
   studentId: string;
-  status: boolean;
+  present: boolean;
 }
 interface IData {
   date: string;
@@ -106,7 +106,7 @@ const attendanceData = (groupId: string, data: IData) => {
       date: data.date,
       groupId,
       studentId: student.studentId,
-      status: student.status,
+      status: student.present,
     };
   });
 };

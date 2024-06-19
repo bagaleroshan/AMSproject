@@ -21,7 +21,7 @@ attendanceRouter
   .route("/:groupId")
   .post(
     isAuthenticated,
-    isAuthorized(["teacher", "admin"]),
+    isAuthorized(["teacher", "admin", "superAdmin"]),
     createAttendanceController
   );
 // .delete(
