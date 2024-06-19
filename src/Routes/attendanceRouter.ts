@@ -3,6 +3,8 @@ import { Router } from "express";
 import {
   createAttendanceController,
   readAllAttendanceController,
+  readSpecificStudentController,
+  updateSpecificStudentController,
 } from "../Controllers/attendanceController";
 import isAuthenticated from "../middleware/isAuthenticated";
 import isAuthorized from "../middleware/isAuthorized";
@@ -23,7 +25,18 @@ attendanceRouter
     isAuthenticated,
     isAuthorized(["teacher", "admin", "superAdmin"]),
     createAttendanceController
-  );
+  
+  )
+  .patch(
+   // isAuthenticated,
+   // isAuthorized(["teacher", "admin"]),
+    updateSpecificStudentController
+  
+  )
+  .get(
+    isAuthenticated,
+    isAuthorized(["admin", "superAdmin"]),
+    readSpecificStudentController  );
 // .delete(
 //   isAuthenticated,
 //   isAuthorized(["admin", "superAdmin"]),

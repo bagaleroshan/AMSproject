@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 
+import { Types } from "mongoose";
 import {
   createStudentService,
   deleteStudentService,
@@ -10,11 +11,8 @@ import {
 } from "../Services/studentService";
 import successResponseData from "../helper/successResponse";
 import { myMongooseQuerys } from "../utils/mongooseQuery";
-import { Student } from "../Schema/model";
-import { Types } from "mongoose";
 
 const ObjectId = Types.ObjectId;
-
 export const createStudentController = asyncHandler(
   async (req: Request, res: Response) => {
     let result = await createStudentService(req.body);

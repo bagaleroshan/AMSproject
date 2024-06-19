@@ -1,11 +1,13 @@
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 
+import { Attendance } from "../Schema/model";
 import {
   createAttendanceService,
   readAllAttendanceService,
   readSpecificAttendanceService,
 } from "../Services/attendanceServices";
+import { IUAttendance } from "../helper/interfaces";
 import successResponseData from "../helper/successResponse";
 import { AuthenticatedRequest } from "../middleware/isAuthenticated";
 import { myMongooseQuerys } from "../utils/mongooseQuery";
@@ -41,8 +43,33 @@ export const readAllAttendanceController = asyncHandler(
 
 export const readSpecificStudentController = asyncHandler(
   async (req: Request, res: Response) => {
-    let result = await readSpecificAttendanceService(req.params.groupId);
+    let result = await readSpecificAttendanceService(
+      req.params.groupId,
+      req.body.date
+    );
     successResponseData(res, "Read Successfully.", 200, result);
+  }
+);
+export const updateSpecificStudentController = asyncHandler(
+  async (req: Request, res: Response) => {
+    let numbers: IUAttendance[] = req.body.Students;
+    let result = await numbers.reduce(
+      async (accumulatorPromise, num, index) => {
+        // Wait for the accumulator to resolve before proceeding
+        let accumulator = await accumulatorPromise;
+ 
+        // Update the document and push the result to accumulator
+        let updatedDoc = await Attendance.findByIdAndUpdate(
+          num.attendenceId,
+          { present: num.present },
+          { new: true }
+        );
+        accumulator.push({ success: updatedDoc });
+        return accumulator;
+      },
+      Promise.resolve([]) as any
+    );
+    successResponseData(res, "Updated Successfully.", 200, result);
   }
 );
 // export const updateAttendanceController = asyncHandler(
@@ -50,6 +77,7 @@ export const readSpecificStudentController = asyncHandler(
 //     let result = await updateAttendanceService(req.params.id, req.body);
 //     successResponseData(res, "Successfully Updated.", 201, result);
 //   }
+
 // );
 
 // export const deleteAttendanceController = asyncHandler(

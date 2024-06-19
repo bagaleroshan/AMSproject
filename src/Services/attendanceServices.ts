@@ -1,128 +1,15 @@
-import { group } from "console";
-import { Attendance, Group, User } from "../Schema/model";
+import { Attendance, User } from "../Schema/model";
+import {
+  attendanceData,
+  getAttendanceByDate,
+  groupData,
+  isAttendanceTaken,
+  isClassCrossedLimit,
+  toggleActiveGroup,
+} from "../helper/attendenceServiceFunction";
+import { IData } from "../helper/interfaces";
 import { searchAndPaginate } from "../utils/searchAndPaginate";
 
-interface IAttendance {
-  studentId: string;
-  present: boolean;
-}
-interface IData {
-  date: string;
-  attendance: IAttendance[];
-}
-const groupData = async (
-  groupId: string,
-  teacherId: string,
-  role: string,
-  date: string
-) => {
-  const group = await Group.findById(groupId).populate("subject");
-  if (!group) {
-    throw new Error("Group not found.");
-  }
-
-  const today = new Date().toISOString().split("T")[0];
-  const dateOnly = new Date(date).toISOString().split("T")[0];
-
-  const firstAttendance = await Attendance.find({ groupId }).sort("date");
-
-  const startDate = firstAttendance[0]
-    ? new Date(firstAttendance[0].date).toISOString().split("T")[0]
-    : null;
-
-  if (role === "teacher") {
-    if (group.teacher.toString() !== teacherId) {
-      throw new Error(
-        "You are not authorized to take attendance for this group."
-      );
-    }
-    if (dateOnly !== today) {
-      throw new Error("Teachers can only take attendance for today.");
-    }
-  } else if (role === "admin") {
-    if (!startDate && dateOnly !== today) {
-      throw new Error("First attendance must be taken.");
-    }
-    if (startDate && (dateOnly < startDate || dateOnly > today)) {
-      throw new Error("Attendance cannot be taken on provided date.");
-    }
-  }
-  return group;
-};
-const isClassCrossedLimit = async (groupId: string, group: any) => {
-  const attendanceTaken = await Attendance.find({
-    groupId: groupId,
-    studentId: group.students[0],
-  });
-  if (group.subject.numberOfClasses === attendanceTaken.length) {
-    throw new Error("Maximum number of classes has been reached.");
-  }
-};
-const isAttendanceTaken = async (
-  groupId: string,
-  date: string,
-  role: string
-) => {
-  const providedDate = new Date(date);
-  const startOfProvidedDate = new Date(providedDate);
-  startOfProvidedDate.setHours(0, 0, 0, 0);
-
-  const endOfProvidedDate = new Date(startOfProvidedDate);
-  endOfProvidedDate.setDate(startOfProvidedDate.getDate() + 1);
-
-  const today = new Date();
-  const startOfToday = new Date(today);
-  startOfToday.setHours(0, 0, 0, 0);
-
-  const endOfToday = new Date(startOfToday);
-  endOfToday.setDate(startOfToday.getDate() + 1);
-  const existingAttendances = await Attendance.find({
-    date: {
-      $gte: startOfProvidedDate,
-      $lt: endOfProvidedDate,
-    },
-    groupId: groupId,
-  });
-  if (
-    role === "teacher" &&
-    date !== startOfToday.toISOString().split("T")[0] &&
-    existingAttendances.length > 0
-  ) {
-    throw new Error(`Attendance has already been taken for today.`);
-  }
-
-  if (
-    role === "admin" &&
-    date !== startOfToday.toISOString().split("T")[0] &&
-    existingAttendances.length > 0
-  ) {
-    throw new Error(`Attendance has already been taken for the provided date.`);
-  }
-};
-
-const attendanceData = (groupId: string, data: IData) => {
-  return data.attendance.map((student) => {
-    return {
-      date: data.date,
-      groupId,
-      studentId: student.studentId,
-      status: student.present,
-    };
-  });
-};
-
-const toggleActiveGroup = async (groupId: string, group: any) => {
-  const totalAttendance = await Attendance.find({
-    groupId: groupId,
-    studentId: group.students[0],
-  });
-  if (totalAttendance.length === 1) {
-    await Group.findByIdAndUpdate(groupId, { active: true });
-  }
-  if (totalAttendance.length >= group.subject.numberOfClasses) {
-    await Group.findByIdAndUpdate(groupId, { active: false });
-  }
-};
 export const createAttendanceService = async (
   groupId: string,
   userId: string,
@@ -165,13 +52,15 @@ export const readAllAttendanceService = async (
   return data;
 };
 
-export const readSpecificAttendanceService = async (groupId: string) => {
-  return await Attendance.find({ groupId: groupId });
+export const readSpecificAttendanceService = async (
+  groupId: string,
+  date: string
+) => {
+  return await getAttendanceByDate(groupId, date);
 };
-
-// export const updateAttendanceService = async (id: string, data: {}) => {
-//   return await Attendance.findByIdAndUpdate();
-// };
-// export const deleteAttendanceService = async (id: string) => {
-//   return await Attendance.findByIdAndDelete(id);
-// };
+export const updateSpecificAttendanceService = async (AttendenceData: [{}]) => {
+  console.log("fasfdsfas");
+  return await AttendenceData.map((val, i) => {
+    return console.log(val);
+  });
+};
