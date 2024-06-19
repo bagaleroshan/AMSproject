@@ -11,7 +11,7 @@ import successResponseData from "../helper/successResponse";
 import { AuthenticatedRequest } from "../middleware/isAuthenticated";
 import { myMongooseQuerys } from "../utils/mongooseQuery";
 import { Attendance } from "../Schema/model";
-import { IAttendance } from "../helper/interfaces";
+import { IAttendance, IUAttendance } from "../helper/interfaces";
 
 export const createAttendanceController = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
@@ -53,13 +53,13 @@ export const readSpecificStudentController = asyncHandler(
 );
 export const updateSpecificStudentController = asyncHandler(
   async (req: Request, res: Response) => {
-    let numbers: IAttendance[] = req.body.Students;
+    let numbers: IUAttendance[] = req.body.Students;
     let result = await numbers.reduce(async (accumulatorPromise, num, index) => {
       // Wait for the accumulator to resolve before proceeding
       let accumulator = await accumulatorPromise;
 
       // Update the document and push the result to accumulator
-      let updatedDoc = await Attendance.findByIdAndUpdate(num.studentId, { status: num.status }, { new: true });
+      let updatedDoc = await Attendance.findByIdAndUpdate(num.attendenceId, { status: num.status }, { new: true });
       accumulator.push({ success: (updatedDoc)  });
       return accumulator;
     }, Promise.resolve([]) as any);

@@ -25,6 +25,10 @@ export interface IAttendance {
   studentId: string;
   status: boolean;
 }
+export interface IUAttendance {
+  attendenceId: string;
+  status: boolean;
+}
 export interface IData {
   date: string;
   attendance: IAttendance[];
