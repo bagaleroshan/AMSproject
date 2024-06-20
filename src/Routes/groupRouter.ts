@@ -43,7 +43,7 @@ groupRouter
   .route("/:id")
   .get(
     isAuthenticated,
-    isAuthorized(["admin", "superAdmin"]),
+    isAuthorized(["teacher", "admin", "superAdmin"]),
     readSpecificGroupController
   )
   .patch(

@@ -7,16 +7,19 @@ export const studentSchema = new Schema(
       type: String,
       required: [true, "fullName field is required"],
       lowercase: true,
+      trim: true,
     },
     email: {
       type: String,
       unique: true,
       required: [true, "email field is required"],
       lowercase: true,
+      trim: true,
     },
     phoneNumber: {
       type: String,
       required: [true, "phoneNumber field is required"],
+      trim: true,
     },
     groups: [
       {

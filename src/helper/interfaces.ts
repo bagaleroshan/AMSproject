@@ -20,3 +20,16 @@ export interface ILookup {
   foreignField: string;
   as: string;
 }
+
+export interface IAttendance {
+  studentId: string;
+  present: boolean;
+}
+export interface IUAttendance {
+  attendenceId: string;
+  present: boolean;
+}
+export interface IData {
+  date: string;
+  attendance: IAttendance[];
+}

@@ -17,7 +17,7 @@ const attendanceSchema: Schema = new Schema(
       type: Schema.ObjectId,
       ref: "Group",
     },
-    status: {
+    present: {
       type: Boolean,
       default: false,
     },

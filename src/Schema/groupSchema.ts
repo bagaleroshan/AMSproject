@@ -40,7 +40,7 @@ const groupSchema: Schema = new Schema(
     ],
     active: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     startTime: {
       type: String,

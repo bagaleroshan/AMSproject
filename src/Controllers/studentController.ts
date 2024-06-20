@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
+
+import { Types } from "mongoose";
 import {
   createStudentService,
   deleteStudentService,
@@ -10,6 +12,7 @@ import {
 import successResponseData from "../helper/successResponse";
 import { myMongooseQuerys } from "../utils/mongooseQuery";
 
+const ObjectId = Types.ObjectId;
 export const createStudentController = asyncHandler(
   async (req: Request, res: Response) => {
     let result = await createStudentService(req.body);
@@ -19,17 +22,15 @@ export const createStudentController = asyncHandler(
 
 export const readAllStudentController = asyncHandler(
   async (req: Request, res: Response) => {
-    const { page, limit, sort, select, query, find } = myMongooseQuerys(
+    let { page, limit, sort, select, query, find } = myMongooseQuerys(
       req.query
     );
-    let result = await readAllStudentService(
-      page,
-      limit,
-      sort,
-      select,
-      query,
-      find
-    );
+    const groupId = find.groups;
+    let groupObjectId = new ObjectId(String(groupId));
+    let result = await readAllStudentService(page, limit, sort, select, query, {
+      ...find,
+      groups: groupObjectId,
+    });
     successResponseData(res, "Successfully Read All Student.", 200, result);
   }
 );
