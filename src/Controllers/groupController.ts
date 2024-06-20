@@ -49,9 +49,18 @@ export const readRelatedGroupController = asyncHandler(
     );
     const { ObjectId } = Types;
     const teacherId = req._id;
-    const teacherObjectId =
-      typeof teacherId === "string" ? new ObjectId(teacherId) : teacherId;
+    const teacherObjectId = new ObjectId(teacherId);
+    const activeQueryParam = req.query.active;
+    let active;
+    if (activeQueryParam === "true") {
+      active = true;
+    } else if (activeQueryParam === "false") {
+      active = false;
+    }
     const findQuery: FindQuery = { ...find, teacher: teacherObjectId };
+    if (active !== undefined) {
+      findQuery.active = active;
+    }
     let result = await readGroupsByTeacherId(
       page,
       limit,
@@ -60,7 +69,7 @@ export const readRelatedGroupController = asyncHandler(
       query,
       findQuery
     );
-    successResponseData(res, "Reading Group Successfull.", 200, result);
+    successResponseData(res, "Read Group Successfully.", 200, result);
   }
 );
 
