@@ -114,11 +114,3 @@ export const toggleActiveGroup = async (groupId: string, group: any) => {
     await Group.findByIdAndUpdate(groupId, { active: false });
   }
 };
-
-export const getAttendanceByDate = async (groupId: string, date: string) => {
-  return await Attendance.find({ groupId: groupId, date: date });
-};
-export const patchAttendanceByDate = async (attendenceArray: [{}]) => {
-  attendenceArray.map((val,i)=>{console.log(val)})
- // return await Attendance.findByIdAndUpdate({ groupId: groupId, date: date });
-};
