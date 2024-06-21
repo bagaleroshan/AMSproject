@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 
+import { Types } from "mongoose";
 import {
   createAttendanceService,
   readAllAttendanceService,
@@ -11,6 +12,7 @@ import successResponseData from "../helper/successResponse";
 import { AuthenticatedRequest } from "../middleware/isAuthenticated";
 import { myMongooseQuerys } from "../utils/mongooseQuery";
 
+const ObjectId = Types.ObjectId;
 export const createAttendanceController = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     const teacherId = req._id;
@@ -28,15 +30,42 @@ export const readAllAttendanceController = asyncHandler(
     const { page, limit, sort, select, query, find } = myMongooseQuerys(
       req.query
     );
-    let result = await readAllAttendanceService(
-      page,
-      limit,
-      sort,
-      select,
-      query,
-      find
-    );
-    successResponseData(res, "Successfully Read All Attendances.", 200, result);
+    const groupId = find.groupId;
+    if (groupId) {
+      let groupObjectId = new ObjectId(String(groupId));
+      let result = await readAllAttendanceService(
+        page,
+        limit,
+        sort,
+        select,
+        query,
+        {
+          ...find,
+          groupId: groupObjectId,
+        }
+      );
+      successResponseData(
+        res,
+        "Successfully Read All Attendances.",
+        200,
+        result
+      );
+    } else {
+      let result = await readAllAttendanceService(
+        page,
+        limit,
+        sort,
+        select,
+        query,
+        find
+      );
+      successResponseData(
+        res,
+        "Successfully Read All Attendances.",
+        200,
+        result
+      );
+    }
   }
 );
 
