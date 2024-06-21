@@ -3,6 +3,8 @@ import { Router } from "express";
 import {
   createAttendanceController,
   readAllAttendanceController,
+  readSpecificAttendanceController,
+  updateSpecificAttendanceController,
 } from "../Controllers/attendanceController";
 import isAuthenticated from "../middleware/isAuthenticated";
 import isAuthorized from "../middleware/isAuthorized";
@@ -21,8 +23,18 @@ attendanceRouter
   .route("/:groupId")
   .post(
     isAuthenticated,
-    isAuthorized(["teacher", "admin"]),
+    isAuthorized(["teacher", "admin", "superAdmin"]),
     createAttendanceController
+  )
+  .patch(
+    isAuthenticated,
+    isAuthorized(["superAdmin", "admin"]),
+    updateSpecificAttendanceController
+  )
+  .get(
+    isAuthenticated,
+    isAuthorized(["admin", "superAdmin"]),
+    readSpecificAttendanceController
   );
 // .delete(
 //   isAuthenticated,

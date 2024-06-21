@@ -5,6 +5,7 @@ import {
   createAttendanceService,
   readAllAttendanceService,
   readSpecificAttendanceService,
+  updateSpecificAttendanceService,
 } from "../Services/attendanceServices";
 import successResponseData from "../helper/successResponse";
 import { AuthenticatedRequest } from "../middleware/isAuthenticated";
@@ -39,22 +40,18 @@ export const readAllAttendanceController = asyncHandler(
   }
 );
 
-export const readSpecificStudentController = asyncHandler(
+export const readSpecificAttendanceController = asyncHandler(
   async (req: Request, res: Response) => {
-    let result = await readSpecificAttendanceService(req.params.groupId);
+    let result = await readSpecificAttendanceService(
+      req.params.groupId,
+      req.body.date
+    );
     successResponseData(res, "Read Successfully.", 200, result);
   }
 );
-// export const updateAttendanceController = asyncHandler(
-//   async (req: Request, res: Response) => {
-//     let result = await updateAttendanceService(req.params.id, req.body);
-//     successResponseData(res, "Successfully Updated.", 201, result);
-//   }
-// );
-
-// export const deleteAttendanceController = asyncHandler(
-//   async (req: Request, res: Response) => {
-//     let result = await deleteAttendanceService(req.params.id);
-//     successResponseData(res, "Successfully Deleted.", 200, result);
-//   }
-// );
+export const updateSpecificAttendanceController = asyncHandler(
+  async (req: Request, res: Response) => {
+    let result = await updateSpecificAttendanceService(req.body.students);
+    successResponseData(res, "Updated Successfully.", 201, result);
+  }
+);

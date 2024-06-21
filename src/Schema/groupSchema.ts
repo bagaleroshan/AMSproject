@@ -1,6 +1,10 @@
 import { Schema } from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
+import { IGroup, IgroupData } from "../helper/interfaces";
 
+const startTimeValidator = function (this: IGroup, startTime: string): boolean {
+  return startTime < this.endTime;
+};
 const groupSchema: Schema = new Schema(
   {
     subject: {
@@ -26,11 +30,17 @@ const groupSchema: Schema = new Schema(
     ],
     active: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     startTime: {
       type: String,
       required: true,
+      validate: [
+        {
+          validator: startTimeValidator,
+          message: "Start time must be before end time",
+        },
+      ],
     },
     endTime: {
       type: String,
