@@ -30,19 +30,42 @@ export const readAllAttendanceController = asyncHandler(
     const { page, limit, sort, select, query, find } = myMongooseQuerys(
       req.query
     );
-    let groupObjectId = new ObjectId(String(find.groupId));
-    let result = await readAllAttendanceService(
-      page,
-      limit,
-      sort,
-      select,
-      query,
-      {
-        ...find,
-        groupId: groupObjectId,
-      }
-    );
-    successResponseData(res, "Successfully Read All Attendances.", 200, result);
+    const groupId = find.groupId;
+    if (groupId) {
+      let groupObjectId = new ObjectId(String(groupId));
+      let result = await readAllAttendanceService(
+        page,
+        limit,
+        sort,
+        select,
+        query,
+        {
+          ...find,
+          groupId: groupObjectId,
+        }
+      );
+      successResponseData(
+        res,
+        "Successfully Read All Attendances.",
+        200,
+        result
+      );
+    } else {
+      let result = await readAllAttendanceService(
+        page,
+        limit,
+        sort,
+        select,
+        query,
+        find
+      );
+      successResponseData(
+        res,
+        "Successfully Read All Attendances.",
+        200,
+        result
+      );
+    }
   }
 );
 
