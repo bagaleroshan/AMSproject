@@ -1,3 +1,5 @@
+import { Schema } from "mongoose";
+
 export interface IinfoObj {
   _id: any;
   iat: number;
@@ -32,4 +34,13 @@ export interface IUAttendance {
 export interface IData {
   date: string;
   attendance: IAttendance[];
+}
+export interface IGroup extends Document {
+  subject: typeof Schema.ObjectId;
+  teacher: typeof Schema.ObjectId;
+  groupName: string;
+  students: string[];
+  active: boolean;
+  startTime: string;
+  endTime: string;
 }

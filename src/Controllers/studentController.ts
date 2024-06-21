@@ -25,12 +25,28 @@ export const readAllStudentController = asyncHandler(
     let { page, limit, sort, select, query, find } = myMongooseQuerys(
       req.query
     );
+
     const groupId = find.groups;
-    let groupObjectId = new ObjectId(String(groupId));
-    let result = await readAllStudentService(page, limit, sort, select, query, {
-      ...find,
-      groups: groupObjectId,
-    });
+    if (groupId) {
+      let groupObjectId = new ObjectId(String(groupId));
+      let result = await readAllStudentService(
+        page,
+        limit,
+        sort,
+        select,
+        query,
+        { ...find, groups: groupObjectId }
+      );
+      successResponseData(res, "Successfully Read All Student.", 200, result);
+    }
+    let result = await readAllStudentService(
+      page,
+      limit,
+      sort,
+      select,
+      query,
+      find
+    );
     successResponseData(res, "Successfully Read All Student.", 200, result);
   }
 );

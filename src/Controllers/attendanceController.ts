@@ -1,17 +1,18 @@
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 
-import { Attendance } from "../Schema/model";
+import { Types } from "mongoose";
 import {
   createAttendanceService,
   readAllAttendanceService,
   readSpecificAttendanceService,
+  updateSpecificAttendanceService,
 } from "../Services/attendanceServices";
-import { IUAttendance } from "../helper/interfaces";
 import successResponseData from "../helper/successResponse";
 import { AuthenticatedRequest } from "../middleware/isAuthenticated";
 import { myMongooseQuerys } from "../utils/mongooseQuery";
 
+const ObjectId = Types.ObjectId;
 export const createAttendanceController = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     const teacherId = req._id;
@@ -29,19 +30,46 @@ export const readAllAttendanceController = asyncHandler(
     const { page, limit, sort, select, query, find } = myMongooseQuerys(
       req.query
     );
-    let result = await readAllAttendanceService(
-      page,
-      limit,
-      sort,
-      select,
-      query,
-      find
-    );
-    successResponseData(res, "Successfully Read All Attendances.", 200, result);
+    const groupId = find.groupId;
+    if (groupId) {
+      let groupObjectId = new ObjectId(String(groupId));
+      let result = await readAllAttendanceService(
+        page,
+        limit,
+        sort,
+        select,
+        query,
+        {
+          ...find,
+          groupId: groupObjectId,
+        }
+      );
+      successResponseData(
+        res,
+        "Successfully Read All Attendances.",
+        200,
+        result
+      );
+    } else {
+      let result = await readAllAttendanceService(
+        page,
+        limit,
+        sort,
+        select,
+        query,
+        find
+      );
+      successResponseData(
+        res,
+        "Successfully Read All Attendances.",
+        200,
+        result
+      );
+    }
   }
 );
 
-export const readSpecificStudentController = asyncHandler(
+export const readSpecificAttendanceController = asyncHandler(
   async (req: Request, res: Response) => {
     let result = await readSpecificAttendanceService(
       req.params.groupId,
@@ -50,39 +78,9 @@ export const readSpecificStudentController = asyncHandler(
     successResponseData(res, "Read Successfully.", 200, result);
   }
 );
-export const updateSpecificStudentController = asyncHandler(
+export const updateSpecificAttendanceController = asyncHandler(
   async (req: Request, res: Response) => {
-    let numbers: IUAttendance[] = req.body.Students;
-    let result = await numbers.reduce(
-      async (accumulatorPromise, num, index) => {
-        // Wait for the accumulator to resolve before proceeding
-        let accumulator = await accumulatorPromise;
- 
-        // Update the document and push the result to accumulator
-        let updatedDoc = await Attendance.findByIdAndUpdate(
-          num.attendenceId,
-          { present: num.present },
-          { new: true }
-        );
-        accumulator.push({ success: updatedDoc });
-        return accumulator;
-      },
-      Promise.resolve([]) as any
-    );
-    successResponseData(res, "Updated Successfully.", 200, result);
+    let result = await updateSpecificAttendanceService(req.body.students);
+    successResponseData(res, "Updated Successfully.", 201, result);
   }
 );
-// export const updateAttendanceController = asyncHandler(
-//   async (req: Request, res: Response) => {
-//     let result = await updateAttendanceService(req.params.id, req.body);
-//     successResponseData(res, "Successfully Updated.", 201, result);
-//   }
-
-// );
-
-// export const deleteAttendanceController = asyncHandler(
-//   async (req: Request, res: Response) => {
-//     let result = await deleteAttendanceService(req.params.id);
-//     successResponseData(res, "Successfully Deleted.", 200, result);
-//   }
-// );

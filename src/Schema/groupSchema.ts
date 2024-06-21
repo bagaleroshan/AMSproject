@@ -1,20 +1,10 @@
 import { Schema } from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
-
-interface IGroup extends Document {
-  subject: Schema.Types.ObjectId;
-  teacher: Schema.Types.ObjectId;
-  groupName: string;
-  students: string[];
-  active: boolean;
-  startTime: string;
-  endTime: string;
-}
+import { IGroup } from "../helper/interfaces";
 
 const startTimeValidator = function (this: IGroup, startTime: string): boolean {
   return startTime < this.endTime;
 };
-
 const groupSchema: Schema = new Schema(
   {
     subject: {
