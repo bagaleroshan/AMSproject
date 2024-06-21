@@ -6,6 +6,23 @@ info:
 servers:
   - url: http://localhost:8000
 paths:
+  /cars:
+    post:
+      summary: Create a new student
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarInput'
+      responses:
+        '200':
+          description: Student created successfully
+    get:
+      summary: Get all students
+      responses:
+        '200':
+          description: List of students retrieved successfully
   /students:
     post:
       summary: Create a new student
@@ -90,5 +107,20 @@ components:
           type: integer
           description: The updated age of the student
         grade:
+          type: string
+          description: The updated grade of the student
+    CarInput:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The updated name of the student
+        model:
+          type: string
+          description: The updated age of the student
+        price:
+          type: string
+          description: The updated grade of the student
+        quantity:
           type: string
           description: The updated grade of the student

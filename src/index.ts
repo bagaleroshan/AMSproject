@@ -12,6 +12,7 @@ import path from "path";
 import { groupRouter } from "./Routes/groupRouter";
 import { attendanceRouter } from "./Routes/attendanceRouter";
 import exceljs from 'exceljs';
+import { carRouter } from "./Routes/carRouter";
 
 const jsonData = [
   {Name: "John", "Age": 30, "City": "New York"},
@@ -25,7 +26,7 @@ app.use(cors());
 app.use(express.static(staticFolder));
 app.use(express.json());
 
-const swaggerDocument = YAML.load(path.join("./public", "YAML.yaml"));
+const swaggerDocument = YAML.load(path.join("./public", "swag.yaml"));
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
@@ -35,6 +36,7 @@ app.use("/users", userRouter);
 app.use("/subjects", subjectRouter);
 app.use("/groups", groupRouter);
 app.use("/attendances", attendanceRouter);
+app.use("/cars", carRouter);
 
 app.get('/convert', (req: Request, res: Response) => {
   // Create a new workbook

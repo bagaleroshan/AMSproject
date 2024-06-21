@@ -4,6 +4,7 @@ import { userSchema } from "./userSchema";
 import subjectSchema from "./subjectSchema";
 import groupSchema from "./groupSchema";
 import attendanceSchema from "./attendanceSchema";
+import carSchema from "./carSchema";
 interface iSubject extends Document {
   subjectName: string;
   subjectCode: string;
@@ -49,6 +50,15 @@ export const Group: any = model<
     ) => Promise<any>;
   }
 >("Group", groupSchema);
+export const Car: any = model<
+  typeof Car & {
+    paginate: (
+      filter: any,
+      options: any,
+      callback?: (err: any, result: any) => void
+    ) => Promise<any>;
+  }
+>("Car", carSchema);
 export const Attendance: any = model<
   typeof Attendance & {
     paginate: (
