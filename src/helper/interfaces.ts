@@ -25,11 +25,11 @@ export interface ILookup {
 
 export interface IAttendance {
   studentId: string;
-  present: boolean;
+  status: string;
 }
 export interface IUAttendance {
   attendenceId: string;
-  present: boolean;
+  status: string;
 }
 export interface IData {
   date: string;

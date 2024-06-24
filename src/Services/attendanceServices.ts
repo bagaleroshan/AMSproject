@@ -74,7 +74,7 @@ export const updateSpecificAttendanceService = async (data: IUAttendance[]) => {
   const updatePromises = data.map(async (attendance) => {
     return await Attendance.findByIdAndUpdate(
       attendance.attendenceId,
-      { present: attendance.present },
+      { status: attendance.status },
       { new: true }
     );
   });
