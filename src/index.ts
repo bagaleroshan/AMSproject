@@ -33,8 +33,8 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/students", studentRouter);
 app.use("/users", userRouter);
 app.use("/subjects", subjectRouter);
+app.use("/groups/attendances", attendanceRouter);
 app.use("/groups", groupRouter);
-app.use("/attendances", attendanceRouter);
 
 app.get('/convert', (req: Request, res: Response) => {
   // Create a new workbook
