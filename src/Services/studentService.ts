@@ -45,7 +45,7 @@ let deleteStudentService = async (id: string) => {
   });
   const attendanceRecords = await Attendance.find({
     studentId: id,
-    present: true,
+    status: "P",
   });
 
   if (studentAssignedToGroup && attendanceRecords.length >= 15) {

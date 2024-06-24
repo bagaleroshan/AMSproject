@@ -15,11 +15,12 @@ const attendanceSchema: Schema = new Schema(
     studentId: {
       required: [true, "studentId is Required"],
       type: Schema.ObjectId,
-      ref: "Group",
+      ref: "Student",
     },
-    present: {
-      type: Boolean,
-      default: false,
+    status: {
+      type: String,
+      enum: ["A", "P", "N/T"],
+      default: "N/T",
     },
   },
   {

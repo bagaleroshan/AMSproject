@@ -1,13 +1,12 @@
 import { Attendance, User } from "../Schema/model";
 import {
   attendanceData,
-  getAttendanceByDate,
   groupData,
   isAttendanceTaken,
   isClassCrossedLimit,
   toggleActiveGroup,
 } from "../helper/attendenceServiceFunction";
-import { IData } from "../helper/interfaces";
+import { IData, IGroup, IUAttendance } from "../helper/interfaces";
 import { searchAndPaginate } from "../utils/searchAndPaginate";
 
 export const createAttendanceService = async (
@@ -56,11 +55,28 @@ export const readSpecificAttendanceService = async (
   groupId: string,
   date: string
 ) => {
-  return await getAttendanceByDate(groupId, date);
-};
-export const updateSpecificAttendanceService = async (AttendenceData: [{}]) => {
-  console.log("fasfdsfas");
-  return await AttendenceData.map((val, i) => {
-    return console.log(val);
+  const providedDate = new Date(date);
+  const startOfProvidedDate = new Date(providedDate);
+  startOfProvidedDate.setHours(0, 0, 0, 0);
+
+  const endOfProvidedDate = new Date(startOfProvidedDate);
+  endOfProvidedDate.setDate(startOfProvidedDate.getDate() + 1);
+  return await Attendance.find({
+    date: {
+      $gte: startOfProvidedDate,
+      $lt: endOfProvidedDate,
+    },
+    groupId: groupId,
   });
+};
+
+export const updateSpecificAttendanceService = async (data: IUAttendance[]) => {
+  const updatePromises = data.map(async (attendance) => {
+    return await Attendance.findByIdAndUpdate(
+      attendance.attendenceId,
+      { status: attendance.status },
+      { new: true }
+    );
+  });
+  return await Promise.all(updatePromises);
 };

@@ -60,6 +60,7 @@ export const isAttendanceTaken = async (
 
   const endOfProvidedDate = new Date(startOfProvidedDate);
   endOfProvidedDate.setDate(startOfProvidedDate.getDate() + 1);
+  endOfProvidedDate.setHours(0, 0, 0, 0);
 
   const today = new Date();
   const startOfToday = new Date(today);
@@ -67,6 +68,7 @@ export const isAttendanceTaken = async (
 
   const endOfToday = new Date(startOfToday);
   endOfToday.setDate(startOfToday.getDate() + 1);
+
   const existingAttendances = await Attendance.find({
     date: {
       $gte: startOfProvidedDate,
@@ -83,8 +85,8 @@ export const isAttendanceTaken = async (
   }
 
   if (
-    role === "admin" &&
-    date !== startOfToday.toISOString().split("T")[0] &&
+    (role === "admin" &&
+      date !== startOfProvidedDate.toISOString().split("T")[0]) ||
     existingAttendances.length > 0
   ) {
     throw new Error(`Attendance has already been taken for the provided date.`);
@@ -97,7 +99,7 @@ export const attendanceData = (groupId: string, data: IData) => {
       date: data.date,
       groupId,
       studentId: student.studentId,
-      present: student.present,
+      status: student.status,
     };
   });
 };
@@ -113,12 +115,4 @@ export const toggleActiveGroup = async (groupId: string, group: any) => {
   if (totalAttendance.length >= group.subject.numberOfClasses) {
     await Group.findByIdAndUpdate(groupId, { active: false });
   }
-};
-
-export const getAttendanceByDate = async (groupId: string, date: string) => {
-  return await Attendance.find({ groupId: groupId, date: date });
-};
-export const patchAttendanceByDate = async (attendenceArray: [{}]) => {
-  attendenceArray.map((val,i)=>{console.log(val)})
- // return await Attendance.findByIdAndUpdate({ groupId: groupId, date: date });
 };
