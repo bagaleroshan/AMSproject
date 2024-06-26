@@ -1,10 +1,10 @@
 import { model } from "mongoose";
-import studentSchema from "./studentSchema";
-import { userSchema } from "./userSchema";
-import subjectSchema from "./subjectSchema";
-import groupSchema from "./groupSchema";
 import attendanceSchema from "./attendanceSchema";
-import carSchema from "./carSchema";
+import feedbackSchema from "./feedbackSchema";
+import groupSchema from "./groupSchema";
+import studentSchema from "./studentSchema";
+import subjectSchema from "./subjectSchema";
+import { userSchema } from "./userSchema";
 interface iSubject extends Document {
   subjectName: string;
   subjectCode: string;
@@ -50,15 +50,6 @@ export const Group: any = model<
     ) => Promise<any>;
   }
 >("Group", groupSchema);
-export const Car: any = model<
-  typeof Car & {
-    paginate: (
-      filter: any,
-      options: any,
-      callback?: (err: any, result: any) => void
-    ) => Promise<any>;
-  }
->("Car", carSchema);
 export const Attendance: any = model<
   typeof Attendance & {
     paginate: (
@@ -68,5 +59,14 @@ export const Attendance: any = model<
     ) => Promise<any>;
   }
 >("Attendance", attendanceSchema);
+export const Feedback: any = model<
+  typeof Feedback & {
+    paginate: (
+      filter: any,
+      options: any,
+      callback?: (err: any, result: any) => void
+    ) => Promise<any>;
+  }
+>("Feedback", feedbackSchema);
 
 // export const Subject = model<iSubject>("Subject", subjectSchema);

@@ -28,6 +28,9 @@ const successResponseData = (
   mongoose.connection.db
     .collection("cars")
     .updateMany({}, [{ $set: { id: "$_id" } }]);
+  mongoose.connection.db
+    .collection("feedbacks")
+    .updateMany({}, [{ $set: { id: "$_id" } }]);
   if (token) {
     return res.status(statusCode).json({
       success: true,
