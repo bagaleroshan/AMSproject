@@ -1,6 +1,6 @@
 import { Schema } from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
-import { IGroup } from "../helper/interfaces";
+import { IGroup } from "../utils/interfaces";
 
 const startTimeValidator = function (this: IGroup, startTime: string): boolean {
   return startTime < this.endTime;
