@@ -8,7 +8,7 @@ import {
   readSpecificSubjectService,
   updateSubjectService,
 } from "../Services/subjectServices";
-import successResponseData from "../helper/successResponse";
+import successResponseData from "../utils/successResponse";
 import { myMongooseQuerys } from "../utils/mongooseQuery";
 
 export const createSubjectController = asyncHandler(

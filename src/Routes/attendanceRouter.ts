@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import {
   createAttendanceController,
+  getMonthlyAttendanceReportController,
   readAllAttendanceController,
   readSpecificAttendanceController,
   updateSpecificAttendanceController,
@@ -19,6 +20,13 @@ attendanceRouter
     readAllAttendanceController
   );
 
+attendanceRouter
+  .route("/monthly-report")
+  .get(
+    isAuthenticated,
+    isAuthorized(["teacher", "admin", "superAdmin"]),
+    getMonthlyAttendanceReportController
+  );
 attendanceRouter
   .route("/:groupId")
   .post(

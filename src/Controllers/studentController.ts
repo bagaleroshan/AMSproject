@@ -9,7 +9,7 @@ import {
   readSpecificStudentService,
   updateStudentService,
 } from "../Services/studentService";
-import successResponseData from "../helper/successResponse";
+import successResponseData from "../utils/successResponse";
 import { myMongooseQuerys } from "../utils/mongooseQuery";
 
 const ObjectId = Types.ObjectId;

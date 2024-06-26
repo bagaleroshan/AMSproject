@@ -10,7 +10,7 @@ import {
   readSpecificGroupService,
   updateGroupService,
 } from "../Services/groupServices";
-import successResponseData from "../helper/successResponse";
+import successResponseData from "../utils/successResponse";
 import { AuthenticatedRequest } from "../middleware/isAuthenticated";
 import { myMongooseQuerys } from "../utils/mongooseQuery";
 

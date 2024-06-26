@@ -4,11 +4,12 @@ import asyncHandler from "express-async-handler";
 import { Types } from "mongoose";
 import {
   createAttendanceService,
+  getMonthlyAttendanceReportService,
   readAllAttendanceService,
   readSpecificAttendanceService,
   updateSpecificAttendanceService,
 } from "../Services/attendanceServices";
-import successResponseData from "../helper/successResponse";
+import successResponseData from "../utils/successResponse";
 import { AuthenticatedRequest } from "../middleware/isAuthenticated";
 import { myMongooseQuerys } from "../utils/mongooseQuery";
 
@@ -82,5 +83,22 @@ export const updateSpecificAttendanceController = asyncHandler(
   async (req: Request, res: Response) => {
     let result = await updateSpecificAttendanceService(req.body.students);
     successResponseData(res, "Updated Successfully.", 201, result);
+  }
+);
+
+export const getMonthlyAttendanceReportController = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { groupId, month } = req.query;
+
+    const report = await getMonthlyAttendanceReportService(
+      groupId as string,
+      month as string
+    );
+    successResponseData(
+      res,
+      "Attendance Report Generated Successfully.",
+      200,
+      report
+    );
   }
 );
