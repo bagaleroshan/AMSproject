@@ -1,7 +1,7 @@
-import jwt from "jsonwebtoken";
-import { secretKey } from "../utils/constant";
 import { NextFunction, Request, Response } from "express";
 import asyncHandler from "express-async-handler";
+import jwt from "jsonwebtoken";
+import { secretKey } from "../utils/constant";
 
 export interface AuthenticatedRequest extends Request {
   _id?: string;

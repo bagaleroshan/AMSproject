@@ -10,9 +10,9 @@ import {
   readSpecificGroupService,
   updateGroupService,
 } from "../Services/groupServices";
-import successResponseData from "../utils/successResponse";
 import { AuthenticatedRequest } from "../middleware/isAuthenticated";
 import { myMongooseQuerys } from "../utils/mongooseQuery";
+import successResponseData from "../utils/successResponse";
 
 interface FindQuery {
   teacher?: Types.ObjectId;

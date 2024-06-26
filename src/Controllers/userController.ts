@@ -17,13 +17,13 @@ import {
   mailUser,
 } from "../utils/constant";
 import { generateToken } from "../utils/generateToken";
-import { myMongooseQuerys } from "../utils/mongooseQuery";
-import { attachments, sendEmail } from "../utils/sendMail";
-import successResponseData from "../utils/successResponse";
 import {
   generateCreateEmailHtml,
   generateResetPasswordHtml,
 } from "../utils/htmlContentFormat";
+import { myMongooseQuerys } from "../utils/mongooseQuery";
+import { attachments, sendEmail } from "../utils/sendMail";
+import successResponseData from "../utils/successResponse";
 
 export const createUserController = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {

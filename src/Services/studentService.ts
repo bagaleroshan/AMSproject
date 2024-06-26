@@ -62,8 +62,8 @@ let deleteStudentService = async (id: string) => {
 
 export {
   createStudentService,
-  readSpecificStudentService,
-  readAllStudentService,
-  updateStudentService,
   deleteStudentService,
+  readAllStudentService,
+  readSpecificStudentService,
+  updateStudentService,
 };
