@@ -1,9 +1,7 @@
-import mongoose from "mongoose";
 import { Group, Student } from "../Schema/model";
 import { ILookup } from "../utils/interfaces";
 import { searchAndPaginate } from "../utils/searchAndPaginate";
 
-const { ObjectId } = mongoose.Types;
 export const createGroupService = async (data: {}) => {
   return await Group.create(data);
 };

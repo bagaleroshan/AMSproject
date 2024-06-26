@@ -1,5 +1,5 @@
-import { Attendance, User } from "../Schema/model";
 import { Types } from "mongoose";
+import { Attendance, User } from "../Schema/model";
 import {
   attendanceData,
   groupData,

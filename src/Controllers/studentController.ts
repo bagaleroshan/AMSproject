@@ -9,8 +9,8 @@ import {
   readSpecificStudentService,
   updateStudentService,
 } from "../Services/studentService";
-import successResponseData from "../utils/successResponse";
 import { myMongooseQuerys } from "../utils/mongooseQuery";
+import successResponseData from "../utils/successResponse";
 
 const ObjectId = Types.ObjectId;
 export const createStudentController = asyncHandler(

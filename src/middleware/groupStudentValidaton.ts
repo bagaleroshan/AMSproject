@@ -1,5 +1,5 @@
+import { NextFunction, Request, Response } from "express";
 import asyncHandler from "express-async-handler";
-import { Request, Response, NextFunction } from "express";
 import { Group } from "../Schema/model";
 
 const groupStudentValidation = asyncHandler(

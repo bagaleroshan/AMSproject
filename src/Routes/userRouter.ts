@@ -1,5 +1,4 @@
 import { Router } from "express";
-
 import {
   createUserController,
   deleteUserController,
@@ -13,9 +12,9 @@ import {
   updateProfile,
   updateUserController,
 } from "../Controllers/userController";
-import { validation } from "../middleware/validation";
 import isAuthenticated from "../middleware/isAuthenticated";
 import isAuthorized from "../middleware/isAuthorized";
+import { validation } from "../middleware/validation";
 import { userValidation } from "../validation/userValidation";
 
 export const userRouter = Router();

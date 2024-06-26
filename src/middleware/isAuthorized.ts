@@ -1,7 +1,7 @@
-import asyncHandler from "express-async-handler";
-import { AuthenticatedRequest } from "./isAuthenticated";
 import { NextFunction, Response } from "express";
+import asyncHandler from "express-async-handler";
 import { User } from "../Schema/model";
+import { AuthenticatedRequest } from "./isAuthenticated";
 
 const isAuthorized = (roles: string[]) =>
   asyncHandler(

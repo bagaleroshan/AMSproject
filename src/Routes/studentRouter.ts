@@ -6,10 +6,10 @@ import {
   readSpecificStudentController,
   updateStudentController,
 } from "../Controllers/studentController";
-import { studentValidation } from "../validation/studentValidation";
-import { validation } from "../middleware/validation";
 import isAuthenticated from "../middleware/isAuthenticated";
 import isAuthorized from "../middleware/isAuthorized";
+import { validation } from "../middleware/validation";
+import { studentValidation } from "../validation/studentValidation";
 
 export const studentRouter = Router();
 export const numRouter = Router();
