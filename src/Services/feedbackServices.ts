@@ -9,7 +9,7 @@ let createFeedbackService = async (data: {}) => {
   return await Feedback.create(data);
 };
 const requestFeedbackService = async (data: any[any]) => {
-  data.students.map((val:any,i:any)=>{  emailSender1(val.email)})
+  data.students.map((val:any,i:any)=>{  emailSender1(val,data.id)})
   // Example of directly sending an email to a specific email address
 };
 
