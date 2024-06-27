@@ -88,8 +88,11 @@ export const updateSpecificAttendanceController = asyncHandler(
 
 export const getMonthlyAttendanceReportController = asyncHandler(
   async (req: Request, res: Response) => {
-    const { groupId, month } = req.query;
-
+    const { groupId } = req.params;
+    const { month } = req.query;
+    if (!month || !groupId) {
+      throw new Error("Please select month and group.");
+    }
     const report = await getMonthlyAttendanceReportService(
       groupId as string,
       month as string

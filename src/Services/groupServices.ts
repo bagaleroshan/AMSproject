@@ -1,4 +1,4 @@
-import { Group, Student } from "../Schema/model";
+import { Attendance, Group, Student } from "../Schema/model";
 import { ILookup } from "../utils/interfaces";
 import { searchAndPaginate } from "../utils/searchAndPaginate";
 
@@ -138,3 +138,28 @@ export const addStudentGroupService = async (
     return updatedGroup;
   }
 };
+// export const getTodayAttendanceGroupsCount = async (): Promise<number> => {
+//   const todayStart = startOfToday();
+//   const todayEnd = endOfToday();
+
+//   const todayAttendanceGroups = await Attendance.aggregate([
+//     {
+//       $match: {
+//         date: {
+//           $gte: todayStart,
+//           $lte: todayEnd,
+//         },
+//       },
+//     },
+//     {
+//       $group: {
+//         _id: "$groupId",
+//       },
+//     },
+//     {
+//       $count: "groupCount",
+//     },
+//   ]);
+
+//   return todayAttendanceGroups.length > 0 ? todayAttendanceGroups[0].groupCount : 0;
+// };

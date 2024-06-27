@@ -20,13 +20,13 @@ attendanceRouter
     readAllAttendanceController
   );
 
-attendanceRouter
-  .route("/monthly-report")
-  .get(
-    isAuthenticated,
-    isAuthorized(["teacher", "admin", "superAdmin"]),
-    getMonthlyAttendanceReportController
-  );
+// attendanceRouter
+//   .route("/monthly-report")
+//   .get(
+//     isAuthenticated,
+//     isAuthorized(["teacher", "admin", "superAdmin"]),
+//     getMonthlyAttendanceReportController
+//   );
 attendanceRouter
   .route("/:groupId")
   .post(
@@ -49,3 +49,11 @@ attendanceRouter
 //   isAuthorized(["admin", "superAdmin"]),
 //   deleteAttendanceController
 // );
+
+attendanceRouter
+  .route("/:groupId/monthly-report")
+  .get(
+    isAuthenticated,
+    isAuthorized(["admin", "superAdmin"]),
+    getMonthlyAttendanceReportController
+  );
