@@ -13,7 +13,8 @@ const ObjectId = Types.ObjectId;
 
 export const createFeedbackController = asyncHandler(
   async (req: Request, res: Response) => {
-    let result = await createFeedbackService(req.body);
+    let token = req.query.token as string
+    let result = await createFeedbackService(req.body,token);
     successResponseData(res, "Feedback created Successfully.", 201, result);
   }
 );

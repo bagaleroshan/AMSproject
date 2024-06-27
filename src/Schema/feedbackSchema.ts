@@ -41,6 +41,10 @@ export const feedbackSchema = new Schema(
         type:Number,
         required:[true,"feelChangeOnYourself field is required"]
     },
+    description:{
+      type:String,
+      required:[true,"description is required"]
+    },
     student:
       {
         type:Schema.ObjectId,

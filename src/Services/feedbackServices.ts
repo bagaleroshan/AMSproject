@@ -1,11 +1,18 @@
 import { Feedback, Student } from "../Schema/model";
 import { emailSender, emailSender1 } from "../helper/emailSender";
 import { ILookup } from "../helper/interfaces";
+import { secretKey } from "../utils/constant";
 import { searchAndPaginate } from "../utils/searchAndPaginate";
 import { sendEmail } from "../utils/sendMail";
 import { readSpecificGroupService } from "./groupServices";
+import jwt from 'jsonwebtoken';
 
-let createFeedbackService = async (data: {}) => {
+
+let createFeedbackService = async (data: {student:string,group:string},token:string) => {
+    let user: any = await jwt.verify(token, secretKey);
+    data.student=user.studentId
+    data.group=user.groupId
+    // console.log(data)
   return await Feedback.create(data);
 };
 const requestFeedbackService = async (data: any[any]) => {

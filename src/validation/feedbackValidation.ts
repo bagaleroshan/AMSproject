@@ -12,7 +12,7 @@ export const feedbackValidation = Joi.object()
         }
     })
     .required(),
-    hasDeliveredPower: Joi.number()
+    hasDeliveryPower: Joi.number()
     .custom((value,msg:any)=>{
         if(value<=5){
             return true
@@ -48,7 +48,7 @@ export const feedbackValidation = Joi.object()
         }
     })
     .required(),
-    isClassRoomComfort: Joi.number()
+    isClassRoomComfortable: Joi.number()
     .custom((value,msg:any)=>{
         if(value<=5){
             return true
@@ -84,6 +84,7 @@ export const feedbackValidation = Joi.object()
         }
     })
     .required(),
+    description:Joi.string().required(),
     student:Joi.string(),
     group:Joi.string(),
     
