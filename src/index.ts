@@ -29,7 +29,6 @@ const swaggerDocument = YAML.load(path.join("./public", "YAML.yaml"));
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-// Define your routes here
 app.use("/students", studentRouter);
 app.use("/users", userRouter);
 app.use("/subjects", subjectRouter);
@@ -37,22 +36,17 @@ app.use("/groups", groupRouter);
 app.use("/attendances", attendanceRouter);
 
 app.get("/convert", (req: Request, res: Response) => {
-  // Create a new workbook
   const workbook = new exceljs.Workbook();
   const worksheet = workbook.addWorksheet("Sheet1");
 
-  // Add header row
   const headerRow = worksheet.addRow(["Name", "Age", "City"]);
 
-  // Make header row bold
   headerRow.font = { bold: true };
 
-  // Add data rows
   jsonData.forEach((data) => {
     worksheet.addRow([data.Name, data.Age, data.City]);
   });
 
-  // Generate XLSX file
   workbook.xlsx
     .writeBuffer()
     .then((buffer) => {

@@ -30,13 +30,24 @@ export const readAllGroupController = asyncHandler(
     const { page, limit, sort, select, query, find } = myMongooseQuerys(
       req.query
     );
+    const activeQueryParam = req.query.active;
+    let active;
+    if (activeQueryParam === "true") {
+      active = true;
+    } else if (activeQueryParam === "false") {
+      active = false;
+    }
+    const findQuery: FindQuery = { ...find };
+    if (active !== undefined) {
+      findQuery.active = active;
+    }
     let result = await readAllGroupService(
       page,
       limit,
       sort,
       select,
       query,
-      find
+      findQuery
     );
     successResponseData(res, "Successfully Read All Groups.", 200, result);
   }
