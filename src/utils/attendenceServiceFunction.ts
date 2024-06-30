@@ -116,3 +116,37 @@ export const toggleActiveGroup = async (groupId: string, group: any) => {
     await Group.findByIdAndUpdate(groupId, { active: false });
   }
 };
+
+export const getAttendanceDateRange = async (groupId: string) => {
+  const firstAttendance = await Attendance.findOne({ groupId })
+    .sort({ date: 1 })
+    .exec();
+  const lastAttendance = await Attendance.findOne({ groupId })
+    .sort({ date: -1 })
+    .exec();
+
+  if (!firstAttendance || !lastAttendance) {
+    throw new Error("No attendance records found for the group.");
+  }
+
+  return {
+    firstDate: new Date(firstAttendance.date),
+    lastDate: new Date(lastAttendance.date),
+  };
+};
+
+export const getDatesBetween = (startDate: any, endDate: any) => {
+  const dates = [];
+  let currentDate = new Date(startDate);
+  currentDate.setHours(0, 0, 0, 0);
+
+  const endDateObj = new Date(endDate);
+  endDateObj.setHours(0, 0, 0, 0);
+
+  while (currentDate <= endDateObj) {
+    dates.push(new Date(currentDate).toISOString().split("T")[0]);
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+
+  return dates;
+};
