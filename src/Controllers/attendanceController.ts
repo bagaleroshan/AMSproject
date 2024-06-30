@@ -5,6 +5,7 @@ import { Types } from "mongoose";
 import {
   createAttendanceService,
   getMonthlyAttendanceReportService,
+  getTodayAttendanceGroupsCount,
   readAllAttendanceService,
   readSpecificAttendanceService,
   updateSpecificAttendanceService,
@@ -12,6 +13,7 @@ import {
 import { AuthenticatedRequest } from "../middleware/isAuthenticated";
 import { myMongooseQuerys } from "../utils/mongooseQuery";
 import successResponseData from "../utils/successResponse";
+import { group } from "console";
 
 const ObjectId = Types.ObjectId;
 export const createAttendanceController = asyncHandler(
@@ -88,11 +90,7 @@ export const updateSpecificAttendanceController = asyncHandler(
 
 export const getMonthlyAttendanceReportController = asyncHandler(
   async (req: Request, res: Response) => {
-    const { groupId } = req.params;
-    const { month } = req.query;
-    if (!month || !groupId) {
-      throw new Error("Please select month and group.");
-    }
+    const { groupId, month } = req.query;
     const report = await getMonthlyAttendanceReportService(
       groupId as string,
       month as string
@@ -102,6 +100,17 @@ export const getMonthlyAttendanceReportController = asyncHandler(
       "Attendance Report Generated Successfully.",
       200,
       report
+    );
+  }
+);
+export const getTodayAttendanceGroupsCountController = asyncHandler(
+  async (req: Request, res: Response) => {
+    const count = await getTodayAttendanceGroupsCount();
+    successResponseData(
+      res,
+      "Successfully fetched today's attendance groups count.",
+      200,
+      { count }
     );
   }
 );
