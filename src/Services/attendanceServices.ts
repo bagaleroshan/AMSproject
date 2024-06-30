@@ -9,6 +9,7 @@ import {
 } from "../utils/attendenceServiceFunction";
 import { IData, ILookup, IUAttendance } from "../utils/interfaces";
 import { searchAndPaginate } from "../utils/searchAndPaginate";
+import { endOfToday, startOfToday } from "date-fns";
 
 const ObjectId = Types.ObjectId;
 export const createAttendanceService = async (
@@ -84,7 +85,15 @@ export const readSpecificAttendanceService = async (
       $lt: endOfProvidedDate,
     },
     groupId: groupId,
-  });
+  })
+    .populate({
+      path: "groupId",
+      model: "Group",
+    })
+    .populate({
+      path: "studentId",
+      model: "Student",
+    });
 };
 
 export const updateSpecificAttendanceService = async (data: IUAttendance[]) => {
@@ -99,21 +108,27 @@ export const updateSpecificAttendanceService = async (data: IUAttendance[]) => {
 };
 
 export const getMonthlyAttendanceReportService = async (
-  groupId: string,
+  groupId: string | undefined,
   month: string
 ) => {
   const [year, monthIndex] = month.split("-").map(Number);
   const startOfMonth = new Date(year, monthIndex - 1, 1);
   const endOfMonth = new Date(year, monthIndex, 1);
+
+  const matchStage: any = {
+    date: {
+      $gte: startOfMonth,
+      $lt: endOfMonth,
+    },
+  };
+
+  if (groupId) {
+    matchStage.groupId = new ObjectId(groupId);
+  }
+
   const report = await Attendance.aggregate([
     {
-      $match: {
-        groupId: new ObjectId(groupId),
-        date: {
-          $gte: startOfMonth,
-          $lt: endOfMonth,
-        },
-      },
+      $match: matchStage,
     },
     {
       $project: {
@@ -136,4 +151,32 @@ export const getMonthlyAttendanceReportService = async (
     day: entry._id,
     presentees: entry.presentees,
   }));
+};
+
+export const getTodayAttendanceGroupsCount = async () => {
+  const todayStart = startOfToday();
+  const todayEnd = endOfToday();
+
+  const todayAttendanceGroups = await Attendance.aggregate([
+    {
+      $match: {
+        date: {
+          $gte: todayStart,
+          $lte: todayEnd,
+        },
+      },
+    },
+    {
+      $group: {
+        _id: "$groupId",
+      },
+    },
+    {
+      $count: "groupCount",
+    },
+  ]);
+
+  return todayAttendanceGroups.length > 0
+    ? todayAttendanceGroups[0].groupCount
+    : 0;
 };
