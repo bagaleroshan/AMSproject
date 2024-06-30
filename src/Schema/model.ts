@@ -1,9 +1,9 @@
 import { model } from "mongoose";
-import studentSchema from "./studentSchema";
-import { userSchema } from "./userSchema";
-import subjectSchema from "./subjectSchema";
-import groupSchema from "./groupSchema";
 import attendanceSchema from "./attendanceSchema";
+import groupSchema from "./groupSchema";
+import studentSchema from "./studentSchema";
+import subjectSchema from "./subjectSchema";
+import { userSchema } from "./userSchema";
 interface iSubject extends Document {
   subjectName: string;
   subjectCode: string;

@@ -1,7 +1,6 @@
 import nodemailer from "nodemailer";
-import { mailPass, mailUser } from "./constant";
 import path from "path";
-import { string } from "joi";
+import { mailPass, mailUser } from "./constant";
 
 let transporterInfo = {
   host: "smtp.gmail.com",

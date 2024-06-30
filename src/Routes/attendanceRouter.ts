@@ -2,6 +2,8 @@ import { Router } from "express";
 
 import {
   createAttendanceController,
+  getMonthlyAttendanceReportController,
+  getTodayAttendanceGroupsCountController,
   readAllAttendanceController,
   readSpecificAttendanceController,
   updateSpecificAttendanceController,
@@ -20,6 +22,21 @@ attendanceRouter
   );
 
 attendanceRouter
+  .route("/monthly-report")
+  .get(
+    isAuthenticated,
+    isAuthorized(["teacher", "admin", "superAdmin"]),
+    getMonthlyAttendanceReportController
+  );
+
+attendanceRouter
+  .route("/attendance-taken-groups")
+  .get(
+    isAuthenticated,
+    isAuthorized(["admin", "superAdmin"]),
+    getTodayAttendanceGroupsCountController
+  );
+attendanceRouter
   .route("/:groupId")
   .post(
     isAuthenticated,
@@ -36,8 +53,3 @@ attendanceRouter
     isAuthorized(["admin", "superAdmin"]),
     readSpecificAttendanceController
   );
-// .delete(
-//   isAuthenticated,
-//   isAuthorized(["admin", "superAdmin"]),
-//   deleteAttendanceController
-// );

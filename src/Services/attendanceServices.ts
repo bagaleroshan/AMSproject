@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { Attendance, User } from "../Schema/model";
 import {
   attendanceData,
@@ -5,10 +6,12 @@ import {
   isAttendanceTaken,
   isClassCrossedLimit,
   toggleActiveGroup,
-} from "../helper/attendenceServiceFunction";
-import { IData, IGroup, IUAttendance } from "../helper/interfaces";
+} from "../utils/attendenceServiceFunction";
+import { IData, ILookup, IUAttendance } from "../utils/interfaces";
 import { searchAndPaginate } from "../utils/searchAndPaginate";
+import { endOfToday, startOfToday } from "date-fns";
 
+const ObjectId = Types.ObjectId;
 export const createAttendanceService = async (
   groupId: string,
   userId: string,
@@ -38,6 +41,20 @@ export const readAllAttendanceService = async (
     { field: "groupId", type: "string" },
     { field: "studentId", type: "string" },
   ];
+  const lookups: ILookup[] = [
+    {
+      from: "groups",
+      localField: "groupId",
+      foreignField: "id",
+      as: "groupId",
+    },
+    {
+      from: "students",
+      localField: "studentId",
+      foreignField: "id",
+      as: "studentId",
+    },
+  ];
   const data = await searchAndPaginate(
     Attendance,
     page,
@@ -46,7 +63,8 @@ export const readAllAttendanceService = async (
     select,
     query,
     find,
-    attendanceFields
+    attendanceFields,
+    lookups
   );
   return data;
 };
@@ -67,16 +85,98 @@ export const readSpecificAttendanceService = async (
       $lt: endOfProvidedDate,
     },
     groupId: groupId,
-  });
+  })
+    .populate({
+      path: "groupId",
+      model: "Group",
+    })
+    .populate({
+      path: "studentId",
+      model: "Student",
+    });
 };
 
 export const updateSpecificAttendanceService = async (data: IUAttendance[]) => {
   const updatePromises = data.map(async (attendance) => {
     return await Attendance.findByIdAndUpdate(
       attendance.attendenceId,
-      { present: attendance.present },
+      { status: attendance.status },
       { new: true }
     );
   });
   return await Promise.all(updatePromises);
+};
+
+export const getMonthlyAttendanceReportService = async (
+  groupId: string | undefined,
+  month: string
+) => {
+  const [year, monthIndex] = month.split("-").map(Number);
+  const startOfMonth = new Date(year, monthIndex - 1, 1);
+  const endOfMonth = new Date(year, monthIndex, 1);
+
+  const matchStage: any = {
+    date: {
+      $gte: startOfMonth,
+      $lt: endOfMonth,
+    },
+  };
+
+  if (groupId) {
+    matchStage.groupId = new ObjectId(groupId);
+  }
+
+  const report = await Attendance.aggregate([
+    {
+      $match: matchStage,
+    },
+    {
+      $project: {
+        day: { $dayOfMonth: "$date" },
+        status: 1,
+      },
+    },
+    {
+      $group: {
+        _id: "$day",
+        presentees: { $sum: { $cond: [{ $eq: ["$status", "P"] }, 1, 0] } },
+      },
+    },
+    {
+      $sort: { _id: 1 },
+    },
+  ]);
+
+  return report.map((entry: any) => ({
+    day: entry._id,
+    presentees: entry.presentees,
+  }));
+};
+
+export const getTodayAttendanceGroupsCount = async () => {
+  const todayStart = startOfToday();
+  const todayEnd = endOfToday();
+
+  const todayAttendanceGroups = await Attendance.aggregate([
+    {
+      $match: {
+        date: {
+          $gte: todayStart,
+          $lte: todayEnd,
+        },
+      },
+    },
+    {
+      $group: {
+        _id: "$groupId",
+      },
+    },
+    {
+      $count: "groupCount",
+    },
+  ]);
+
+  return todayAttendanceGroups.length > 0
+    ? todayAttendanceGroups[0].groupCount
+    : 0;
 };

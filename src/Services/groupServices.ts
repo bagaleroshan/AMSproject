@@ -1,9 +1,7 @@
-import mongoose from "mongoose";
-import { Group, Student } from "../Schema/model";
-import { ILookup } from "../helper/interfaces";
+import { Attendance, Group, Student } from "../Schema/model";
+import { ILookup } from "../utils/interfaces";
 import { searchAndPaginate } from "../utils/searchAndPaginate";
 
-const { ObjectId } = mongoose.Types;
 export const createGroupService = async (data: {}) => {
   return await Group.create(data);
 };
@@ -140,3 +138,28 @@ export const addStudentGroupService = async (
     return updatedGroup;
   }
 };
+// export const getTodayAttendanceGroupsCount = async (): Promise<number> => {
+//   const todayStart = startOfToday();
+//   const todayEnd = endOfToday();
+
+//   const todayAttendanceGroups = await Attendance.aggregate([
+//     {
+//       $match: {
+//         date: {
+//           $gte: todayStart,
+//           $lte: todayEnd,
+//         },
+//       },
+//     },
+//     {
+//       $group: {
+//         _id: "$groupId",
+//       },
+//     },
+//     {
+//       $count: "groupCount",
+//     },
+//   ]);
+
+//   return todayAttendanceGroups.length > 0 ? todayAttendanceGroups[0].groupCount : 0;
+// };
