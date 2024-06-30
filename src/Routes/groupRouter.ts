@@ -33,8 +33,8 @@ groupRouter
 groupRouter
   .route("/addStudent/:id")
   .patch(
-    isAuthenticated,
-    isAuthorized(["admin", "superAdmin"]),
+    //isAuthenticated,
+  //  isAuthorized(["admin", "superAdmin"]),
     addStudentGroupController
   );
 

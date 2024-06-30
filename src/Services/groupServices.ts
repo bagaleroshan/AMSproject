@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { Group, Student } from "../Schema/model";
+import { Attendance, Group, Student } from "../Schema/model";
 import { ILookup } from "../helper/interfaces";
 import { searchAndPaginate } from "../utils/searchAndPaginate";
 
@@ -115,6 +115,18 @@ export const addStudentGroupService = async (
   id: string,
   students: string[]
 ) => {
+
+  const regex = /^2023/;
+    
+    // Specify the groupid to match
+    const groupid = 'exampleGroup';
+
+    // Find documents matching both conditions
+    const documents = await Attendance.find({ 
+      date: { $regex: regex },
+      groupid: groupid
+    });
+    return documents
   const group = await Group.findById(id);
   if (!group) {
     throw new Error("Group not found");
