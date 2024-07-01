@@ -1,6 +1,8 @@
+import { Types } from "mongoose";
 import { Attendance, Group } from "../Schema/model";
 import { IData } from "./interfaces";
 
+const ObjectId = Types.ObjectId;
 export const groupData = async (
   groupId: string,
   teacherId: string,
@@ -16,11 +18,10 @@ export const groupData = async (
   const dateOnly = new Date(date).toISOString().split("T")[0];
 
   const firstAttendance = await Attendance.find({ groupId }).sort("date");
-
-  const startDate = firstAttendance[0]
-    ? new Date(firstAttendance[0].date).toISOString().split("T")[0]
-    : null;
-
+  const startDate =
+    firstAttendance.length > 0
+      ? new Date(firstAttendance[0].date).toISOString().split("T")[0]
+      : null;
   if (role === "teacher") {
     if (group.teacher.toString() !== teacherId) {
       throw new Error(
@@ -30,12 +31,12 @@ export const groupData = async (
     if (dateOnly !== today) {
       throw new Error("Teachers can only take attendance for today.");
     }
-  } else if (role === "admin") {
+  } else if (role === "admin" || role === "superAdmin") {
     if (!startDate && dateOnly !== today) {
       throw new Error("First attendance must be taken.");
     }
     if (startDate && (dateOnly < startDate || dateOnly > today)) {
-      throw new Error("Attendance cannot be taken on provided date.");
+      throw new Error("Attendance cannot be taken on the provided date.");
     }
   }
   return group;
@@ -117,36 +118,22 @@ export const toggleActiveGroup = async (groupId: string, group: any) => {
   }
 };
 
-export const getAttendanceDateRange = async (groupId: string) => {
-  const firstAttendance = await Attendance.findOne({ groupId })
-    .sort({ date: 1 })
-    .exec();
-  const lastAttendance = await Attendance.findOne({ groupId })
-    .sort({ date: -1 })
-    .exec();
+export const getAttendanceDatesForGroup = async (groupId: string) => {
+  const attendanceDates = await Attendance.aggregate([
+    {
+      $match: {
+        groupId: new ObjectId(groupId),
+      },
+    },
+    {
+      $group: {
+        _id: "$date",
+      },
+    },
+    {
+      $sort: { _id: 1 },
+    },
+  ]).exec();
 
-  if (!firstAttendance || !lastAttendance) {
-    throw new Error("No attendance records found for the group.");
-  }
-
-  return {
-    firstDate: new Date(firstAttendance.date),
-    lastDate: new Date(lastAttendance.date),
-  };
-};
-
-export const getDatesBetween = (startDate: any, endDate: any) => {
-  const dates = [];
-  let currentDate = new Date(startDate);
-  currentDate.setHours(0, 0, 0, 0);
-
-  const endDateObj = new Date(endDate);
-  endDateObj.setHours(0, 0, 0, 0);
-
-  while (currentDate <= endDateObj) {
-    dates.push(new Date(currentDate).toISOString().split("T")[0]);
-    currentDate.setDate(currentDate.getDate() + 1);
-  }
-
-  return dates;
+  return attendanceDates.map((record: any) => record._id);
 };

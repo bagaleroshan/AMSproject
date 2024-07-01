@@ -4,6 +4,7 @@ import asyncHandler from "express-async-handler";
 import { Types } from "mongoose";
 import {
   createAttendanceService,
+  getGroupAttendanceData,
   getMonthlyAttendanceReportService,
   getTodayAttendanceGroupsCount,
   readAllAttendanceService,
@@ -13,7 +14,6 @@ import {
 import { AuthenticatedRequest } from "../middleware/isAuthenticated";
 import { myMongooseQuerys } from "../utils/mongooseQuery";
 import successResponseData from "../utils/successResponse";
-import { group } from "console";
 
 const ObjectId = Types.ObjectId;
 export const createAttendanceController = asyncHandler(
@@ -111,6 +111,19 @@ export const getTodayAttendanceGroupsCountController = asyncHandler(
       "Successfully fetched today's attendance groups count.",
       200,
       { count }
+    );
+  }
+);
+
+export const getGroupAttendanceDataController = asyncHandler(
+  async (req, res) => {
+    const { groupId } = req.params;
+    const result = await getGroupAttendanceData(groupId);
+    successResponseData(
+      res,
+      "Successfully fetched attendance data.",
+      200,
+      result
     );
   }
 );

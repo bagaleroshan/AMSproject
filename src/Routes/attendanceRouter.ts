@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import {
   createAttendanceController,
+  getGroupAttendanceDataController,
   getMonthlyAttendanceReportController,
   getTodayAttendanceGroupsCountController,
   readAllAttendanceController,
@@ -51,5 +52,5 @@ attendanceRouter
   .get(
     isAuthenticated,
     isAuthorized(["admin", "superAdmin"]),
-    readSpecificAttendanceController
+    getGroupAttendanceDataController
   );
