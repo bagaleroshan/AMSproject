@@ -1,9 +1,6 @@
 import { Types } from "mongoose";
 import { Attendance, Group, Student } from "../Schema/model";
-import {
-  getAttendanceDateRange,
-  getDatesBetween,
-} from "../utils/attendenceServiceFunction";
+import { getAttendanceDatesForGroup } from "../utils/attendenceServiceFunction";
 import { ILookup } from "../utils/interfaces";
 import { searchAndPaginate } from "../utils/searchAndPaginate";
 
@@ -138,11 +135,11 @@ export const addStudentGroupService = async (
       { new: true }
     );
   }
+
   if (newStudents.length > 0) {
-    const { firstDate, lastDate } = await getAttendanceDateRange(id);
-    const dates = getDatesBetween(firstDate, lastDate);
-    const attendanceRecords = dates
-      .map((date) => {
+    const attendanceDates = await getAttendanceDatesForGroup(id);
+    const attendanceRecords = attendanceDates
+      .map((date: any) => {
         return newStudents.map((studentId) => ({
           groupId: new ObjectId(id),
           studentId: new ObjectId(studentId),
@@ -154,31 +151,5 @@ export const addStudentGroupService = async (
 
     await Attendance.insertMany(attendanceRecords);
   }
-
   return group;
 };
-// export const getTodayAttendanceGroupsCount = async (): Promise<number> => {
-//   const todayStart = startOfToday();
-//   const todayEnd = endOfToday();
-
-//   const todayAttendanceGroups = await Attendance.aggregate([
-//     {
-//       $match: {
-//         date: {
-//           $gte: todayStart,
-//           $lte: todayEnd,
-//         },
-//       },
-//     },
-//     {
-//       $group: {
-//         _id: "$groupId",
-//       },
-//     },
-//     {
-//       $count: "groupCount",
-//     },
-//   ]);
-
-//   return todayAttendanceGroups.length > 0 ? todayAttendanceGroups[0].groupCount : 0;
-// };

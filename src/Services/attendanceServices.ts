@@ -180,3 +180,46 @@ export const getTodayAttendanceGroupsCount = async () => {
     ? todayAttendanceGroups[0].groupCount
     : 0;
 };
+
+export const getGroupAttendanceData = async (groupId: string) => {
+  const attendanceData = await Attendance.aggregate([
+    {
+      $match: { groupId: new ObjectId(groupId) },
+    },
+    {
+      $lookup: {
+        from: "students",
+        localField: "studentId",
+        foreignField: "_id",
+        as: "studentInfo",
+      },
+    },
+    {
+      $unwind: {
+        path: "$studentInfo",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $group: {
+        _id: "$studentId",
+        studentName: { $first: "$studentInfo.fullName" },
+        attendance: {
+          $push: {
+            date: "$date",
+            status: "$status",
+          },
+        },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        studentName: 1,
+        attendance: 1,
+      },
+    },
+  ]);
+
+  return attendanceData;
+};
