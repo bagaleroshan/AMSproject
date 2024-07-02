@@ -3,18 +3,26 @@ import asyncHandler from "express-async-handler";
 
 import { Types } from "mongoose";
 
-import successResponseData from "../helper/successResponse";
-import { createFeedbackService, deleteFeedbackService, readAllFeedbackService, readSpecificFeedbackService, requestFeedbackService, updateFeedbackService } from "../Services/feedbackServices";
-import { myMongooseQuerys } from "../utils/mongooseQuery";
-import { Student } from "../Schema/model";
+import {
+  createFeedbackService,
+  deleteFeedbackService,
+  getFeedbackByTeacherIdService,
+  readAllFeedbackService,
+  readSpecificFeedbackService,
+  requestFeedbackService,
+  updateFeedbackService,
+} from "../Services/feedbackServices";
 import { readSpecificGroupService } from "../Services/groupServices";
+import successResponseData from "../helper/successResponse";
+import { myMongooseQuerys } from "../utils/mongooseQuery";
 
 const ObjectId = Types.ObjectId;
 
 export const createFeedbackController = asyncHandler(
   async (req: Request, res: Response) => {
-    let token = req.query.token as string
-    let result = await createFeedbackService(req.body,token);
+    let tokenString = req.headers.authorization || "";
+    let token = tokenString.split(" ")[1];
+    let result = await createFeedbackService(req.body, token);
     successResponseData(res, "Feedback created Successfully.", 201, result);
   }
 );
@@ -32,7 +40,7 @@ export const readAllFeedbackController = asyncHandler(
       req.query
     );
 
-    const groupId = find.group;
+    const groupId = find.groupId;
     if (groupId) {
       let groupObjectId = new ObjectId(String(groupId));
       let result = await readAllFeedbackService(
@@ -41,20 +49,20 @@ export const readAllFeedbackController = asyncHandler(
         sort,
         select,
         query,
-        { ...find, group: groupObjectId }
+        { group: groupObjectId }
       );
       successResponseData(res, "Successfully Read All Student.", 200, result);
     }
-      let result = await readAllFeedbackService(
-        page,
-        limit,
-        sort,
-        select,
-        query,
-        find
-      );
-      successResponseData(res, "Successfully Read All Feedback.", 200, result);
-    }
+    let result = await readAllFeedbackService(
+      page,
+      limit,
+      sort,
+      select,
+      query,
+      find
+    );
+    successResponseData(res, "Successfully Read All Feedback.", 200, result);
+  }
 );
 
 export const readSpecificFeedbackController = asyncHandler(
@@ -77,8 +85,27 @@ export const deleteFeedbackController = asyncHandler(
   }
 );
 
-const getStudentEmail = async(groupId:string)=>{
-  let students = await Student.find({
-    groups:groupId
-  })
-}
+export const getFeedbackByTeacherIdController = asyncHandler(
+  async (req: Request, res: Response) => {
+    let { page, limit, sort, select, query, find } = myMongooseQuerys(
+      req.query
+    );
+    let teacherId = req.params.teacherId;
+    let result = await getFeedbackByTeacherIdService(
+      teacherId,
+      page,
+      limit,
+      sort,
+      select,
+      query,
+      find
+    );
+
+    successResponseData(
+      res,
+      "Successfully Read Feedback by Teacher ID.",
+      200,
+      result
+    );
+  }
+);

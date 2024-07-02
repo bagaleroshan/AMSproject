@@ -2,9 +2,8 @@ import { mailProvider, mailUser } from "../utils/constant";
 import {
   attachments,
   htmlContent,
-  htmlContent1,
   sendEmail,
-  subject,
+  subject
 } from "../utils/sendMail";
 import { generateToken1 } from "./generateToken";
 export let emailSender = async (email: string) => {
@@ -30,7 +29,7 @@ export let emailSender1 = async (std: {email:string,id:string}, groupId:string) 
         </head>
         <body>
             <h1>Please follow the link below to fill feedback credentials</h1>
-            <a href="http://localhost:8000/student/feedback?token=${token}" >Click Me For Feedback.</a>     </body>
+            <a href="http://localhost:5173/feedback-form?token=${token}" >Click Here For Feedback.</a> </body>
     </html>
 `,
     attachments: attachments,

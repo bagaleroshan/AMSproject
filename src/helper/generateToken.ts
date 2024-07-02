@@ -1,4 +1,3 @@
-import { group } from "console";
 import { secretKey } from "../utils/constant";
 import jwt from "jsonwebtoken";
 
@@ -14,7 +13,8 @@ export const generateToken = (result: { _id: string }) => {
 };
 export const generateToken1 = (result: { studentId: string,groupId:string }) => {
   let infoObj = {
-    studentId: result.studentId,groupId:result.groupId
+    studentId: result.studentId,
+    groupId:result.groupId
   };
   let expiryInfo = {
     expiresIn: "100y",

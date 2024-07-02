@@ -48,7 +48,8 @@ export const feedbackSchema = new Schema(
     student:
       {
         type:Schema.ObjectId,
-        ref:"Student"
+        ref:"Student",
+        unique: true,
       }
     ,
     group:

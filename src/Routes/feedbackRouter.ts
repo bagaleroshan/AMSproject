@@ -1,26 +1,46 @@
 import { Router } from "express";
 
-import { createFeedbackController, deleteFeedbackController, readAllFeedbackController, readSpecificFeedbackController, requestFeedbackController, updateFeedbackController } from "../Controllers/feedbackController";
+import {
+  createFeedbackController,
+  deleteFeedbackController,
+  getFeedbackByTeacherIdController,
+  readAllFeedbackController,
+  readSpecificFeedbackController,
+  requestFeedbackController,
+  updateFeedbackController,
+} from "../Controllers/feedbackController";
 import isAuthenticated from "../middleware/isAuthenticated";
 import { feedbackValidation } from "../validation/feedbackValidation";
 import { validation } from "../middleware/validation";
+import isAuthorized from "../middleware/isAuthorized";
 
 export const feedbackRouter = Router();
 
 feedbackRouter
   .route("/")
-  .post(
+  .post(validation(feedbackValidation), createFeedbackController)
+  .get(
     isAuthenticated,
-    validation(feedbackValidation),
-    createFeedbackController
-  )
-  .get(isAuthenticated,readAllFeedbackController)
+    isAuthorized(["admin", "superAdmin"]),
+    readAllFeedbackController
+  );
 
-  feedbackRouter
+feedbackRouter
+  .route("/teacher/:teacherId")
+
+  .get(
+    isAuthenticated,
+    isAuthorized(["admin", "superAdmin"]),
+    getFeedbackByTeacherIdController
+  );
+
+feedbackRouter
   .route("/:id")
   .post(requestFeedbackController)
-  .get(isAuthenticated,readSpecificFeedbackController)
-  .patch(isAuthenticated,validation(feedbackValidation),updateFeedbackController)
-  .delete(isAuthenticated,deleteFeedbackController)
-
-
+  .get(isAuthenticated, readSpecificFeedbackController)
+  .patch(
+    isAuthenticated,
+    validation(feedbackValidation),
+    updateFeedbackController
+  )
+  .delete(isAuthenticated, deleteFeedbackController);
