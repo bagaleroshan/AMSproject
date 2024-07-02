@@ -8,8 +8,8 @@ import {
   readSpecificSubjectService,
   updateSubjectService,
 } from "../Services/subjectServices";
-import successResponseData from "../helper/successResponse";
 import { myMongooseQuerys } from "../utils/mongooseQuery";
+import successResponseData from "../utils/successResponse";
 
 export const createSubjectController = asyncHandler(
   async (req: Request, res: Response) => {
@@ -55,3 +55,5 @@ export const deleteSubjectController = asyncHandler(
     successResponseData(res, "Successfully Deleted.", 200, result);
   }
 );
+
+

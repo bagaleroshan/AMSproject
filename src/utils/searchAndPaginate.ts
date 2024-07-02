@@ -1,5 +1,4 @@
-import { match } from "assert";
-import { ILookup } from "../helper/interfaces";
+import { ILookup } from "./interfaces";
 
 export const searchAndPaginate = async (
   Model: any,

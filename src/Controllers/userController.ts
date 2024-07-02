@@ -1,7 +1,6 @@
 import bcrypt from "bcrypt";
 import { NextFunction, Request, Response } from "express";
 import asyncHandler from "express-async-handler";
-import jwt from "jsonwebtoken";
 import { User } from "../Schema/model";
 import {
   createUserService,
@@ -10,45 +9,41 @@ import {
   readSpecificUserService,
   updateUserService,
 } from "../Services/userService";
-import successResponseData from "../helper/successResponse";
 import { AuthenticatedRequest } from "../middleware/isAuthenticated";
 import {
   clientUrl,
   defaultPassword,
   mailProvider,
   mailUser,
-  secretKey,
 } from "../utils/constant";
+import { generateToken } from "../utils/generateToken";
+import {
+  generateCreateEmailHtml,
+  generateResetPasswordHtml,
+} from "../utils/htmlContentFormat";
 import { myMongooseQuerys } from "../utils/mongooseQuery";
 import { attachments, sendEmail } from "../utils/sendMail";
-import { generateToken } from "../helper/generateToken";
+import successResponseData from "../utils/successResponse";
 
 export const createUserController = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     let password = await bcrypt.hash(defaultPassword as string, 10);
     let data = { ...req.body, password };
     let result = await createUserService(data);
+    const emailHtml = generateCreateEmailHtml(
+      defaultPassword as string,
+      clientUrl
+    );
     await sendEmail({
       from: `${mailProvider} <${mailUser}>`,
       to: [req.body.email],
-      subject: "Account Registration",
-      html: `
-      <h1>Your account has been created successfully</h1>
-      <p>Your password is: ${defaultPassword}</p>
-      <a href="${clientUrl}/login">
-      Login
-      </a>
-      <br />
-      <br />
-      <br />
-      <img src="cid:unique_image_cid" width= "100" height = "100">
-
-      `,
+      subject: "Account Registration.",
+      html: emailHtml,
       attachments: attachments,
     });
     successResponseData(
       res,
-      "Successfully created User and Please check your email.",
+      "Registration Successful. Please check your email for login.",
       201,
       result
     );
@@ -142,19 +137,12 @@ export const forgotPassword = asyncHandler(
     let result = await User.findOne({ email: email });
     if (result !== null) {
       let token = await generateToken(result);
+      const emailHtml = generateResetPasswordHtml(clientUrl, token);
       await sendEmail({
         from: `${mailProvider} <${mailUser}>`,
         to: email,
         subject: "Forgot Password?",
-        html: `
-        <h4>Please verify that its you trying to reset your password.</h4><br/>
-        <a href="${clientUrl}/reset-password?token=${token}">
-        ${clientUrl}/reset-password?token=${token}
-        </a><br/>
-        <h4>If you did not request a password reset, no further action is required.</h4><br/>
-        <br/>
-        <img src="cid:unique_image_cid" width= "100" height = "100">
-        `,
+        html: emailHtml,
         attachments: attachments,
       });
       successResponseData(
