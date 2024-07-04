@@ -39,7 +39,7 @@ export const feedbackValidation = Joi.object()
         }
     })
     .required(),
-    isClassFretful: Joi.number()
+    isClassFruitful: Joi.number()
     .custom((value,msg:any)=>{
         if(value<=5){
             return true

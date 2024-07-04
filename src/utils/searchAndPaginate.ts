@@ -18,24 +18,6 @@ export const searchAndPaginate = async (
     projection[field] = 1;
   });
 
-  let matchStage = { $match: find };
-  if (query) {
-    matchStage = {
-      $match: {
-        ...find,
-        $or: fields.map(({ field, type }) => ({
-          [field]:
-            type === "string"
-              ? { $regex: query, $options: "i" }
-              : Number(query),
-        })),
-      },
-    };
-  }
-
-  console.log("aggregation", matchStage);
-  aggregationPipeline.push(matchStage);
-
   if (select) {
     const selectFields: { [key: string]: number } = select
       .split(" ")
@@ -73,6 +55,22 @@ export const searchAndPaginate = async (
       );
     });
   }
+  let matchStage = { $match: find };
+  if (query) {
+    matchStage = {
+      $match: {
+        ...find,
+        $or: fields.map(({ field, type }) => ({
+          [field]:
+            type === "string"
+              ? { $regex: query, $options: "i" }
+              : Number(query),
+        })),
+      },
+    };
+  }
+
+  aggregationPipeline.push(matchStage);
 
   if (sort) {
     const sortFields: { [key: string]: number } = sort

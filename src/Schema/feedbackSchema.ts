@@ -16,48 +16,44 @@ export const feedbackSchema = new Schema(
       type: Number,
       required: [true, "hasSkills field is required"],
     },
-    hasInteraction:{
-        type:Number,
-        required:[true,"hasInteraction field is required"]
+    hasInteraction: {
+      type: Number,
+      required: [true, "hasInteraction field is required"],
     },
 
-    isClassFretful:{
-        type:Number,
-        required:[true,"isClassFretful field is required"]
+    isClassFruitful: {
+      type: Number,
+      required: [true, "isClassFretful field is required"],
     },
-    isClassRoomComfortable:{
-        type:Number,
-        required:[true,"isClassRoomComfort field is required"]
+    isClassRoomComfortable: {
+      type: Number,
+      required: [true, "isClassRoomComfort field is required"],
     },
-    hasClearConversation:{
-        type:Number,
-        required:[true,"hasClearConversation field is required"]
+    hasClearConversation: {
+      type: Number,
+      required: [true, "hasClearConversation field is required"],
     },
-    doesInternetWork:{
-        type:Number,
-        required:[true,"doesInternetWork field is required"]
+    doesInternetWork: {
+      type: Number,
+      required: [true, "doesInternetWork field is required"],
     },
-    feelChangeOnYourself:{
-        type:Number,
-        required:[true,"feelChangeOnYourself field is required"]
+    feelChangeOnYourself: {
+      type: Number,
+      required: [true, "feelChangeOnYourself field is required"],
     },
-    description:{
-      type:String,
-      required:[true,"description is required"]
+    description: {
+      type: String,
+      required: [true, "description is required"],
     },
-    student:
-      {
-        type:Schema.ObjectId,
-        ref:"Student",
-        unique: true,
-      }
-    ,
-    group:
-      {
-        type:Schema.ObjectId,
-        ref:"Group"
-      }
-    
+    student: {
+      type: Schema.ObjectId,
+      ref: "Student",
+      unique: true,
+    },
+    group: {
+      type: Schema.ObjectId,
+      ref: "Group",
+    },
   },
   {
     timestamps: true,
@@ -67,5 +63,3 @@ export const feedbackSchema = new Schema(
 feedbackSchema.plugin(mongoosePaginate);
 
 export default feedbackSchema;
-
-

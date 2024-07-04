@@ -44,7 +44,7 @@ export const readAllAttendanceController = asyncHandler(
         query,
         {
           ...find,
-          groupId: groupObjectId,
+          "groupId._id": groupObjectId,
         }
       );
       successResponseData(

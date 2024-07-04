@@ -37,7 +37,6 @@ let readAllFeedbackService = async (
   query: string,
   find: {}
 ) => {
-  console.log(find, "SErvice***********************");
   const feedbackFields = [
     { field: "onTime", type: "number" },
     { field: "hasDeliveredPower", type: "number" },

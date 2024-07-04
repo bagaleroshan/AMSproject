@@ -64,20 +64,20 @@ export const readAllFeedbackController = asyncHandler(
         sort,
         select,
         query,
-        { group: groupObjectId }
+        { "group._id": groupObjectId }
       );
       successResponseData(res, "Successfully Read All Student.", 200, result);
     }
 
-    // let result = await readAllFeedbackService(
-    //   page,
-    //   limit,
-    //   sort,
-    //   select,
-    //   query,
-    //   find
-    // );
-    // successResponseData(res, "Successfully Read All Feedback.", 200, result);
+    let result = await readAllFeedbackService(
+      page,
+      limit,
+      sort,
+      select,
+      query,
+      find
+    );
+    successResponseData(res, "Successfully Read All Feedback.", 200, result);
   }
 );
 
