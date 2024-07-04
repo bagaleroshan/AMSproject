@@ -13,8 +13,8 @@ import {
   updateFeedbackService,
 } from "../Services/feedbackServices";
 import { readSpecificGroupService } from "../Services/groupServices";
-import successResponseData from "../helper/successResponse";
 import { myMongooseQuerys } from "../utils/mongooseQuery";
+import successResponseData from "../utils/successResponse";
 
 const ObjectId = Types.ObjectId;
 
@@ -41,8 +41,23 @@ export const readAllFeedbackController = asyncHandler(
     );
 
     const groupId = find.groupId;
+    const { teacherId } = req.body;
+
+    if (teacherId) {
+      let teacherObjectId = new ObjectId(String(teacherId));
+      let result = await readAllFeedbackService(
+        page,
+        limit,
+        sort,
+        select,
+        query,
+        { "group.teacher": teacherObjectId, ...find }
+      );
+      successResponseData(res, "Successfully Read All Student.", 200, result);
+    }
     if (groupId) {
       let groupObjectId = new ObjectId(String(groupId));
+
       let result = await readAllFeedbackService(
         page,
         limit,
@@ -53,15 +68,16 @@ export const readAllFeedbackController = asyncHandler(
       );
       successResponseData(res, "Successfully Read All Student.", 200, result);
     }
-    let result = await readAllFeedbackService(
-      page,
-      limit,
-      sort,
-      select,
-      query,
-      find
-    );
-    successResponseData(res, "Successfully Read All Feedback.", 200, result);
+
+    // let result = await readAllFeedbackService(
+    //   page,
+    //   limit,
+    //   sort,
+    //   select,
+    //   query,
+    //   find
+    // );
+    // successResponseData(res, "Successfully Read All Feedback.", 200, result);
   }
 );
 

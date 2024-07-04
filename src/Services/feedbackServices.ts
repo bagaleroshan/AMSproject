@@ -1,10 +1,11 @@
 import jwt from "jsonwebtoken";
 import { Feedback } from "../Schema/model";
 import { emailSender1 } from "../helper/emailSender";
-import { ILookup } from "../helper/interfaces";
+// import { ILookup } from "../helper/interfaces";
 import { secretKey } from "../utils/constant";
 import { searchAndPaginate } from "../utils/searchAndPaginate";
 import { Types } from "mongoose";
+import { ILookup } from "../utils/interfaces";
 
 let createFeedbackService = async (
   data: { student: string; group: string },
@@ -36,6 +37,7 @@ let readAllFeedbackService = async (
   query: string,
   find: {}
 ) => {
+  console.log(find, "SErvice***********************");
   const feedbackFields = [
     { field: "onTime", type: "number" },
     { field: "hasDeliveredPower", type: "number" },

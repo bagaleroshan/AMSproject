@@ -1,5 +1,5 @@
 import { Group, User } from "../Schema/model";
-import { IuserData } from "../helper/interfaces";
+import { IuserData } from "../utils/interfaces";
 import { searchAndPaginate } from "../utils/searchAndPaginate";
 
 export let createUserService = async (data: {}) => {

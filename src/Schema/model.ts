@@ -1,6 +1,6 @@
 import { model } from "mongoose";
-import attendanceSchema from "./attendanceSchema";
 import feedbackSchema from "./feedbackSchema";
+import attendanceSchema from "./attendanceSchema";
 import groupSchema from "./groupSchema";
 import studentSchema from "./studentSchema";
 import subjectSchema from "./subjectSchema";

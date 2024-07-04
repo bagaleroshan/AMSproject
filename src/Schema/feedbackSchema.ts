@@ -68,8 +68,4 @@ feedbackSchema.plugin(mongoosePaginate);
 
 export default feedbackSchema;
 
-/* 
-student 
-group
 
-*/

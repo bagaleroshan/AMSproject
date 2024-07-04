@@ -17,9 +17,10 @@ const attendanceSchema: Schema = new Schema(
       type: Schema.ObjectId,
       ref: "Student",
     },
-    present: {
-      type: Boolean,
-      default: false,
+    status: {
+      type: String,
+      enum: ["A", "P", "-"],
+      default: "-",
     },
   },
   {

@@ -1,11 +1,11 @@
 import { mailProvider, mailUser } from "../utils/constant";
+import { generateToken1 } from "../utils/generateToken";
 import {
   attachments,
   htmlContent,
   sendEmail,
   subject
 } from "../utils/sendMail";
-import { generateToken1 } from "./generateToken";
 export let emailSender = async (email: string) => {
   await sendEmail({
     from: `${mailProvider} <${mailUser}>`,

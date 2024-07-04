@@ -1,6 +1,6 @@
 import { Response } from "express";
 import mongoose from "mongoose";
-import { dbUrl } from "../utils/constant";
+import { dbUrl } from "./constant";
 
 const successResponseData = (
   res: Response,

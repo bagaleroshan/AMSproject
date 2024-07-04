@@ -1,5 +1,4 @@
-import { match } from "assert";
-import { ILookup } from "../helper/interfaces";
+import { ILookup } from "./interfaces";
 
 export const searchAndPaginate = async (
   Model: any,
@@ -33,6 +32,8 @@ export const searchAndPaginate = async (
       },
     };
   }
+
+  console.log("aggregation", matchStage);
   aggregationPipeline.push(matchStage);
 
   if (select) {

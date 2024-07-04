@@ -1,4 +1,4 @@
-import { secretKey } from "../utils/constant";
+import { secretKey } from "./constant";
 import jwt from "jsonwebtoken";
 
 export const generateToken = (result: { _id: string }) => {

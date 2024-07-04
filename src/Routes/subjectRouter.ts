@@ -6,11 +6,11 @@ import {
   readSpecificSubjectController,
   updateSubjectController,
 } from "../Controllers/subjectController";
-import { validation } from "../middleware/validation";
-import { subjectValidation } from "../validation/subjectValidation";
-import validateQueryParams from "../middleware/validateQueryParams";
 import isAuthenticated from "../middleware/isAuthenticated";
 import isAuthorized from "../middleware/isAuthorized";
+import validateQueryParams from "../middleware/validateQueryParams";
+import { validation } from "../middleware/validation";
+import { subjectValidation } from "../validation/subjectValidation";
 
 export const subjectRouter = Router();
 

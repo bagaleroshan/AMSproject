@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import asyncHandler from "express-async-handler";
-import throwError from "../helper/throwError";
+import throwError from "../utils/throwError";
 
 const validateQueryParams = (routeQuery: string[]) =>
   asyncHandler((req: Request, res: Response, next: NextFunction) => {
