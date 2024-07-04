@@ -1,10 +1,11 @@
 import cors from "cors";
-import exceljs from "exceljs";
+import exceljs from 'exceljs';
 import express, { Express, Request, Response } from "express";
 import path from "path";
 import swaggerUi from "swagger-ui-express";
 import * as YAML from "yamljs";
 import { attendanceRouter } from "./Routes/attendanceRouter";
+import { feedbackRouter } from "./Routes/feedbackRouter";
 import { groupRouter } from "./Routes/groupRouter";
 import { studentRouter } from "./Routes/studentRouter";
 import { subjectRouter } from "./Routes/subjectRouter";
@@ -25,7 +26,7 @@ app.use(cors());
 app.use(express.static(staticFolder));
 app.use(express.json());
 
-const swaggerDocument = YAML.load(path.join("./public", "YAML.yaml"));
+const swaggerDocument = YAML.load(path.join("./public", "swag.yaml"));
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
@@ -34,6 +35,7 @@ app.use("/users", userRouter);
 app.use("/subjects", subjectRouter);
 app.use("/groups", groupRouter);
 app.use("/attendances", attendanceRouter);
+app.use("/feedbacks",feedbackRouter)
 
 app.get("/convert", (req: Request, res: Response) => {
   const workbook = new exceljs.Workbook();
