@@ -50,6 +50,7 @@ export const isClassCrossedLimit = async (groupId: string, group: any) => {
     throw new Error("Maximum number of classes has been reached.");
   }
 };
+
 export const isAttendanceTaken = async (
   groupId: string,
   date: string,
@@ -59,16 +60,17 @@ export const isAttendanceTaken = async (
   const startOfProvidedDate = new Date(providedDate);
   startOfProvidedDate.setHours(0, 0, 0, 0);
 
-  const endOfProvidedDate = new Date(startOfProvidedDate);
-  endOfProvidedDate.setDate(startOfProvidedDate.getDate() + 1);
+  const endOfProvidedDate = new Date(providedDate);
+  endOfProvidedDate.setDate(providedDate.getDate() + 1);
   endOfProvidedDate.setHours(0, 0, 0, 0);
 
   const today = new Date();
   const startOfToday = new Date(today);
   startOfToday.setHours(0, 0, 0, 0);
 
-  const endOfToday = new Date(startOfToday);
-  endOfToday.setDate(startOfToday.getDate() + 1);
+  const endOfToday = new Date(today);
+  endOfToday.setDate(today.getDate() + 1);
+  endOfToday.setHours(0, 0, 0, 0);
 
   const existingAttendances = await Attendance.find({
     date: {
@@ -77,19 +79,12 @@ export const isAttendanceTaken = async (
     },
     groupId: groupId,
   });
-  if (
-    role === "teacher" &&
-    date !== startOfToday.toISOString().split("T")[0] &&
-    existingAttendances.length > 0
-  ) {
-    throw new Error(`Attendance has already been taken for today.`);
+
+  if (role === "teacher" && date !== startOfToday.toISOString().split("T")[0]) {
+    throw new Error(`Teachers can only take attendance for today.`);
   }
 
-  if (
-    (role === "admin" &&
-      date !== startOfProvidedDate.toISOString().split("T")[0]) ||
-    existingAttendances.length > 0
-  ) {
+  if (existingAttendances.length > 0) {
     throw new Error(`Attendance has already been taken for the provided date.`);
   }
 };

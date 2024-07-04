@@ -15,3 +15,15 @@ Database: MongoDB
 Authentication: JSON Web Tokens (JWT), bcrypt
 Email: Nodemailer
 Others: TypeScript, Mongoose
+
+superAdmin Credentials:
+-email: "super@admin.com",
+-password:"password@admin"
+
+admin Credentials:
+-email: "shambhuc45@gmail.com",
+-password: "Password@123"
+
+teacher Credentials:
+-email: "chaudharyshambhu04@gmail.com",
+-password: "Password@123"

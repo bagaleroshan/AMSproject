@@ -212,13 +212,6 @@ export const getGroupAttendanceData = async (groupId: string) => {
         },
       },
     },
-    {
-      $project: {
-        _id: 1,
-        studentName: 1,
-        attendance: 1,
-      },
-    },
   ]);
 
   return attendanceData;
