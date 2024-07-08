@@ -55,3 +55,5 @@ export const deleteSubjectController = asyncHandler(
     successResponseData(res, "Successfully Deleted.", 200, result);
   }
 );
+
+
