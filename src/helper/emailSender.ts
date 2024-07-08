@@ -1,10 +1,10 @@
-import { clientUrl, mailProvider, mailUser } from "../utils/constant";
+import { mailProvider, mailUser } from "../utils/constant";
 import { generateToken1 } from "../utils/generateToken";
 import {
   attachments,
   htmlContent,
   sendEmail,
-  subject,
+  subject
 } from "../utils/sendMail";
 export let emailSender = async (email: string) => {
   await sendEmail({
@@ -15,12 +15,10 @@ export let emailSender = async (email: string) => {
     attachments: attachments,
   });
 };
-export let emailSender1 = async (
-  std: { email: string; id: string },
-  groupId: string
-) => {
-  const token = generateToken1({ studentId: std.id, groupId: groupId });
+export let emailSender1 = async (std: {email:string,id:string}, groupId:string) => {
 
+   const token=generateToken1({studentId:std.id,groupId:groupId})
+  
   await sendEmail({
     from: `${mailProvider} <${mailUser}>`,
     to: [std.email],
@@ -31,7 +29,7 @@ export let emailSender1 = async (
         </head>
         <body>
             <h1>Please follow the link below to fill feedback credentials</h1>
-            <a href="${clientUrl}/feedback-form?token=${token}" >Click Here For Feedback.</a> </body>
+            <a href="http://localhost:5173/feedback-form?token=${token}" >Click Here For Feedback.</a> </body>
     </html>
 `,
     attachments: attachments,
