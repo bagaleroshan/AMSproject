@@ -42,7 +42,7 @@ let readAllFeedbackService = async (
     { field: "hasDeliveredPower", type: "number" },
     { field: "hasSkills", type: "number" },
     { field: "hasInteraction", type: "number" },
-    { field: "isClassFretful", type: "number" },
+    { field: "isClassFruitful", type: "number" },
     { field: "isClassRoomComfort", type: "number" },
     { field: "hasClearConversation", type: "number" },
     { field: "doesInternetWork", type: "number" },
