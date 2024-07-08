@@ -3,7 +3,6 @@ import { Router } from "express";
 import {
   createFeedbackController,
   deleteFeedbackController,
-  getFeedbackByGroupIdController,
   getFeedbackByTeacherIdController,
   readAllFeedbackController,
   readSpecificFeedbackController,
@@ -14,7 +13,6 @@ import isAuthenticated from "../middleware/isAuthenticated";
 import { feedbackValidation } from "../validation/feedbackValidation";
 import { validation } from "../middleware/validation";
 import isAuthorized from "../middleware/isAuthorized";
-import { getFeedbackByGroupIdService } from "../Services/feedbackServices";
 
 export const feedbackRouter = Router();
 
@@ -35,12 +33,6 @@ feedbackRouter
     isAuthorized(["admin", "superAdmin"]),
     getFeedbackByTeacherIdController
   );
-
-feedbackRouter
-  .route("/group/:groupId")
-  .get(isAuthenticated,
-    isAuthorized(["admin", "superAdmin"]),getFeedbackByGroupIdController)
-
 
 feedbackRouter
   .route("/:id")

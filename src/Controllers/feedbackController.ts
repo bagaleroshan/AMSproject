@@ -6,7 +6,6 @@ import { Types } from "mongoose";
 import {
   createFeedbackService,
   deleteFeedbackService,
-  getFeedbackByGroupIdService,
   getFeedbackByTeacherIdService,
   readAllFeedbackService,
   readSpecificFeedbackService,
@@ -37,7 +36,7 @@ export const requestFeedbackController = asyncHandler(
 
 export const readAllFeedbackController = asyncHandler(
   async (req: Request, res: Response) => {
-    let { page, limit, sort, select, query,find } = myMongooseQuerys(
+    let { page, limit, sort, select, query, find } = myMongooseQuerys(
       req.query
     );
 
@@ -121,30 +120,6 @@ export const getFeedbackByTeacherIdController = asyncHandler(
     successResponseData(
       res,
       "Successfully Read Feedback by Teacher ID.",
-      200,
-      result
-    );
-  }
-);
-export const getFeedbackByGroupIdController = asyncHandler(
-  async (req: Request, res: Response) => {
-    let { page, limit, sort, select, query, find } = myMongooseQuerys(
-      req.query
-    );
-    let groupId = req.params.groupId;
-    let result = await getFeedbackByGroupIdService(
-      groupId,
-      page,
-      limit,
-      sort,
-      select,
-      query,
-      find
-    );
-
-    successResponseData(
-      res,
-      "Successfully Read Feedback by group ID.",
       200,
       result
     );
