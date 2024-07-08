@@ -1,4 +1,5 @@
 import { model } from "mongoose";
+import feedbackSchema from "./feedbackSchema";
 import attendanceSchema from "./attendanceSchema";
 import groupSchema from "./groupSchema";
 import studentSchema from "./studentSchema";
@@ -58,5 +59,14 @@ export const Attendance: any = model<
     ) => Promise<any>;
   }
 >("Attendance", attendanceSchema);
+export const Feedback: any = model<
+  typeof Feedback & {
+    paginate: (
+      filter: any,
+      options: any,
+      callback?: (err: any, result: any) => void
+    ) => Promise<any>;
+  }
+>("Feedback", feedbackSchema);
 
 // export const Subject = model<iSubject>("Subject", subjectSchema);

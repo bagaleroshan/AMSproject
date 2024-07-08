@@ -1,10 +1,11 @@
 import cors from "cors";
-import exceljs from "exceljs";
+import exceljs from 'exceljs';
 import express, { Express, Request, Response } from "express";
 import path from "path";
 import swaggerUi from "swagger-ui-express";
 import * as YAML from "yamljs";
 import { attendanceRouter } from "./Routes/attendanceRouter";
+import { feedbackRouter } from "./Routes/feedbackRouter";
 import { groupRouter } from "./Routes/groupRouter";
 import { studentRouter } from "./Routes/studentRouter";
 import { subjectRouter } from "./Routes/subjectRouter";
@@ -55,6 +56,7 @@ app.use("/subjects", subjectRouter);
 app.use("/groups/attendances", attendanceRouter);
 app.use("/groups", groupRouter);
 app.use("/file", file);
+app.use("/feedbacks", feedbackRouter);
 
 app.get("/convert", (req: Request, res: Response) => {
   const workbook = new exceljs.Workbook();
