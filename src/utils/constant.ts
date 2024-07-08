@@ -83,21 +83,3 @@ export const validExtensions = [
   ".mp4",
   ".PNG",
 ];
-
-export const options = {
-  definition: {
-    openapi: "3.0.0", // Specification (optional, defaults to swagger: '2.0')
-    info: {
-      title: "Express API with Swagger",
-      version: "1.0.0",
-      description:
-        "A sample API for learning Swagger in Express and TypeScript",
-    },
-    servers: [
-      {
-        url: "http://localhost:8000", // Your server URL
-      },
-    ],
-  },
-  apis: ["./src/Routes/*.ts"], // Path to your API routes
-};
