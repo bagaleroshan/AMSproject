@@ -13,6 +13,7 @@ import { userRouter } from "./Routes/userRouter";
 import { connectToMongo } from "./connectDb/connectToMongo";
 import { port, staticFolder } from "./utils/constant";
 import { errorHandler } from "./utils/errorHandler";
+import swaggerJSDoc from "swagger-jsdoc";
 
 const jsonData = [
   { Name: "John", Age: 30, City: "New York" },
@@ -26,9 +27,26 @@ app.use(cors());
 app.use(express.static(staticFolder));
 app.use(express.json());
 
-const swaggerDocument = YAML.load(path.join("./public", "swag.yaml"));
+const options = {
+  definition: {
+    openapi: "3.0.0", // Specification (optional, defaults to swagger: '2.0')
+    info: {
+      title: "Express API with Swagger",
+      version: "1.0.0",
+      description:
+        "A sample API for learning Swagger in Express and TypeScript",
+    },
+    servers: [
+      {
+        url: "http://localhost:8000", // Your server URL
+      },
+    ],
+  },
+  apis: ["./src/Routes/*.ts"], // Path to your API routes
+};
 
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+const specs = swaggerJSDoc(options);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));;
 
 app.use("/students", studentRouter);
 app.use("/users", userRouter);
