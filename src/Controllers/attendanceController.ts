@@ -43,7 +43,7 @@ export const readAllAttendanceController = asyncHandler(
         select,
         query,
         {
-          ...find,
+          // ...find,
           "groupId._id": groupObjectId,
         }
       );
