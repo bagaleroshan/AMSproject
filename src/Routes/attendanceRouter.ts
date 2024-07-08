@@ -51,7 +51,7 @@ attendanceRouter
   )
   .get(
     isAuthenticated,
-    isAuthorized(["admin", "superAdmin"]),
+    isAuthorized(["teacher", "admin", "superAdmin"]),
     getGroupAttendanceDataController
   );
 /**
