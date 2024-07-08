@@ -73,6 +73,48 @@ userRouter
  *           type: http
  *           scheme: bearer
  *           bearerFormat: JWT
+ * /users/update-password:
+ *   patch:
+ *     summary: update password for a user 
+ *     description: Create a new user with the specified data.
+ *     tags:
+ *        - Users
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserUpdatePassword'
+ * /users/reset-password:
+ *   patch:
+ *     summary: Create a new user 
+ *     description: Create a new user with the specified data.
+ *     tags:
+ *        - Users
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ * /users/forgot-password:
+ *   post:
+ *     summary: Create a new user 
+ *     description: Create a new user with the specified data.
+ *     tags:
+ *        - Users
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ForgotUser'
  * /users:
  *   get:
  *     summary: Retrieve paginated attendance records
@@ -208,12 +250,6 @@ userRouter
  *   schemas:
  *     User:
  *       type: object
- *       required:
- *         - fullName
- *         - email
- *         - password
- *         - phoneNumber
- *         - role
  *       properties:
  *         fullName:
  *           type: string

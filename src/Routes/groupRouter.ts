@@ -66,8 +66,8 @@ groupRouter
  *           bearerFormat: JWT
  * /groups:
  *   get:
- *     summary: Retrieve subjects
- *     description: Retrieves a list of attendance records with pagination support. Can be filtered by groupId or studentId.
+ *     summary: Retrieve groups
+ *     description: Retrieves a list of groups records with pagination support. Can be filtered by groupId or studentId.
  *     security:
  *       - bearerAuth: []     
  *     responses:
@@ -87,28 +87,12 @@ groupRouter
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/User'
+ *             $ref: '#/components/schemas/Group'
  * 
- *   delete:
- *     summary: Delete a  user 
- *     description: Delete a  user 
- *     tags:
- *        - Groups
- *     security:
- *       - bearerAuth: []
- *     requestBody:
- *       required: false
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/User'
- *     responses:
- *       200:
- *         description: OK
- * /users/{id}:
+ * /groups/{id}:
  *   get:
- *     summary: Retrieve paginated attendance records
- *     description: Retrieves a list of attendance records with pagination support. Can be filtered by groupId or studentId.
+ *     summary: Retrieve paginated group records
+ *     description: Retrieves a list of group records with pagination support. Can be filtered by groupId or studentId.
  *     parameters:
  *       - in: path
  *         name: id
@@ -117,13 +101,13 @@ groupRouter
  *       - bearerAuth: []     
  *     responses:
  *       '200':
- *         description: A list of attendance records
+ *         description: A list of group records
  *     tags:
  *       - Groups
  *   
  *   patch:
- *     summary: Update a  user 
- *     description: Update a  user with the specified data.
+ *     summary: Update a  group 
+ *     description: Update a  group with the specified data.
  *     tags:
  *        - Groups
  *     security:
@@ -133,7 +117,7 @@ groupRouter
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/User'
+ *             $ref: '#/components/schemas/Group'
  *     responses:
  *       200:
  *         description: OK
@@ -149,14 +133,14 @@ groupRouter
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/User'
+ *             $ref: '#/components/schemas/Group'
  *     responses:
  *       200:
  *         description: OK
- * /users/login:
+ * /groups/addStudent:
  *   post:
- *         summary: User login
- *         description: Authenticate user credentials and obtain a token.
+ *         summary: add std in a groups
+ *         description: add students in group
  *         tags:
  *          - Groups
  *         requestBody:
@@ -165,14 +149,11 @@ groupRouter
  *            application/json:
  *              schema:
  *               type: object
- *               properties:
- *                 username:
- *                  type: string
- *                 password:
- *                  type: string
  *         responses:
  *               '200':
  *                description: Login successful. Returns a token.
+ 
+ *
 
  *    
 
@@ -182,17 +163,8 @@ groupRouter
  * @swagger
  * components:
  *   schemas:
- *     User:
+ *     Group:
  *       type: object
- *       required:
- *         - subject
- *         - teacher
- *         - password
- *         - groupName
- *         - students
- *         - active
- *         - startTime
- *         - endTime
  *       properties:
  *         subject:
  *           type: string
@@ -220,9 +192,11 @@ groupRouter
  *           default: false
  *           description: Flag indicating if the password has been changed by the user
  *       example:
- *         fullName: John Doe
- *         email: john.doe@example.com
- *         password: password123
- *         phoneNumber: "+1234567890"
- *         role: user
+ *         subject: ''
+ *         teacher: ''
+ *         groupName: ''
+ *         students: ['','']
+ *         active: ''
+ *         startTime: false
+ *         endTime: ''
  */

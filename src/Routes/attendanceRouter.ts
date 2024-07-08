@@ -73,59 +73,14 @@ attendanceRouter
  *         description: A list of attendance records
  *     tags:
  *       - Attendence
- *   post:
- *     summary: Create a new user 
- *     description: Create a new user with the specified data.
- *     tags:
- *        - Attendence
- *     security:
- *       - bearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/User'
- *   patch:
- *     summary: Update a  user 
- *     description: Update a  user with the specified data.
- *     tags:
- *        - Attendence
- *     security:
- *       - bearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/User'
- *     responses:
- *       200:
- *         description: OK
- *   delete:
- *     summary: Delete a  user 
- *     description: Delete a  user 
- *     tags:
- *        - Attendence
- *     security:
- *       - bearerAuth: []
- *     requestBody:
- *       required: false
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/User'
- *     responses:
- *       200:
- *         description: OK
- * /users/{id}:
+ * /groups/attendances/{id}:
  *   get:
  *     summary: Retrieve paginated attendance records
  *     description: Retrieves a list of attendance records with pagination support. Can be filtered by groupId or studentId.
  *     parameters:
  *       - in: path
  *         name: id
- *         required: true
+ *         required: false
  *     security:
  *       - bearerAuth: []     
  *     responses:
@@ -138,15 +93,15 @@ attendanceRouter
  *     summary: Update a  user 
  *     description: Update a  user with the specified data.
  *     tags:
- *        - Students
+ *        - Attendance
  *     security:
  *       - bearerAuth: []
  *     requestBody:
- *       required: true
+ *       required: false
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/User'
+ *             $ref: '#/components/schemas/Attendance'
  *     responses:
  *       200:
  *         description: OK
@@ -166,14 +121,34 @@ attendanceRouter
  *     responses:
  *       200:
  *         description: OK
- * /users/login:
- *   post:
+ * /groups/attendances/monthly-report:
+ *   get:
  *         summary: User login
  *         description: Authenticate user credentials and obtain a token.
  *         tags:
  *          - Attendence
  *         requestBody:
- *          required: true
+ *          required: false
+ *          content:
+ *            application/json:
+ *              schema:
+ *               type: object
+ *               properties:
+ *                 username:
+ *                  type: string
+ *                 password:
+ *                  type: string
+ *         responses:
+ *               '200':
+ *                description: Login successful. Returns a token.
+ * /groups/attendances/attendance-taken-groups:
+ *   get:
+ *         summary: User login
+ *         description: Authenticate user credentials and obtain a token.
+ *         tags:
+ *          - Attendence
+ *         requestBody:
+ *          required: false
  *          content:
  *            application/json:
  *              schema:
@@ -195,14 +170,8 @@ attendanceRouter
  * @swagger
  * components:
  *   schemas:
- *     User:
+ *     Attendance:
  *       type: object
- *       required:
- *         - fullName
- *         - email
- *         - password
- *         - phoneNumber
- *         - role
  *       properties:
  *         fullName:
  *           type: string
@@ -226,9 +195,9 @@ attendanceRouter
  *           default: false
  *           description: Flag indicating if the password has been changed by the user
  *       example:
- *         fullName: John Doe
- *         email: john.doe@example.com
- *         password: password123
- *         phoneNumber: "+1234567890"
+ *         date: ''
+ *         groupId: ''
+ *         studentId: ''
+ *         status: ''
  *         role: user
  */

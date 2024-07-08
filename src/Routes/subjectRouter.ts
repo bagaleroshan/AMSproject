@@ -59,7 +59,7 @@ subjectRouter
  * /subjects:
  *   get:
  *     summary: Retrieve subjects
- *     description: Retrieves a list of attendance records with pagination support. Can be filtered by groupId or studentId.
+ *     description: Retrieves a list of Sujects records with pagination support.
  *     security:
  *       - bearerAuth: []     
  *     responses:
@@ -68,8 +68,8 @@ subjectRouter
  *     tags:
  *       - Subjects
  *   post:
- *     summary: Create a new user 
- *     description: Create a new user with the specified data.
+ *     summary: Create a new Subject 
+ *     description: Create a new Subject with the specified data.
  *     tags:
  *        - Subjects
  *     security:
@@ -79,25 +79,11 @@ subjectRouter
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/User'
- * 
- *   delete:
- *     summary: Delete a  user 
- *     description: Delete a  user 
- *     tags:
- *        - Subjects
- *     security:
- *       - bearerAuth: []
- *     requestBody:
- *       required: false
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/User'
+ *             $ref: '#/components/schemas/Subjects'
  *     responses:
- *       200:
- *         description: OK
- * /users/{id}:
+ *       '200':
+ *         description: A list of sujects records
+ * /subjects/{id}:
  *   get:
  *     summary: Retrieve paginated attendance records
  *     description: Retrieves a list of attendance records with pagination support. Can be filtered by groupId or studentId.
@@ -125,13 +111,13 @@ subjectRouter
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/User'
+ *             $ref: '#/components/schemas/Subjects'
  *     responses:
  *       200:
  *         description: OK
  *   delete:
- *     summary: Delete a  user 
- *     description: Delete a  user 
+ *     summary: Delete a  Subject 
+ *     description: Delete a  Subject 
  *     tags:
  *        - Subjects
  *     security:
@@ -145,69 +131,28 @@ subjectRouter
  *     responses:
  *       200:
  *         description: OK
- * /users/login:
- *   post:
- *         summary: User login
- *         description: Authenticate user credentials and obtain a token.
- *         tags:
- *          - Subjects
- *         requestBody:
- *          required: true
- *          content:
- *            application/json:
- *              schema:
- *               type: object
- *               properties:
- *                 username:
- *                  type: string
- *                 password:
- *                  type: string
- *         responses:
- *               '200':
- *                description: Login successful. Returns a token.
-
- *    
-
  */
 
 /**
  * @swagger
  * components:
  *   schemas:
- *     User:
+ *     Subjects:
  *       type: object
- *       required:
- *         - fullName
- *         - email
- *         - password
- *         - phoneNumber
- *         - role
  *       properties:
- *         fullName:
+ *         subjectName:
  *           type: string
  *           description: Full name of the user
- *         email:
+ *         subjectCode:
  *           type: string
  *           format: email
  *           description: Email address of the user
- *         password:
+ *         numberOfClasses:
  *           type: string
  *           format: password
  *           description: Password of the user
- *         phoneNumber:
- *           type: string
- *           description: Phone number of the user
- *         role:
- *           type: string
- *           description: Role of the user (e.g., admin, user)
- *         isPasswordChanged:
- *           type: boolean
- *           default: false
- *           description: Flag indicating if the password has been changed by the user
  *       example:
- *         fullName: John Doe
- *         email: john.doe@example.com
- *         password: password123
- *         phoneNumber: "+1234567890"
- *         role: user
+ *         subjectName: John Doe
+ *         subjectCode: john.doe@example.com
+ *         numberOfClasses: 123
  */
