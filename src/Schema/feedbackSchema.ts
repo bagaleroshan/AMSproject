@@ -23,7 +23,7 @@ export const feedbackSchema = new Schema(
 
     isClassFruitful: {
       type: Number,
-      required: [true, "isClassFretful field is required"],
+      required: [true, "isClassFruitful field is required"],
     },
     isClassRoomComfortable: {
       type: Number,
