@@ -58,19 +58,19 @@ export const isAttendanceTaken = async (
 ) => {
   const providedDate = new Date(date);
   const startOfProvidedDate = new Date(providedDate);
-  startOfProvidedDate.setHours(0, 0, 0, 0);
+  startOfProvidedDate.setUTCHours(0, 0, 0, 0);
 
   const endOfProvidedDate = new Date(providedDate);
-  endOfProvidedDate.setDate(providedDate.getDate() + 1);
-  endOfProvidedDate.setHours(0, 0, 0, 0);
+  endOfProvidedDate.setUTCDate(providedDate.getUTCDate() + 1);
+  endOfProvidedDate.setUTCHours(0, 0, 0, 0);
 
   const today = new Date();
   const startOfToday = new Date(today);
-  startOfToday.setHours(0, 0, 0, 0);
+  startOfToday.setUTCHours(0, 0, 0, 0);
 
   const endOfToday = new Date(today);
-  endOfToday.setDate(today.getDate() + 1);
-  endOfToday.setHours(0, 0, 0, 0);
+  endOfToday.setUTCDate(today.getUTCDate() + 1);
+  endOfToday.setUTCHours(0, 0, 0, 0);
 
   const existingAttendances = await Attendance.find({
     date: {
@@ -80,7 +80,9 @@ export const isAttendanceTaken = async (
     groupId: groupId,
   });
 
-  if (role === "teacher" && date !== startOfToday.toISOString().split("T")[0]) {
+  const formattedStartOfToday = startOfToday.toISOString().split("T")[0];
+  const formattedProvidedDate = providedDate.toISOString().split("T")[0];
+  if (role === "teacher" && formattedProvidedDate !== formattedStartOfToday) {
     throw new Error(`Teachers can only take attendance for today.`);
   }
 
@@ -88,7 +90,6 @@ export const isAttendanceTaken = async (
     throw new Error(`Attendance has already been taken for the provided date.`);
   }
 };
-
 export const attendanceData = (groupId: string, data: IData) => {
   return data.attendance.map((student) => {
     return {

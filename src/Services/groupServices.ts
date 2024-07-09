@@ -125,10 +125,11 @@ export const addStudentGroupService = async (
   const newStudents = students.filter(
     (studentId) => !group.students.includes(studentId)
   );
-  group.students = [...new Set([...group.students, ...students])];
+
+  group.students = [...group.students, ...newStudents];
   await group.save();
 
-  for (const studentId of students) {
+  for (const studentId of newStudents) {
     await Student.findByIdAndUpdate(
       studentId,
       { $addToSet: { groups: id } },
