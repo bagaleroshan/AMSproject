@@ -241,9 +241,7 @@ userRouter
  *         responses:
  *               '200':
  *                description: Login successful. Returns a token.
-
  *    
-
  */
 
 /**

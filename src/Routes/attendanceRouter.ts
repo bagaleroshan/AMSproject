@@ -62,7 +62,7 @@ attendanceRouter
  *           type: http
  *           scheme: bearer
  *           bearerFormat: JWT
- * /groups/attendances:
+ * /attendances:
  *   get:
  *     summary: Retrieve paginated attendance records
  *     description: Retrieves a list of attendance records with pagination support. Can be filtered by groupId or studentId.
@@ -72,8 +72,28 @@ attendanceRouter
  *       '200':
  *         description: A list of attendance records
  *     tags:
- *       - Attendence
- * /groups/attendances/{id}:
+ *       - Attendance
+ * /attendances/{id}:
+ *   post:
+ *     summary: Retrieve paginated attendance record
+ *     description: Retrieves a list of attendance records with pagination support. Can be filtered by groupId or studentId.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: false
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       '200':
+ *         description: success attendance records     
+ *     requestBody:
+ *       required: false
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Attendance'
+ *     tags:
+ *       - Attendance
  *   get:
  *     summary: Retrieve paginated attendance records
  *     description: Retrieves a list of attendance records with pagination support. Can be filtered by groupId or studentId.
@@ -87,11 +107,11 @@ attendanceRouter
  *       '200':
  *         description: A list of attendance records
  *     tags:
- *       - Attendence
+ *       - Attendance
  *   
  *   patch:
- *     summary: Update a  user 
- *     description: Update a  user with the specified data.
+ *     summary: Update a attendance 
+ *     description: Update a  attendance with the specified data.
  *     tags:
  *        - Attendance
  *     security:
@@ -109,24 +129,20 @@ attendanceRouter
  *     summary: Delete a  user 
  *     description: Delete a  user 
  *     tags:
- *        - Attendence
+ *        - Attendance
  *     security:
  *       - bearerAuth: []
  *     requestBody:
  *       required: false
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/User'
  *     responses:
  *       200:
  *         description: OK
- * /groups/attendances/monthly-report:
+ * /attendances/monthly-report:
  *   get:
  *         summary: User login
  *         description: Authenticate user credentials and obtain a token.
  *         tags:
- *          - Attendence
+ *          - Attendance
  *         requestBody:
  *          required: false
  *          content:
@@ -141,12 +157,12 @@ attendanceRouter
  *         responses:
  *               '200':
  *                description: Login successful. Returns a token.
- * /groups/attendances/attendance-taken-groups:
+ * /attendances/attendance-taken-groups:
  *   get:
  *         summary: User login
  *         description: Authenticate user credentials and obtain a token.
  *         tags:
- *          - Attendence
+ *          - Attendance
  *         requestBody:
  *          required: false
  *          content:
@@ -172,32 +188,11 @@ attendanceRouter
  *   schemas:
  *     Attendance:
  *       type: object
- *       properties:
- *         fullName:
- *           type: string
- *           description: Full name of the user
- *         email:
- *           type: string
- *           format: email
- *           description: Email address of the user
- *         password:
- *           type: string
- *           format: password
- *           description: Password of the user
- *         phoneNumber:
- *           type: string
- *           description: Phone number of the user
- *         role:
- *           type: string
- *           description: Role of the user (e.g., admin, user)
- *         isPasswordChanged:
- *           type: boolean
- *           default: false
- *           description: Flag indicating if the password has been changed by the user
  *       example:
- *         date: ''
- *         groupId: ''
- *         studentId: ''
- *         status: ''
- *         role: user
+ *         date: '2024-07-02T08:58:49.437Z'
+ *         attendance:
+ *           - studentId: '66811304d73f83b6ff8658c3'
+ *             status: 'P'
+ *           - studentId: '666c63e743433e1dfa54b3fa'
+ *             status: 'P'
  */
