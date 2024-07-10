@@ -65,6 +65,12 @@ let readAllFeedbackService = async (
       foreignField: "id",
       as: "group",
     },
+    {
+      from: "teachers",
+      localField: "teacher",
+      foreignField: "id",
+      as: "teacher",
+    },
   ];
 
   const data = await searchAndPaginate(
@@ -157,8 +163,6 @@ export const getFeedbackByTeacherIdService = async (
   return data;
 };
 
-
-
 export const getFeedbackByGroupIdService = async (
   groupId: string,
   page: number,
@@ -195,6 +199,12 @@ export const getFeedbackByGroupIdService = async (
       localField: "group",
       foreignField: "_id",
       as: "group",
+    },
+    {
+      from: "teachers",
+      localField: "teacher",
+      foreignField: "_id",
+      as: "teacher",
     },
   ];
 

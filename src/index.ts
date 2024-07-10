@@ -1,9 +1,8 @@
 import cors from "cors";
 import exceljs from 'exceljs';
 import express, { Express, Request, Response } from "express";
-import path from "path";
+import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
-import * as YAML from "yamljs";
 import { attendanceRouter } from "./Routes/attendanceRouter";
 import { feedbackRouter } from "./Routes/feedbackRouter";
 import { groupRouter } from "./Routes/groupRouter";
@@ -13,7 +12,6 @@ import { userRouter } from "./Routes/userRouter";
 import { connectToMongo } from "./connectDb/connectToMongo";
 import { port, staticFolder } from "./utils/constant";
 import { errorHandler } from "./utils/errorHandler";
-import swaggerJSDoc from "swagger-jsdoc";
 
 const jsonData = [
   { Name: "John", Age: 30, City: "New York" },

@@ -22,7 +22,7 @@ feedbackRouter
   .post(validation(feedbackValidation), createFeedbackController)
   .get(
     isAuthenticated,
-    isAuthorized(["admin", "superAdmin"]),
+    isAuthorized(["admin", "superAdmin","teacher"]),
     readAllFeedbackController
   );
 
@@ -31,13 +31,13 @@ feedbackRouter
 
   .get(
     isAuthenticated,
-    isAuthorized(["admin", "superAdmin"]),
+    isAuthorized(["admin", "superAdmin","teacher"]),
     getFeedbackByTeacherIdController
   );
   feedbackRouter
   .route("/group/:groupId")
   .get(isAuthenticated,
-    isAuthorized(["admin", "superAdmin"]),getFeedbackByGroupIdController)
+    isAuthorized(["admin", "superAdmin","teacher"]),getFeedbackByGroupIdController)
 
 feedbackRouter
   .route("/:id")
