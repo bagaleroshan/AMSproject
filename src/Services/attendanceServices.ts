@@ -1,3 +1,4 @@
+import { endOfToday, startOfToday } from "date-fns";
 import { Types } from "mongoose";
 import { Attendance, User } from "../Schema/model";
 import {
@@ -9,7 +10,6 @@ import {
 } from "../utils/attendenceServiceFunction";
 import { IData, ILookup, IUAttendance } from "../utils/interfaces";
 import { searchAndPaginate } from "../utils/searchAndPaginate";
-import { endOfToday, startOfToday } from "date-fns";
 
 const ObjectId = Types.ObjectId;
 export const createAttendanceService = async (
@@ -216,4 +216,3 @@ export const getGroupAttendanceData = async (groupId: string) => {
 
   return attendanceData;
 };
-

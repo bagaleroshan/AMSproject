@@ -66,9 +66,9 @@ let readAllFeedbackService = async (
       as: "group",
     },
     {
-      from: "teachers",
-      localField: "teacher",
-      foreignField: "id",
+      from: "users",
+      localField: "group.teacher",
+      foreignField: "_id",
       as: "teacher",
     },
   ];
@@ -144,6 +144,12 @@ export const getFeedbackByTeacherIdService = async (
       foreignField: "_id",
       as: "group",
     },
+    {
+      from: "users",
+      localField: "group.teacher",
+      foreignField: "_id",
+      as: "teacher",
+    },
   ];
 
   find = { ...find, "group.teacherId": new Types.ObjectId(teacherId) };
@@ -199,6 +205,12 @@ export const getFeedbackByGroupIdService = async (
       localField: "group",
       foreignField: "_id",
       as: "group",
+    },
+    {
+      from: "users",
+      localField: "group.teacher",
+      foreignField: "_id",
+      as: "teacher",
     },
   ];
 
