@@ -6,6 +6,7 @@ import {
   readAllGroupController,
   readRelatedGroupController,
   readSpecificGroupController,
+  removeStudentGroupController,
   updateGroupController,
 } from "../Controllers/groupController";
 import isAuthenticated from "../middleware/isAuthenticated";
@@ -35,6 +36,14 @@ groupRouter
     isAuthenticated,
     isAuthorized(["admin", "superAdmin"]),
     addStudentGroupController
+  );
+
+groupRouter
+  .route("/removeStudent/:id")
+  .patch(
+    isAuthenticated,
+    isAuthorized(["admin", "superAdmin"]),
+    removeStudentGroupController
   );
 
 groupRouter.route("/teacher").get(isAuthenticated, readRelatedGroupController);
