@@ -183,3 +183,13 @@ export const removeStudentGroupService = async (
 
   return group;
 };
+
+export const getDaysLeftService = async (groupId: string) => {
+  const group = await Group.findById(groupId).populate("subject");
+
+  const attendanceTaken = await Attendance.find({
+    groupId: groupId,
+    studentId: group.students[0],
+  });
+  return group.subject.numberOfClasses - attendanceTaken.length;
+};

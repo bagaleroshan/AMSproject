@@ -116,7 +116,7 @@ export const getTodayAttendanceGroupsCountController = asyncHandler(
 );
 
 export const getGroupAttendanceDataController = asyncHandler(
-  async (req, res) => {
+  async (req: Request, res: Response) => {
     const { groupId } = req.params;
     const result = await getGroupAttendanceData(groupId);
     successResponseData(

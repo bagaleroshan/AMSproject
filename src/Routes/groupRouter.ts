@@ -3,6 +3,7 @@ import {
   addStudentGroupController,
   createGroupController,
   deleteGroupController,
+  getDaysLeftController,
   readAllGroupController,
   readRelatedGroupController,
   readSpecificGroupController,
@@ -45,6 +46,8 @@ groupRouter
     isAuthorized(["admin", "superAdmin"]),
     removeStudentGroupController
   );
+
+groupRouter.route("/days-left/:id").get(isAuthenticated, getDaysLeftController);
 
 groupRouter.route("/teacher").get(isAuthenticated, readRelatedGroupController);
 groupRouter

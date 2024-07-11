@@ -5,6 +5,7 @@ import {
   addStudentGroupService,
   createGroupService,
   deleteGroupService,
+  getDaysLeftService,
   readAllGroupService,
   readGroupsByTeacherId,
   readSpecificGroupService,
@@ -120,5 +121,13 @@ export const removeStudentGroupController = asyncHandler(
       req.body.students
     );
     successResponseData(res, "Successfully Removed.", 200, result);
+  }
+);
+
+export const getDaysLeftController = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const result = await getDaysLeftService(id);
+    successResponseData(res, "Successfully fetched.", 200, result);
   }
 );
