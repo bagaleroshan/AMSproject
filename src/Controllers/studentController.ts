@@ -35,19 +35,20 @@ export const readAllStudentController = asyncHandler(
         sort,
         select,
         query,
-        { ...find, groups: groupObjectId }
+        { groups: groupObjectId }
+      );
+      successResponseData(res, "Successfully Read All Student.", 200, result);
+    } else {
+      let result = await readAllStudentService(
+        page,
+        limit,
+        sort,
+        select,
+        query,
+        find
       );
       successResponseData(res, "Successfully Read All Student.", 200, result);
     }
-    let result = await readAllStudentService(
-      page,
-      limit,
-      sort,
-      select,
-      query,
-      find
-    );
-    successResponseData(res, "Successfully Read All Student.", 200, result);
   }
 );
 

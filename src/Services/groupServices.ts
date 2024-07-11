@@ -163,21 +163,23 @@ export const removeStudentGroupService = async (
   if (!group) {
     throw new Error("Group not found");
   }
-
-  // Filter out students to be removed
-  group.students = group.students.filter(
-    (studentId: any) => !students.includes(studentId)
+  const remainingStudents = group.students.filter(
+    (student: any) => !students.includes(student.toString())
   );
+
+  group.students = remainingStudents;
 
   await group.save();
 
-  for (const studentId of students) {
-    await Student.findByIdAndUpdate(
-      studentId,
-      { $pull: { groups: id } },
-      { new: true }
-    );
-  }
+  await Promise.all(
+    students.map((studentId) =>
+      Student.findByIdAndUpdate(
+        studentId,
+        { $pull: { groups: id } },
+        { new: true }
+      )
+    )
+  );
 
   return group;
 };

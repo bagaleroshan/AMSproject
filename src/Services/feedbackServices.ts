@@ -21,7 +21,7 @@ let createFeedbackService = async (
   if (existingFeedback) {
     throw new Error("You have already given Feedback for this group.");
   }
-  
+
   return await Feedback.create(data);
 };
 const requestFeedbackService = async (data: any[any]) => {
@@ -200,12 +200,6 @@ export const getFeedbackByGroupIdService = async (
       foreignField: "_id",
       as: "group",
     },
-    {
-      from: "teachers",
-      localField: "teacher",
-      foreignField: "_id",
-      as: "teacher",
-    },
   ];
 
   find = { ...find, "group.id": new Types.ObjectId(groupId) };
@@ -221,6 +215,5 @@ export const getFeedbackByGroupIdService = async (
     feedbackFields,
     lookups
   );
-
   return data;
 };
