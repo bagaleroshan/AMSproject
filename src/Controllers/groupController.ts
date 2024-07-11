@@ -8,6 +8,7 @@ import {
   readAllGroupService,
   readGroupsByTeacherId,
   readSpecificGroupService,
+  removeStudentGroupService,
   updateGroupService,
 } from "../Services/groupServices";
 import { AuthenticatedRequest } from "../middleware/isAuthenticated";
@@ -109,5 +110,15 @@ export const addStudentGroupController = asyncHandler(
   async (req: Request, res: Response) => {
     let result = await addStudentGroupService(req.params.id, req.body.students);
     successResponseData(res, "Successfully Added.", 201, result);
+  }
+);
+
+export const removeStudentGroupController = asyncHandler(
+  async (req: Request, res: Response) => {
+    let result = await removeStudentGroupService(
+      req.params.id,
+      req.body.students
+    );
+    successResponseData(res, "Successfully Removed.", 200, result);
   }
 );

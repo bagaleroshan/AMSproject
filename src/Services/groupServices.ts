@@ -154,3 +154,32 @@ export const addStudentGroupService = async (
   }
   return group;
 };
+
+export const removeStudentGroupService = async (
+  id: string,
+  students: string[]
+) => {
+  const group = await Group.findById(id);
+  if (!group) {
+    throw new Error("Group not found");
+  }
+  const remainingStudents = group.students.filter(
+    (student: any) => !students.includes(student.toString())
+  );
+
+  group.students = remainingStudents;
+
+  await group.save();
+
+  await Promise.all(
+    students.map((studentId) =>
+      Student.findByIdAndUpdate(
+        studentId,
+        { $pull: { groups: id } },
+        { new: true }
+      )
+    )
+  );
+
+  return group;
+};
