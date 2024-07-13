@@ -3,6 +3,7 @@ import { Router } from "express";
 import {
   createAttendanceController,
   getGroupAttendanceDataController,
+  getGroupAttendanceStatsController,
   getMonthlyAttendanceReportController,
   getTodayAttendanceGroupsCountController,
   readAllAttendanceController,
@@ -37,6 +38,11 @@ attendanceRouter
     isAuthorized(["admin", "superAdmin"]),
     getTodayAttendanceGroupsCountController
   );
+
+attendanceRouter
+  .route("/getPresenteesAndAbsentees/:id")
+  .get(isAuthenticated, getGroupAttendanceStatsController);
+
 attendanceRouter
   .route("/:groupId")
   .post(

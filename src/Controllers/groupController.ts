@@ -128,6 +128,8 @@ export const getDaysLeftController = asyncHandler(
   async (req: Request, res: Response) => {
     const { id } = req.params;
     const result = await getDaysLeftService(id);
-    successResponseData(res, "Successfully fetched.", 200, result);
+    successResponseData(res, "Successfully fetched.", 200, {
+      daysLeft: result,
+    });
   }
 );

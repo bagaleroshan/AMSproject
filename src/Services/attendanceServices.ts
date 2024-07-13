@@ -216,3 +216,25 @@ export const getGroupAttendanceData = async (groupId: string) => {
 
   return attendanceData;
 };
+
+export const getGroupAttendanceStatsService = async (groupId: string) => {
+  const todayStart = startOfToday();
+  const todayEnd = endOfToday();
+  const presentees = await Attendance.find({
+    groupId: groupId,
+    status: "P",
+    date: { $gte: todayStart, $lt: todayEnd },
+  });
+
+  const absentees = await Attendance.find({
+    groupId: groupId,
+    status: "A",
+    date: { $gte: todayStart, $lt: todayEnd },
+  });
+  const presenteesCount = presentees.length;
+  const absenteesCount = absentees.length;
+  return {
+    presenteesCount: presenteesCount,
+    absenteesCount: absenteesCount,
+  };
+};
