@@ -1,4 +1,3 @@
-import { required } from "joi";
 import { Schema } from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
 
@@ -48,7 +47,6 @@ export const feedbackSchema = new Schema(
     student: {
       type: Schema.ObjectId,
       ref: "Student",
-      unique: true,
     },
     group: {
       type: Schema.ObjectId,
