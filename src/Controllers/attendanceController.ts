@@ -5,6 +5,7 @@ import { Types } from "mongoose";
 import {
   createAttendanceService,
   getGroupAttendanceData,
+  getGroupAttendanceStatsService,
   getMonthlyAttendanceReportService,
   getTodayAttendanceGroupsCount,
   readAllAttendanceService,
@@ -91,7 +92,7 @@ export const updateSpecificAttendanceController = asyncHandler(
 export const getMonthlyAttendanceReportController = asyncHandler(
   async (req: Request, res: Response) => {
     const { groupId, month } = req.query;
-    const report = await getMonthlyAttendanceReportService(
+    const result = await getMonthlyAttendanceReportService(
       groupId as string,
       month as string
     );
@@ -99,18 +100,18 @@ export const getMonthlyAttendanceReportController = asyncHandler(
       res,
       "Attendance Report Generated Successfully.",
       200,
-      report
+      result
     );
   }
 );
 export const getTodayAttendanceGroupsCountController = asyncHandler(
   async (req: Request, res: Response) => {
-    const count = await getTodayAttendanceGroupsCount();
+    const result = await getTodayAttendanceGroupsCount();
     successResponseData(
       res,
       "Successfully fetched today's attendance groups count.",
       200,
-      { count }
+      { count: result }
     );
   }
 );
@@ -122,6 +123,19 @@ export const getGroupAttendanceDataController = asyncHandler(
     successResponseData(
       res,
       "Successfully fetched attendance data.",
+      200,
+      result
+    );
+  }
+);
+
+export const getGroupAttendanceStatsController = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const result = await getGroupAttendanceStatsService(id);
+    successResponseData(
+      res,
+      "Successfully fetched attendance stats.",
       200,
       result
     );

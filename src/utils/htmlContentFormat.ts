@@ -160,9 +160,6 @@ export const generateResetPasswordHtml = (clientUrl: string, token: string) => {
         </footer>
       </div>
       <br />
-      <br />
-      <br />
-      <img src="cid:unique_image_cid" width= "100" height = "100">
     </body>
     </html>`;
 };
