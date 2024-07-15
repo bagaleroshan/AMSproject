@@ -47,6 +47,16 @@ export let deleteUserService = async (id: string, loggedInUserId: string) => {
   if (id === loggedInUserId) {
     throw new Error("You cannot delete yourself.");
   }
+  const loggedInUser = await User.findById(loggedInUserId);
+  const loggedInUserRole = loggedInUser.role;
+  const userToDelete = await User.findById(id);
+  if (!userToDelete) {
+    throw new Error("User not found.");
+  }
+  const userRole = userToDelete.role;
+  if (userRole === "admin" && loggedInUserRole !== "superAdmin") {
+    throw new Error("You are not authorized to delete admin.");
+  }
   const teacherAssignedToGroup = await Group.findOne({
     teacher: id,
   });
