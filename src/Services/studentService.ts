@@ -1,11 +1,11 @@
 import { Attendance, Group, Student } from "../Schema/model";
 import { searchAndPaginate } from "../utils/searchAndPaginate";
 
-let createStudentService = async (data: {}) => {
+export let createStudentService = async (data: {}) => {
   return await Student.create(data);
 };
 
-let readAllStudentService = async (
+export let readAllStudentService = async (
   page: number,
   limit: number,
   sort: string,
@@ -31,24 +31,19 @@ let readAllStudentService = async (
   );
   return data;
 };
-let readSpecificStudentService = async (id: string) => {
+export let readSpecificStudentService = async (id: string) => {
   return await Student.findById(id);
 };
 
-let updateStudentService = async (id: string, data: {}) => {
+export let updateStudentService = async (id: string, data: {}) => {
   return await Student.findByIdAndUpdate(id, data, { new: true });
 };
 
-let deleteStudentService = async (id: string) => {
+export let deleteStudentService = async (id: string) => {
   const studentAssignedToGroup = await Group.find({
     students: id,
   });
-  const attendanceRecords = await Attendance.find({
-    studentId: id,
-    status: "P",
-  });
-
-  if (studentAssignedToGroup && attendanceRecords.length >= 15) {
+  if (studentAssignedToGroup) {
     throw new Error("Student cannot be deleted as are assigned to a group.");
   }
   await Attendance.deleteMany({ studentId: id });
@@ -58,12 +53,4 @@ let deleteStudentService = async (id: string) => {
     throw new Error("Student not found.");
   }
   return deletedStudent;
-};
-
-export {
-  createStudentService,
-  deleteStudentService,
-  readAllStudentService,
-  readSpecificStudentService,
-  updateStudentService,
 };

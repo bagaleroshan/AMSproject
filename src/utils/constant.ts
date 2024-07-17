@@ -3,7 +3,9 @@ import { config } from "dotenv";
 config();
 
 export const port = process.env.PORT || 8000;
-export const dbUrl = process.env.DB_URL || "mongodb://0.0.0.0:27017/ams";
+export const dbUrl = process.env.DB_URL_DEV || "mongodb://0.0.0.0:27017/ams";
+export const dbUrlProd =
+  process.env.DB_URL_PRODUCTION || "mongodb://0.0.0.0:27017/ams";
 export const mailUser = process.env.MAIL_USER || "jenishona123@gmail.com";
 export const mailPass = process.env.MAIL_PASS || "misd oait jhwa vmxd";
 export const mailProvider = process.env.MAIL_PROVIDER || "Jenis Hona";
