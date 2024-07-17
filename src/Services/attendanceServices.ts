@@ -1,6 +1,6 @@
 import { endOfToday, startOfToday } from "date-fns";
 import { Types } from "mongoose";
-import { Attendance, User } from "../Schema/model";
+import { Attendance, Group, User } from "../Schema/model";
 import {
   attendanceData,
   groupData,
@@ -181,7 +181,71 @@ export const getTodayAttendanceGroupsCount = async () => {
     : 0;
 };
 
-export const getGroupAttendanceData = async (groupId: string) => {
+// export const getGroupAttendanceData = async (groupId: string) => {
+//   const attendanceData = await Attendance.aggregate([
+//     {
+//       $match: { groupId: new ObjectId(groupId) },
+//     },
+//     {
+//       $lookup: {
+//         from: "students",
+//         localField: "studentId",
+//         foreignField: "_id",
+//         as: "studentInfo",
+//       },
+//     },
+//     {
+//       $unwind: {
+//         path: "$studentInfo",
+//         preserveNullAndEmptyArrays: true,
+//       },
+//     },
+//     {
+//       $group: {
+//         _id: "$studentId",
+//         studentName: { $first: "$studentInfo.fullName" },
+//         attendance: {
+//           $push: {
+//             date: "$date",
+//             status: "$status",
+//           },
+//         },
+//       },
+//     },
+//   ]);
+
+//   return attendanceData;
+// };
+
+export const getGroupAttendanceStatsService = async (groupId: string) => {
+  const todayStart = startOfToday();
+  const todayEnd = endOfToday();
+  const presentees = await Attendance.find({
+    groupId: groupId,
+    status: "P",
+    date: { $gte: todayStart, $lt: todayEnd },
+  });
+
+  const absentees = await Attendance.find({
+    groupId: groupId,
+    status: "A",
+    date: { $gte: todayStart, $lt: todayEnd },
+  });
+  const presenteesCount = presentees.length;
+  const absenteesCount = absentees.length;
+  return {
+    presenteesCount: presenteesCount,
+    absenteesCount: absenteesCount,
+  };
+};
+
+export const getGroupAttendanceAndDaysLeftService = async (groupId: string) => {
+  const group = await Group.findById(groupId).populate("subject");
+
+  if (!group) {
+    throw new Error("Group not found");
+  }
+
   const attendanceData = await Attendance.aggregate([
     {
       $match: { groupId: new ObjectId(groupId) },
@@ -214,27 +278,15 @@ export const getGroupAttendanceData = async (groupId: string) => {
     },
   ]);
 
-  return attendanceData;
-};
-
-export const getGroupAttendanceStatsService = async (groupId: string) => {
-  const todayStart = startOfToday();
-  const todayEnd = endOfToday();
-  const presentees = await Attendance.find({
+  const attendanceTaken = await Attendance.find({
     groupId: groupId,
-    status: "P",
-    date: { $gte: todayStart, $lt: todayEnd },
+    studentId: group.students[0],
   });
 
-  const absentees = await Attendance.find({
-    groupId: groupId,
-    status: "A",
-    date: { $gte: todayStart, $lt: todayEnd },
-  });
-  const presenteesCount = presentees.length;
-  const absenteesCount = absentees.length;
+  const daysLeft = group.subject.numberOfClasses - attendanceTaken.length;
+
   return {
-    presenteesCount: presenteesCount,
-    absenteesCount: absenteesCount,
+    data: attendanceData,
+    daysLeft: daysLeft,
   };
 };
