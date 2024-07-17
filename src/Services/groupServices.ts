@@ -163,6 +163,17 @@ export const removeStudentGroupService = async (
   if (!group) {
     throw new Error("Group not found");
   }
+  for (const studentId of students) {
+    const attendanceRecords = await Attendance.find({
+      studentId: studentId,
+      status: "P",
+    });
+    if (attendanceRecords.length >= 7) {
+      throw new Error(
+        `Cannot remove student, who has 7 or more days of attendance.`
+      );
+    }
+  }
   const remainingStudents = group.students.filter(
     (student: any) => !students.includes(student.toString())
   );
