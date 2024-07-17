@@ -2,12 +2,11 @@ import { Router } from "express";
 
 import {
   createAttendanceController,
-  getGroupAttendanceDataController,
+  getGroupAttendanceAndDaysLeftController,
   getGroupAttendanceStatsController,
   getMonthlyAttendanceReportController,
   getTodayAttendanceGroupsCountController,
   readAllAttendanceController,
-  readSpecificAttendanceController,
   updateSpecificAttendanceController,
 } from "../Controllers/attendanceController";
 import isAuthenticated from "../middleware/isAuthenticated";
@@ -58,7 +57,7 @@ attendanceRouter
   .get(
     isAuthenticated,
     isAuthorized(["teacher", "admin", "superAdmin"]),
-    getGroupAttendanceDataController
+    getGroupAttendanceAndDaysLeftController
   );
 /**
  * @swagger

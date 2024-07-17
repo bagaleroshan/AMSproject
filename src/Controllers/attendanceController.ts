@@ -4,7 +4,7 @@ import asyncHandler from "express-async-handler";
 import { Types } from "mongoose";
 import {
   createAttendanceService,
-  getGroupAttendanceData,
+  getGroupAttendanceAndDaysLeftService,
   getGroupAttendanceStatsService,
   getMonthlyAttendanceReportService,
   getTodayAttendanceGroupsCount,
@@ -116,18 +116,18 @@ export const getTodayAttendanceGroupsCountController = asyncHandler(
   }
 );
 
-export const getGroupAttendanceDataController = asyncHandler(
-  async (req: Request, res: Response) => {
-    const { groupId } = req.params;
-    const result = await getGroupAttendanceData(groupId);
-    successResponseData(
-      res,
-      "Successfully fetched attendance data.",
-      200,
-      result
-    );
-  }
-);
+// export const getGroupAttendanceDataController = asyncHandler(
+//   async (req: Request, res: Response) => {
+//     const { groupId } = req.params;
+//     const result = await getGroupAttendanceData(groupId);
+//     successResponseData(
+//       res,
+//       "Successfully fetched attendance data.",
+//       200,
+//       result
+//     );
+//   }
+// );
 
 export const getGroupAttendanceStatsController = asyncHandler(
   async (req: Request, res: Response) => {
@@ -136,6 +136,19 @@ export const getGroupAttendanceStatsController = asyncHandler(
     successResponseData(
       res,
       "Successfully fetched attendance stats.",
+      200,
+      result
+    );
+  }
+);
+
+export const getGroupAttendanceAndDaysLeftController = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { groupId } = req.params;
+    const result = await getGroupAttendanceAndDaysLeftService(groupId);
+    successResponseData(
+      res,
+      "Successfully fetched attendance data and days left.",
       200,
       result
     );
