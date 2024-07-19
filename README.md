@@ -25,5 +25,5 @@ admin Credentials:
 -password: "Password@123"
 
 teacher Credentials:
--email: "chaudharyshambhu04@gmail.com",
+-email: "nitanthapa425@gmail.com",
 -password: "Password@123"

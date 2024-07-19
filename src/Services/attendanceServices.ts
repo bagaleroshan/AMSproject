@@ -181,64 +181,6 @@ export const getTodayAttendanceGroupsCount = async () => {
     : 0;
 };
 
-// export const getGroupAttendanceData = async (groupId: string) => {
-//   const attendanceData = await Attendance.aggregate([
-//     {
-//       $match: { groupId: new ObjectId(groupId) },
-//     },
-//     {
-//       $lookup: {
-//         from: "students",
-//         localField: "studentId",
-//         foreignField: "_id",
-//         as: "studentInfo",
-//       },
-//     },
-//     {
-//       $unwind: {
-//         path: "$studentInfo",
-//         preserveNullAndEmptyArrays: true,
-//       },
-//     },
-//     {
-//       $group: {
-//         _id: "$studentId",
-//         studentName: { $first: "$studentInfo.fullName" },
-//         attendance: {
-//           $push: {
-//             date: "$date",
-//             status: "$status",
-//           },
-//         },
-//       },
-//     },
-//   ]);
-
-//   return attendanceData;
-// };
-
-export const getGroupAttendanceStatsService = async (groupId: string) => {
-  const todayStart = startOfToday();
-  const todayEnd = endOfToday();
-  const presentees = await Attendance.find({
-    groupId: groupId,
-    status: "P",
-    date: { $gte: todayStart, $lt: todayEnd },
-  });
-
-  const absentees = await Attendance.find({
-    groupId: groupId,
-    status: "A",
-    date: { $gte: todayStart, $lt: todayEnd },
-  });
-  const presenteesCount = presentees.length;
-  const absenteesCount = absentees.length;
-  return {
-    presenteesCount: presenteesCount,
-    absenteesCount: absenteesCount,
-  };
-};
-
 export const getGroupAttendanceAndDaysLeftService = async (groupId: string) => {
   const group = await Group.findById(groupId).populate("subject");
 
