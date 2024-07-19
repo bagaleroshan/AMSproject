@@ -5,7 +5,6 @@ import { Types } from "mongoose";
 import {
   createAttendanceService,
   getGroupAttendanceAndDaysLeftService,
-  getGroupAttendanceStatsService,
   getMonthlyAttendanceReportService,
   getTodayAttendanceGroupsCount,
   readAllAttendanceService,
@@ -44,7 +43,6 @@ export const readAllAttendanceController = asyncHandler(
         select,
         query,
         {
-          // ...find,
           "groupId._id": groupObjectId,
         }
       );
@@ -112,32 +110,6 @@ export const getTodayAttendanceGroupsCountController = asyncHandler(
       "Successfully fetched today's attendance groups count.",
       200,
       { count: result }
-    );
-  }
-);
-
-// export const getGroupAttendanceDataController = asyncHandler(
-//   async (req: Request, res: Response) => {
-//     const { groupId } = req.params;
-//     const result = await getGroupAttendanceData(groupId);
-//     successResponseData(
-//       res,
-//       "Successfully fetched attendance data.",
-//       200,
-//       result
-//     );
-//   }
-// );
-
-export const getGroupAttendanceStatsController = asyncHandler(
-  async (req: Request, res: Response) => {
-    const { id } = req.params;
-    const result = await getGroupAttendanceStatsService(id);
-    successResponseData(
-      res,
-      "Successfully fetched attendance stats.",
-      200,
-      result
     );
   }
 );

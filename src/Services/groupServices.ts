@@ -3,6 +3,7 @@ import { Attendance, Group, Student } from "../Schema/model";
 import { getAttendanceDatesForGroup } from "../utils/attendenceServiceFunction";
 import { ILookup } from "../utils/interfaces";
 import { searchAndPaginate } from "../utils/searchAndPaginate";
+import { getGroupAttendanceStats } from "../utils/groupServiceFunction";
 
 const { ObjectId } = Types;
 
@@ -39,7 +40,7 @@ export const readAllGroupService = async (
       as: "subject",
     },
   ];
-  const data = await searchAndPaginate(
+  const result = await searchAndPaginate(
     Group,
     page,
     limit,
@@ -50,7 +51,22 @@ export const readAllGroupService = async (
     groupFields,
     lookups
   );
-  return data;
+  // return data;
+
+  const groupsWithStats = await Promise.all(
+    result.results.map(async (group: any) => {
+      const stats = await getGroupAttendanceStats(group.id);
+      return {
+        ...group,
+        attendanceStats: stats,
+      };
+    })
+  );
+
+  return {
+    ...result,
+    results: groupsWithStats,
+  };
 };
 
 export const readGroupsByTeacherId = async (
@@ -76,7 +92,7 @@ export const readGroupsByTeacherId = async (
       as: "subject",
     },
   ];
-  const data = await searchAndPaginate(
+  const result = await searchAndPaginate(
     Group,
     page,
     limit,
@@ -87,7 +103,21 @@ export const readGroupsByTeacherId = async (
     groupFields,
     lookups
   );
-  return data;
+
+  const groupsWithStats = await Promise.all(
+    result.results.map(async (group: any) => {
+      const stats = await getGroupAttendanceStats(group.id);
+      return {
+        ...group,
+        attendanceStats: stats,
+      };
+    })
+  );
+
+  return {
+    ...result,
+    results: groupsWithStats,
+  };
 };
 
 export let readSpecificGroupService = async (id: string) => {
@@ -193,14 +223,4 @@ export const removeStudentGroupService = async (
   );
 
   return group;
-};
-
-export const getDaysLeftService = async (groupId: string) => {
-  const group = await Group.findById(groupId).populate("subject");
-
-  const attendanceTaken = await Attendance.find({
-    groupId: groupId,
-    studentId: group.students[0],
-  });
-  return group.subject.numberOfClasses - attendanceTaken.length;
 };
