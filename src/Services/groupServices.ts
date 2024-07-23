@@ -51,7 +51,6 @@ export const readAllGroupService = async (
     groupFields,
     lookups
   );
-  // return data;
 
   const groupsWithStats = await Promise.all(
     result.results.map(async (group: any) => {
@@ -59,6 +58,7 @@ export const readAllGroupService = async (
       return {
         ...group,
         attendanceStats: stats,
+        active: group.active ? "active" : "inactive",
       };
     })
   );
@@ -110,6 +110,7 @@ export const readGroupsByTeacherId = async (
       return {
         ...group,
         attendanceStats: stats,
+        active: group.active ? "active" : "inactive",
       };
     })
   );
@@ -121,7 +122,7 @@ export const readGroupsByTeacherId = async (
 };
 
 export let readSpecificGroupService = async (id: string) => {
-  return await Group.findById(id)
+  const group = await Group.findById(id)
     .populate({
       path: "subject",
       model: "Subject",
@@ -134,10 +135,27 @@ export let readSpecificGroupService = async (id: string) => {
       path: "students",
       model: "Student",
     });
+
+  if (group) {
+    return {
+      ...group.toObject(),
+      active: group.active ? "active" : "inactive",
+    };
+  }
+
+  return null;
 };
 
 export let updateGroupService = async (id: string, data: {}) => {
-  return await Group.findByIdAndUpdate(id, data, { new: true });
+  const updatedGroup = await Group.findByIdAndUpdate(id, data, { new: true });
+  if (updatedGroup) {
+    return {
+      ...updatedGroup.toObject(),
+      active: updatedGroup.active ? "active" : "inactive",
+    };
+  }
+
+  return null;
 };
 
 export let deleteGroupService = async (id: string) => {

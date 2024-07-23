@@ -45,10 +45,10 @@ export const htmlContent: string = `
               border: 1px solid black;
               padding: 8px;
              text-align: left;
-             vertical-align: top; /* Align content to the top of cells */
-             white-space: nowrap; /* Prevent wrapping of long content */
-             overflow: hidden; /* Hide content that exceeds cell dimensions */
-             text-overflow: ellipsis; /* Show ellipsis (...) for overflow */
+             vertical-align: top;
+             white-space: nowrap;
+             overflow: hidden;
+             text-overflow: ellipsis;
     }
             th {
                   background-color: #f2f2f2;
@@ -144,7 +144,6 @@ export const htmlContent1: string = `
             <a href="http://localhost:8000/student/feedback" > http://localhost:8000/student/feedback</a>     </body>
     </html>
 `;
-
 
 export let imagePath = path.resolve(
   __dirname,

@@ -99,7 +99,7 @@ export const readSpecificAttendanceService = async (
 export const updateSpecificAttendanceService = async (data: IUAttendance[]) => {
   const updatePromises = data.map(async (attendance) => {
     return await Attendance.findByIdAndUpdate(
-      attendance.attendenceId,
+      attendance.attendanceId,
       { status: attendance.status },
       { new: true }
     );
@@ -232,3 +232,84 @@ export const getGroupAttendanceAndDaysLeftService = async (groupId: string) => {
     daysLeft: daysLeft,
   };
 };
+
+export const createOrUpdateAttendanceService = async (
+  groupId: string,
+  userId: string,
+  data: IData
+) => {
+  const user = await User.findById(userId);
+  const role = user.role;
+
+  const today = new Date().toISOString().split("T")[0];
+  const dateOnly = new Date(data.date).toISOString().split("T")[0];
+
+  if (role === "teacher" && dateOnly !== today) {
+    throw new Error("Teachers can only take attendance for today.");
+  }
+
+  let group = await groupData(groupId, userId, role, data.date);
+  await isClassCrossedLimit(groupId, group);
+
+  const existingAttendances = await Attendance.find({
+    groupId: groupId,
+    studentId: { $in: data.attendance.map((a) => a.studentId) },
+    date: {
+      $gte: new Date(data.date).setUTCHours(0, 0, 0, 0),
+      $lt: new Date(data.date).setUTCHours(24, 0, 0, 0),
+    },
+  });
+
+  const existingStudentIds = existingAttendances.map((att: any) =>
+    att.studentId.toString()
+  );
+
+  const newAttendances = data.attendance.filter(
+    (att) => !existingStudentIds.includes(att.studentId)
+  );
+  const updateAttendances = data.attendance.filter((att) =>
+    existingStudentIds.includes(att.studentId)
+  );
+
+  if (role === "teacher" && updateAttendances.length > 0) {
+    throw new Error("Teachers are not allowed to update existing attendances.");
+  }
+
+  if (newAttendances.length > 0) {
+    let _data = attendanceData(groupId, {
+      ...data,
+      attendance: newAttendances,
+    });
+    await Attendance.insertMany(_data);
+  }
+
+  const updatePromises = updateAttendances.map(async (attendance) => {
+    return await Attendance.findOneAndUpdate(
+      {
+        groupId: groupId,
+        studentId: attendance.studentId,
+        date: {
+          $gte: new Date(data.date).setUTCHours(0, 0, 0, 0),
+          $lt: new Date(data.date).setUTCHours(24, 0, 0, 0),
+        },
+      },
+      { status: attendance.status },
+      { new: true }
+    );
+  });
+  await Promise.all(updatePromises);
+
+  toggleActiveGroup(groupId, group);
+  return { newAttendances, updateAttendances };
+};
+
+/* 
+groupId : url ma
+body:{
+date:"",
+attendances:{
+studentId:"",
+status:""
+}
+}
+*/

@@ -1,0 +1,49 @@
+Node Cron: (A Simple Task Scheduler)
+    Node Cron is a lightweight JavaScript library for Node.js that allows you to schedule tasks based on the familiar Cron syntax. It's perfect for automating repetitive jobs like:
+
+    -Data backups
+    -Sending notifications
+    -Generating reports
+    -Cleaning up temporary files
+
+    1. Installation:
+        `npm install node-cron`
+
+    
+    2. Basic Usage:
+        
+
+        const cron = require('node-cron');
+
+        cron.schedule('*/1 * * * *', () => {
+            console.log('This task runs every minute');
+        });
+
+
+
+
+Cron Syntax
+    The cron expression you provide defines the schedule for the task. 
+    It consists of six fields separated by spaces:
+
+        Second: 0-59
+        Minute: 0-59
+        Hour: 0-23
+        Day of month: 1-31
+        Month: 1-12 or Jan-Dec
+        Day of week: 0-6 (Sunday=0 or 7)
+
+
+        You can use various special characters:
+
+            *: Matches all values for that field.
+            -: Defines a range of values.
+            ,: Separates multiple values.
+            /: Specifies increments.
+
+
+            example: 
+            
+           `cron.schedule('0 0 * * *', () => {
+                console.log('This task runs every day at midnight');
+            });`

@@ -4,6 +4,7 @@ import asyncHandler from "express-async-handler";
 import { Types } from "mongoose";
 import {
   createAttendanceService,
+  createOrUpdateAttendanceService,
   getGroupAttendanceAndDaysLeftService,
   getMonthlyAttendanceReportService,
   getTodayAttendanceGroupsCount,
@@ -124,5 +125,20 @@ export const getGroupAttendanceAndDaysLeftController = asyncHandler(
       200,
       result
     );
+  }
+);
+
+export const createOrUpdateAttendanceController = asyncHandler(
+  async (req: AuthenticatedRequest, res: Response) => {
+    const teacherId = req._id;
+    const groupId = req.params.groupId;
+    const data = req.body;
+
+    let result = await createOrUpdateAttendanceService(
+      groupId,
+      teacherId as string,
+      data
+    );
+    successResponseData(res, "Attendance processed successfully.", 200, result);
   }
 );
