@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { Feedback } from "../Schema/model";
+import { Feedback, Group } from "../Schema/model";
 import { emailSender1 } from "../helper/emailSender";
 // import { ILookup } from "../helper/interfaces";
 import { secretKey } from "../utils/constant";
@@ -24,10 +24,20 @@ let createFeedbackService = async (
 
   return await Feedback.create(data);
 };
-const requestFeedbackService = async (data: any[any]) => {
-  data.students.map((val: any, i: any) => {
-    emailSender1(val, data.id);
-  });
+
+const requestFeedbackService = async (data: any) => {
+  const groupId = data._id;
+  await Promise.all(
+    data.students.map(async (val: any) => {
+      await emailSender1(val, groupId);
+    })
+  );
+
+  await Group.findByIdAndUpdate(
+    groupId,
+    { hasRequestedFeedback: true },
+    { new: true }
+  );
 };
 
 let readAllFeedbackService = async (

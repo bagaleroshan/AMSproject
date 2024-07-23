@@ -240,5 +240,10 @@ export const removeStudentGroupService = async (
     )
   );
 
+  await Attendance.deleteMany({
+    groupId: id,
+    studentId: { $in: students },
+  });
+
   return group;
 };
