@@ -1,8 +1,9 @@
 import cors from "cors";
-import exceljs from 'exceljs';
+import exceljs from "exceljs";
 import express, { Express, Request, Response } from "express";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
+import cron from "node-cron";
 import { attendanceRouter } from "./Routes/attendanceRouter";
 import { feedbackRouter } from "./Routes/feedbackRouter";
 import { groupRouter } from "./Routes/groupRouter";
@@ -44,14 +45,14 @@ const options = {
 };
 
 const specs = swaggerJSDoc(options);
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));;
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 app.use("/students", studentRouter);
 app.use("/users", userRouter);
 app.use("/subjects", subjectRouter);
 app.use("/groups", groupRouter);
 app.use("/attendances", attendanceRouter);
-app.use("/feedbacks",feedbackRouter)
+app.use("/feedbacks", feedbackRouter);
 
 app.get("/convert", (req: Request, res: Response) => {
   const workbook = new exceljs.Workbook();
@@ -79,6 +80,10 @@ app.get("/convert", (req: Request, res: Response) => {
       console.error("Error generating XLSX:", error);
       res.status(500).send("Error generating XLSX");
     });
+});
+
+cron.schedule("0 23 * * *", () => {
+  
 });
 
 app.use(errorHandler);

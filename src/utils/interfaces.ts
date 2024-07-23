@@ -24,17 +24,19 @@ export interface ILookup {
 }
 
 export interface IAttendance {
+  attendanceId?: string;
   studentId: string;
   status: string;
 }
 export interface IUAttendance {
-  attendenceId: string;
+  attendanceId: string;
   status: string;
 }
 export interface IData {
   date: string;
   attendance: IAttendance[];
 }
+
 export interface IGroup extends Document {
   subject: typeof Schema.ObjectId;
   teacher: typeof Schema.ObjectId;

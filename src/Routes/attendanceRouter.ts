@@ -1,12 +1,11 @@
 import { Router } from "express";
 
 import {
-  createAttendanceController,
+  createOrUpdateAttendanceController,
   getGroupAttendanceAndDaysLeftController,
   getMonthlyAttendanceReportController,
   getTodayAttendanceGroupsCountController,
   readAllAttendanceController,
-  updateSpecificAttendanceController,
 } from "../Controllers/attendanceController";
 import isAuthenticated from "../middleware/isAuthenticated";
 import isAuthorized from "../middleware/isAuthorized";
@@ -37,22 +36,18 @@ attendanceRouter
     getTodayAttendanceGroupsCountController
   );
 
-// attendanceRouter
-//   .route("/getPresenteesAndAbsentees/:id")
-//   .get(isAuthenticated, getGroupAttendanceStatsController);
-
 attendanceRouter
   .route("/:groupId")
   .post(
     isAuthenticated,
     isAuthorized(["teacher", "admin", "superAdmin"]),
-    createAttendanceController
+    createOrUpdateAttendanceController
   )
-  .patch(
-    isAuthenticated,
-    isAuthorized(["superAdmin", "admin"]),
-    updateSpecificAttendanceController
-  )
+  // .patch(
+  //   isAuthenticated,
+  //   isAuthorized(["superAdmin", "admin"]),
+  //   updateSpecificAttendanceController
+  // )
   .get(
     isAuthenticated,
     isAuthorized(["teacher", "admin", "superAdmin"]),
