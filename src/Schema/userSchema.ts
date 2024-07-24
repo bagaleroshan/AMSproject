@@ -3,9 +3,9 @@ import mongoosePaginate from "mongoose-paginate-v2";
 
 export const userSchema = new Schema(
   {
-    userName: {
+    fullName: {
       type: String,
-      required: [true, "userName field is required"],
+      required: [true, "fullName field is required"],
       trim: true,
       lowercase: true,
     },

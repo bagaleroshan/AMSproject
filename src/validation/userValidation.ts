@@ -3,10 +3,10 @@ import Joi from "joi";
 export const userValidation = ({ isCreate }: { isCreate: boolean }) =>
   Joi.object()
     .keys({
-      userName: Joi.string()
+      fullName: Joi.string()
         .lowercase()
         .messages({
-          "any.required": "userName is required.",
+          "any.required": "fullName is required.",
         })
         .when("", {
           is: () => {

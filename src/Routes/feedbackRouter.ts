@@ -22,7 +22,7 @@ feedbackRouter
   .post(validation(feedbackValidation), createFeedbackController)
   .get(
     isAuthenticated,
-    isAuthorized(["admin", "superAdmin", "teacher"]),
+    isAuthorized(["admin", "superAdmin","teacher"]),
     readAllFeedbackController
   );
 
@@ -31,16 +31,13 @@ feedbackRouter
 
   .get(
     isAuthenticated,
-    isAuthorized(["admin", "superAdmin", "teacher"]),
+    isAuthorized(["admin", "superAdmin","teacher"]),
     getFeedbackByTeacherIdController
   );
-feedbackRouter
+  feedbackRouter
   .route("/group/:groupId")
-  .get(
-    isAuthenticated,
-    isAuthorized(["admin", "superAdmin", "teacher"]),
-    getFeedbackByGroupIdController
-  );
+  .get(isAuthenticated,
+    isAuthorized(["admin", "superAdmin","teacher"]),getFeedbackByGroupIdController)
 
 feedbackRouter
   .route("/:id")
@@ -145,14 +142,14 @@ feedbackRouter
  *         name: fileName
  *         required: true
  *     security:
- *       - bearerAuth: []
+ *       - bearerAuth: []     
  *     responses:
  *       '200':
  *         description: A list of attendance records
  *     tags:
  *       - File
- *
- *
+ *   
+ *    
  */
 
 /**
@@ -162,13 +159,13 @@ feedbackRouter
  *     User:
  *       type: object
  *       required:
- *         - userName
+ *         - fullName
  *         - email
  *         - password
  *         - phoneNumber
  *         - role
  *       properties:
- *         userName:
+ *         fullName:
  *           type: string
  *           description: Full name of the user
  *         email:
@@ -190,7 +187,7 @@ feedbackRouter
  *           default: false
  *           description: Flag indicating if the password has been changed by the user
  *       example:
- *         userName: John Doe
+ *         fullName: John Doe
  *         email: john.doe@example.com
  *         password: password123
  *         phoneNumber: "+1234567890"
