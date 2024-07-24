@@ -14,7 +14,7 @@ export const readAllUserService = async (
   find: {}
 ) => {
   const userFields = [
-    { field: "fullName", type: "string" },
+    { field: "userName", type: "string" },
     { field: "email", type: "string" },
     { field: "phoneNumber", type: "string" },
     { field: "role", type: "string" },
