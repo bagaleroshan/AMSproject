@@ -149,7 +149,7 @@ attendanceRouter
  *              schema:
  *               type: object
  *               properties:
- *                 username:
+ *                 fullName:
  *                  type: string
  *                 password:
  *                  type: string
@@ -169,7 +169,7 @@ attendanceRouter
  *              schema:
  *               type: object
  *               properties:
- *                 username:
+ *                 fullName:
  *                  type: string
  *                 password:
  *                  type: string
