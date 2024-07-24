@@ -25,8 +25,6 @@ export const subjectValidation = ({ isCreate }: { isCreate: boolean }) =>
 
     subjectCode: Joi.string()
       .required()
-      .min(3)
-      .max(30)
       .when("", {
         is: () => {
           return isCreate === true;
