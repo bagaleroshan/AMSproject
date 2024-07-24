@@ -43,7 +43,7 @@ export let deleteStudentService = async (id: string) => {
   const studentAssignedToGroup = await Group.find({
     students: id,
   });
-  if (studentAssignedToGroup) {
+  if (studentAssignedToGroup.length > 0) {
     throw new Error("Student cannot be deleted as are assigned to a group.");
   }
   await Attendance.deleteMany({ studentId: id });
