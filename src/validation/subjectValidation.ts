@@ -19,7 +19,7 @@ export const subjectValidation = ({ isCreate }: { isCreate: boolean }) =>
         otherwise: Joi.optional(),
       })
       .messages({
-        "any.required": "subjectName is required",
+        "any.required": "fullName is required",
         "string.base": "Input must be string",
       }),
 

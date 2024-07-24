@@ -6,7 +6,7 @@ export interface IinfoObj {
   exp: number;
 }
 export interface IuserData {
-  userName?: string;
+  fullName?: string;
   email?: string;
   password?: string;
   role?: string;

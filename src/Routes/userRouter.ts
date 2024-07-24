@@ -65,7 +65,9 @@ userRouter
     deleteUserController
   );
 
-/**
+
+
+  /**
  * @swagger
  * components:
  *        securitySchemes:
@@ -75,7 +77,7 @@ userRouter
  *           bearerFormat: JWT
  * /users/update-password:
  *   patch:
- *     summary: update password for a user
+ *     summary: update password for a user 
  *     description: Create a new user with the specified data.
  *     tags:
  *        - Users
@@ -89,7 +91,7 @@ userRouter
  *             $ref: '#/components/schemas/UserUpdatePassword'
  * /users/reset-password:
  *   patch:
- *     summary: Create a new user
+ *     summary: Create a new user 
  *     description: Create a new user with the specified data.
  *     tags:
  *        - Users
@@ -103,7 +105,7 @@ userRouter
  *             $ref: '#/components/schemas/User'
  * /users/forgot-password:
  *   post:
- *     summary: Create a new user
+ *     summary: Create a new user 
  *     description: Create a new user with the specified data.
  *     tags:
  *        - Users
@@ -120,14 +122,14 @@ userRouter
  *     summary: Retrieve paginated attendance records
  *     description: Retrieves a list of attendance records with pagination support. Can be filtered by groupId or studentId.
  *     security:
- *       - bearerAuth: []
+ *       - bearerAuth: []     
  *     responses:
  *       '200':
  *         description: A list of attendance records
  *     tags:
  *       - Users
  *   post:
- *     summary: Create a new user
+ *     summary: Create a new user 
  *     description: Create a new user with the specified data.
  *     tags:
  *        - Users
@@ -140,7 +142,7 @@ userRouter
  *           schema:
  *             $ref: '#/components/schemas/User'
  *   patch:
- *     summary: Update a  user
+ *     summary: Update a  user 
  *     description: Update a  user with the specified data.
  *     tags:
  *        - Users
@@ -156,8 +158,8 @@ userRouter
  *       200:
  *         description: OK
  *   delete:
- *     summary: Delete a  user
- *     description: Delete a  user
+ *     summary: Delete a  user 
+ *     description: Delete a  user 
  *     tags:
  *        - Users
  *     security:
@@ -180,15 +182,15 @@ userRouter
  *         name: id
  *         required: true
  *     security:
- *       - bearerAuth: []
+ *       - bearerAuth: []     
  *     responses:
  *       '200':
  *         description: A list of attendance records
  *     tags:
  *       - Users
- *
+ *   
  *   patch:
- *     summary: Update a  user
+ *     summary: Update a  user 
  *     description: Update a  user with the specified data.
  *     tags:
  *        - Users
@@ -204,8 +206,8 @@ userRouter
  *       200:
  *         description: OK
  *   delete:
- *     summary: Delete a  user
- *     description: Delete a  user
+ *     summary: Delete a  user 
+ *     description: Delete a  user 
  *     tags:
  *        - Users
  *     security:
@@ -239,7 +241,7 @@ userRouter
  *         responses:
  *               '200':
  *                description: Login successful. Returns a token.
- *
+ *    
  */
 
 /**
@@ -249,7 +251,7 @@ userRouter
  *     User:
  *       type: object
  *       properties:
- *         userName:
+ *         fullName:
  *           type: string
  *           description: Full name of the user
  *         email:
@@ -271,7 +273,7 @@ userRouter
  *           default: false
  *           description: Flag indicating if the password has been changed by the user
  *       example:
- *         userName: John Doe
+ *         fullName: John Doe
  *         email: john.doe@example.com
  *         password: password123
  *         phoneNumber: "+1234567890"
