@@ -54,7 +54,20 @@ export const readAllAttendanceService = async (
       foreignField: "id",
       as: "studentId",
     },
+    {
+      from: "users",
+      localField: "groupId.teacher",
+      foreignField: "id",
+      as: "teacher",
+    },
+    {
+      from: "subjects",
+      localField: "groupId.subject",
+      foreignField: "id",
+      as: "subject",
+    },
   ];
+
   const data = await searchAndPaginate(
     Attendance,
     page,
@@ -182,7 +195,9 @@ export const getTodayAttendanceGroupsCount = async () => {
 };
 
 export const getGroupAttendanceAndDaysLeftService = async (groupId: string) => {
-  const group = await Group.findById(groupId).populate("subject");
+  const group = await Group.findById(groupId)
+    .populate("subject")
+    .populate("teacher");
 
   if (!group) {
     throw new Error("Group not found");
@@ -230,6 +245,8 @@ export const getGroupAttendanceAndDaysLeftService = async (groupId: string) => {
   return {
     data: attendanceData,
     daysLeft: daysLeft,
+    teacherName: group.teacher.fullName,
+    subjectName: group.subject.subjectName,
   };
 };
 
