@@ -247,6 +247,9 @@ export const getGroupAttendanceAndDaysLeftService = async (groupId: string) => {
     daysLeft: daysLeft,
     teacherName: group.teacher.fullName,
     subjectName: group.subject.subjectName,
+    groupName:group.groupName,
+    startTime:group.startTime,
+    endTime:group.endTime
   };
 };
 
